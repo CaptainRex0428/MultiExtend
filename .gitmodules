@@ -41,9 +41,11 @@
 [submodule "Dependencies/openssl"]
 	path = Dependencies/openssl
 	url = https://github.com/openssl/openssl
+	branch = OpenSSL_1_1_1w
 [submodule "Dependencies/luacrypto"]
 	path = Dependencies/luacrypto
 	url = https://github.com/mkottman/luacrypto
 [submodule "Dependencies/lua"]
 	path = Dependencies/lua
 	url = https://github.com/lua/lua
+	branch = v5.3.6
