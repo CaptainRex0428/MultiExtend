@@ -1,0 +1,4 @@
+#pragma once
+
+#define MULTIEXTEND_PATTERN_SPDLOG_HEADER "%^["
+#define MULTIEXTEND_PATTERN_SPDLOG_INFO "] %n: %v%$"

@@ -1,0 +1,26 @@
+﻿/*
+* Standard Micro
+* MULTIEXTEND_PATTERN_
+* MULTIEXTEND_DEFAULT_
+* MULTIEXTEND_TAG_
+* MULTIEXTEND_ （Logic / Class / Functionals)
+*/
+
+#pragma once
+
+#define MULTIEXTEND_PATTERN_OUTFILE_FORMATDASH "------------------"
+#define MULTIEXTEND_PATTERN_OUTFILE_TILTE "{0}{1} START--[{2:.2f}{3}]{0}"
+#define MULTIEXTEND_PATTERN_OUTFILE_FOOTER "{0}{1} END----[{2:.2f}{3}]{0}"
+
+#ifdef MULTIEXTEND_DEBUG_DETAIL
+#define MULTIEXTEND_TAG_DEBUG_DETAIL_OUT __FUNCSIG__
+#else
+#define MULTIEXTEND_TAG_DEBUG_DETAIL_OUT __FUNCTION__
+#endif
+
+#define MULTIEXTEND_DEFAULT_DEBUG_FUNCTION_TYPE "-NoFuntionRecord-"
+
+#define MULTIEXTEND_PATTERN_FUNCTION_FORCE "Make parameter input <{0}> as <{1}> may help."
+#define MULTIEXTEND_PATTERN_VARIABLE_RESET "Variable <{0}> has been reset."
+
+#define MULTIEXTEND_DEFAULT_LOG_PATH_REL "./log/Default.log"

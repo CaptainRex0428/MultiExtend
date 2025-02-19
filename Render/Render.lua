@@ -17,8 +17,7 @@ project "Render"
         "%{DepIncludeDir.glad}",
         "%{DepIncludeDir.glfw}",
         "%{DepIncludeDir.glew}",
-        "%{DepIncludeDir.linmath}",
-        "%{ProjIncludeDir.ScrewExtend}"
+        "%{DepIncludeDir.linmath}"
     }
 
 	links

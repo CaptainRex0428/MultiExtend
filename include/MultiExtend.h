@@ -1,0 +1,36 @@
+#pragma once
+
+//------------------ Base tool ---------------
+#include "System/File/File.h"
+#include "System/Directory/Directory.h"
+#include "System/Operator.h"
+
+#include "Time/Clock/Clock.h"
+#include "Time/Clock/GlobalClock.h"
+#include "Time/Timer/Timer.h"
+
+#include "Debug/Message/Message.h"
+#include "Debug/Trace/Trace.h"
+#include "Debug/Log/Log.h"
+
+#include "MultiExtendDebug.h"
+//---------------------------------------------
+
+//----------------- Micro Define --------------
+#include "MultiExtendMicro.h"
+#include "Debug/Message/MessageMicro.h"
+#include "Time/Clock/ClockMicro.h"
+#include "Time/Clock/GlobalClockMicro.h"
+#include "System/File/FileMicro.h"
+#include "System/Directory/DirectoryMicro.h"
+#include "Math/MathMicro.h"
+#include "Time/Timer/TimerMicro.h"
+#include "Debug/Trace/TraceMicro.h"
+//---------------------------------------------
+
+namespace MultiExtend
+{
+	MULTIEXTEND_API int Init();
+}
+
+using namespace MultiExtend;

@@ -1,0 +1,15 @@
+#pragma once
+
+#define MULTIEXTEND_CLOCK ::std::chrono
+
+#define MULTIEXTEND_CLOCK_SYSTEM MULTIEXTEND_CLOCK::system_clock
+#define MULTIEXTEND_CLOCK_STEADY MULTIEXTEND_CLOCK::steady_clock
+#define MULTIEXTEND_CLOCK_HIGHRES MULTIEXTEND_CLOCK::high_resolution_clock
+
+
+#define MULTIEXTEND_MAX_TIME_STRING_SIZE 64
+#define MULTIEXTEND_TIME_STRING_PATTERN_CORE "%Y-%m-%d-%H:%M:%S"
+#define MULTIEXTEND_TIME_STRING_PATTERN_FULL "%Y-%m-%d-%H:%M:%S %a."
+#define MULTIEXTEND_TIME_STRING_PATTERN_FILE "%Y%m%d%H%M%S"
+
+#define MULTIEXTEND_CLOCK_UNINITIALIZED "Clock hasn't been initialized.[{0}]"

@@ -32,9 +32,6 @@
 	path = Dependencies/SDL
 	url = https://github.com/libsdl-org/SDL.git
 	branch = SDL2
-[submodule "Extend/ScrewExtend"]
-	path = Extend/ScrewExtend
-	url = https://github.com/CaptainRex0428/ScrewExtend.git
 [submodule "Dependencies/linmath"]
 	path = Dependencies/linmath
 	url = https://github.com/datenwolf/linmath.h.git

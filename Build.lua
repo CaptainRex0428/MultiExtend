@@ -1,9 +1,9 @@
 include "Directory.lua"
 include "Dependencies.lua"
 
-workspace "NRenderGL"
+workspace "MultiExtend"
 	architecture "x64"
-	startproject "Render"
+	startproject "MultiSandbox"
 	configurations{
 		"Debug",
 		"Release",
@@ -11,13 +11,17 @@ workspace "NRenderGL"
 	}
 
     filter "system:windows"
-    buildoptions { "/EHsc", "/Zc:preprocessor", "/Zc:__cplusplus" }
+    buildoptions { "/EHsc", "/Zc:preprocessor", "/Zc:__cplusplus","/utf-8" }
 	
 group "Render"
 	include "Render/Render.lua"
 
-group "Extend"
-	include "Extend/ScrewExtend/ScrewExtend.lua"
+group ""
+	include "MultiExtend.lua"
+
+group "Sandbox"
+	include "MultiSandbox/MultiSandbox.lua"
+	include "MultiTemplate/Template.lua"
 	
 group "Dependencies"
 	include "Dependencies/SDL.lua"
