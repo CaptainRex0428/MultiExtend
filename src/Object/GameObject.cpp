@@ -4,13 +4,13 @@
 #include <fstream>
 
 
-GameObject::GameObject()
+MultiExtend::GameObject::GameObject()
 	:Object()
 {
 	MULTIEXTEND_MESSAGE_TERMINAL_DEBUG("{0}:{1}", "GameObject Constructed(Hash)", GetHash());
 }
 
-void GameObject::AddActor(Actor* actor)
+void MultiExtend::GameObject::AddActor(Actor* actor)
 {
 	if (std::find(Get()->m_actors.begin(), Get()->m_actors.end(), actor) == Get()->m_actors.end())
 	{
@@ -27,14 +27,14 @@ void GameObject::AddActor(Actor* actor)
 	}
 }
 
-void GameObject::RemoveActor(Actor* actor)
+void MultiExtend::GameObject::RemoveActor(Actor* actor)
 {
 	auto it = std::remove_if(Get()->m_actors.begin(), Get()->m_actors.end(),
         [actor](Actor* ac) -> bool {return *actor->GetTag() == *ac->GetTag(); });
     Get()->m_actors.erase(it);
 }
 
-bool GameObject::Update(float delta)
+bool MultiExtend::GameObject::Update(float delta)
 {
 	for (auto actor : Get()->m_actors)
 	{
@@ -44,7 +44,7 @@ bool GameObject::Update(float delta)
 	return true;
 }
 
-void GameObject::Draw()
+void MultiExtend::GameObject::Draw()
 {
 	for (auto actor : Get()->m_actors)
 	{
@@ -52,7 +52,7 @@ void GameObject::Draw()
 	}
 }
 
-GameObject* GameObject::Get()
+GameObject* MultiExtend::GameObject::Get()
 {
     static GameObject instance;
     return &instance;

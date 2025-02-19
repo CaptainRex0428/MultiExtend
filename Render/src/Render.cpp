@@ -1,4 +1,4 @@
-#include "Render.h"
+ï»¿#include "Render.h"
 
 #include <iostream>
 
@@ -113,8 +113,8 @@ int render::Render(const Vertex* vertices, unsigned int size)
 	glUseProgram(shader);
 
 	// tell the layout of attributes
-	// µÚÒ»¸ö²ÎÊı£¨index£©Ö¸¶¨ÁËÄãÔÚ×ÅÉ«Æ÷ÖĞÎª¶¥µãÊôĞÔËùÉèÖÃµÄÎ»ÖÃË÷Òı¡£
-	// ËüÓÃÓÚ½« OpenGL °ó¶¨µÄ¶¥µãÊôĞÔÊı¾İÓë¶¥µã×ÅÉ«Æ÷ÖĞµÄÏàÓ¦ÊäÈë±äÁ¿ÏàÆ¥Åä¡£
+	// ç¬¬ä¸€ä¸ªå‚æ•°ï¼ˆindexï¼‰æŒ‡å®šäº†ä½ åœ¨ç€è‰²å™¨ä¸­ä¸ºé¡¶ç‚¹å±æ€§æ‰€è®¾ç½®çš„ä½ç½®ç´¢å¼•ã€‚
+	// å®ƒç”¨äºå°† OpenGL ç»‘å®šçš„é¡¶ç‚¹å±æ€§æ•°æ®ä¸é¡¶ç‚¹ç€è‰²å™¨ä¸­çš„ç›¸åº”è¾“å…¥å˜é‡ç›¸åŒ¹é…ã€‚
 	const unsigned int vPos_Idx =  glGetAttribLocation(shader,"vPos");
 	glEnableVertexAttribArray(vPos_Idx);
 	glVertexAttribPointer(

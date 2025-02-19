@@ -3,7 +3,7 @@
 
 #include "Component/ActorComponent.h"
 
-ActorComponent::ActorComponent(
+MultiExtend::ActorComponent::ActorComponent(
 	const char* tag,
 	Vector3 position,
 	Vector3 scale,
@@ -18,7 +18,7 @@ ActorComponent::ActorComponent(
 {
 }
 
-ActorComponent::~ActorComponent()
+MultiExtend::ActorComponent::~ActorComponent()
 {
 	for (auto actor_component : m_child_actor_components)
 	{
@@ -29,7 +29,7 @@ ActorComponent::~ActorComponent()
 	m_parent_component = nullptr;
 }
 
-void ActorComponent::UpdateComponents(float delta)
+void MultiExtend::ActorComponent::UpdateComponents(float delta)
 {
 	for (auto component : m_components)
 	{
@@ -37,7 +37,7 @@ void ActorComponent::UpdateComponents(float delta)
 	}
 }
 
-void ActorComponent::AddComponent(Component* component)
+void MultiExtend::ActorComponent::AddComponent(MultiExtend::Component* component)
 {
 	if (std::find(m_components.begin(), m_components.end(),
 		component) == m_components.end())
@@ -56,19 +56,19 @@ void ActorComponent::AddComponent(Component* component)
 	}
 }
 
-void ActorComponent::RemoveComponent(Component* component)
+void MultiExtend::ActorComponent::RemoveComponent(MultiExtend::Component* component)
 {
 	auto it = std::remove_if(m_components.begin(), m_components.end(),
 		[component](Component* comp) -> bool {return *component->GetTag() == *comp->GetTag(); });
 	m_components.erase(it);
 }
 
-const std::vector<Component*>& ActorComponent::GetComponents()
+const std::vector<MultiExtend::Component*>& MultiExtend::ActorComponent::GetComponents()
 {
 	return m_components;
 }
 
-Component* ActorComponent::GetComponent(const char* component_tag)
+MultiExtend::Component* MultiExtend::ActorComponent::GetComponent(const char* component_tag)
 {
 	for (auto component : m_components)
 	{
@@ -81,7 +81,7 @@ Component* ActorComponent::GetComponent(const char* component_tag)
 	return nullptr;
 }
 
-void ActorComponent::UpdateChildActorComponents(float delta)
+void MultiExtend::ActorComponent::UpdateChildActorComponents(float delta)
 {
 	for (auto child : m_child_actor_components)
 	{
@@ -89,7 +89,7 @@ void ActorComponent::UpdateChildActorComponents(float delta)
 	}
 }
 
-void ActorComponent::AddChildActorComponent(ActorComponent* child)
+void MultiExtend::ActorComponent::AddChildActorComponent(MultiExtend::ActorComponent* child)
 {
 	if (std::find(m_child_actor_components.begin(),
 		m_child_actor_components.end(),
@@ -109,12 +109,12 @@ void ActorComponent::AddChildActorComponent(ActorComponent* child)
 	}
 }
 
-void ActorComponent::SetParentActorComponent(ActorComponent* parent)
+void MultiExtend::ActorComponent::SetParentActorComponent(ActorComponent* parent)
 {
 	m_parent_component = parent;
 }
 
-void ActorComponent::RemoveChildActorComponent(ActorComponent* child)
+void MultiExtend::ActorComponent::RemoveChildActorComponent(ActorComponent* child)
 {
 	auto it = std::remove_if(m_child_actor_components.begin(),
 		m_child_actor_components.end(),
@@ -122,12 +122,12 @@ void ActorComponent::RemoveChildActorComponent(ActorComponent* child)
 	m_child_actor_components.erase(it);
 }
 
-const std::vector<ActorComponent*>& ActorComponent::GetChildActorComponents()
+const std::vector<MultiExtend::ActorComponent*>& MultiExtend::ActorComponent::GetChildActorComponents()
 {
 	return m_child_actor_components;
 }
 
-ActorComponent* ActorComponent::GetChildActorComponent(const char* component_tag)
+MultiExtend::ActorComponent* MultiExtend::ActorComponent::GetChildActorComponent(const char* component_tag)
 {
 	for (auto child : m_child_actor_components)
 	{
@@ -140,7 +140,7 @@ ActorComponent* ActorComponent::GetChildActorComponent(const char* component_tag
 	return nullptr;
 }
 
-void ActorComponent::AttachParentActorComponent(ActorComponent* parent)
+void MultiExtend::ActorComponent::AttachParentActorComponent(MultiExtend::ActorComponent* parent)
 {
 	if (std::find(m_child_actor_components.begin(),
 		m_child_actor_components.end(),
@@ -165,7 +165,7 @@ void ActorComponent::AttachParentActorComponent(ActorComponent* parent)
 #endif
 }
 
-void ActorComponent::DettachParentActorComponent()
+void MultiExtend::ActorComponent::DettachParentActorComponent()
 {
 	if (m_parent_component != nullptr)
 	{
@@ -174,42 +174,42 @@ void ActorComponent::DettachParentActorComponent()
 	}
 }
 
-ActorComponent* ActorComponent::GetParentActorComponent()
+MultiExtend::ActorComponent* MultiExtend::ActorComponent::GetParentActorComponent()
 {
 	return m_parent_component;
 }
 
-const Vector3& ActorComponent::GetPosition()
+const MultiExtend::Vector3& MultiExtend::ActorComponent::GetPosition()
 {
 	return m_position;
 }
 
-const Vector3& ActorComponent::GetScale()
+const MultiExtend::Vector3& MultiExtend::ActorComponent::GetScale()
 {
 	return m_scale;
 }
 
-const Vector3& ActorComponent::GetRotation()
+const MultiExtend::Vector3& MultiExtend::ActorComponent::GetRotation()
 {
 	return m_rotation;
 }
 
-void ActorComponent::SetPosition(Vector3 pos)
+void MultiExtend::ActorComponent::SetPosition(Vector3 pos)
 {
 	m_position = pos;
 }
 
-void ActorComponent::SetScale(Vector3 scale)
+void MultiExtend::ActorComponent::SetScale(Vector3 scale)
 {
 	m_scale = scale;
 }
 
-void ActorComponent::SetRotation(Vector3 rotation)
+void MultiExtend::ActorComponent::SetRotation(Vector3 rotation)
 {
 	m_rotation = rotation;
 }
 
-const Vector3 ActorComponent::GetPositionResult()
+const MultiExtend::Vector3 MultiExtend::ActorComponent::GetPositionResult()
 {
 
 
@@ -217,7 +217,7 @@ const Vector3 ActorComponent::GetPositionResult()
 	float p_y = m_position.y;
 	float p_z = m_position.z;
 
-	ActorComponent* parent = GetParentActorComponent();
+	MultiExtend::ActorComponent* parent = GetParentActorComponent();
 
 	while (parent)
 	{
@@ -232,7 +232,7 @@ const Vector3 ActorComponent::GetPositionResult()
 
 }
 
-const Vector3 ActorComponent::GetScaleResult()
+const MultiExtend::Vector3 MultiExtend::ActorComponent::GetScaleResult()
 {
 	float scalesize_x = m_scale.x;
 	float scalesize_y = m_scale.y;
@@ -252,7 +252,7 @@ const Vector3 ActorComponent::GetScaleResult()
 
 }
 
-const Vector3 ActorComponent::GetRotationResult()
+const MultiExtend::Vector3 MultiExtend::ActorComponent::GetRotationResult()
 {
 	float r_x = m_rotation.x;
 	float r_y = m_rotation.y;
@@ -272,12 +272,12 @@ const Vector3 ActorComponent::GetRotationResult()
 
 }
 
-bool ActorComponent::operator==(ActorComponent* other)
+bool MultiExtend::ActorComponent::operator==(ActorComponent* other)
 {
 	return this->GetTag() == other->GetTag();;
 }
 
-void ActorComponent::ClearParentActorComponent()
+void MultiExtend::ActorComponent::ClearParentActorComponent()
 {
 	if (m_parent_component->GetParentActorComponent() != nullptr)
 	{
@@ -288,7 +288,7 @@ void ActorComponent::ClearParentActorComponent()
 	m_parent_component = nullptr;
 }
 
-void ActorComponent::Update(float delta)
+void MultiExtend::ActorComponent::Update(float delta)
 {
 	// update self
 
@@ -305,7 +305,7 @@ void ActorComponent::Update(float delta)
 	return;
 }
 
-void ActorComponent::Draw()
+void MultiExtend::ActorComponent::Draw()
 {
 	// draw self
 

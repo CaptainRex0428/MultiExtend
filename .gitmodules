@@ -38,3 +38,6 @@
 [submodule "Dependencies/spdlog"]
 	path = Dependencies/spdlog
 	url = https://github.com/gabime/spdlog.git
+[submodule "Dependencies/openssl"]
+	path = Dependencies/openssl
+	url = https://github.com/openssl/openssl

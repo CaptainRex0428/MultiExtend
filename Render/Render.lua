@@ -28,7 +28,7 @@ project "Render"
         "glfw",
         "glad",
         "glew",
-        "ScrewExtend",
+        "MultiExtend",
         "OpenGL32.lib",
         "User32.lib",
         "Gdi32.lib",

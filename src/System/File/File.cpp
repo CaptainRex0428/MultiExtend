@@ -1,10 +1,10 @@
 #include "System/File/File.h"
 #include "System/File/FileConfig.h"
 
+#include "Math/Math.h"
+
 #include "MultiExtendMicro.h" 
 #include "MultiExtendConfig.h"
-
-#include "Math/Unit.h"
 
 #include "Debug/Message/Message.h"
 #include "Debug/Message/MessageMicro.h"
@@ -15,7 +15,8 @@
 #include <cassert>
 #include <format>
 
-namespace MultiExtend {
+namespace MultiExtend 
+{
 	bool File::isFilePathValid(std::string filepath)
 	{
 		MULTIEXTEND_FILESYSTEM::path _p(filepath);
@@ -226,7 +227,7 @@ namespace MultiExtend {
 		}
 
 		auto vector = GetContent();
-		auto [_unit, _size] = ByteSizeConvert(GetFileByteSize());
+		auto [_unit, _size] = MultiExtend::Math::ByteSizeConvert(GetFileByteSize());
 
 		MULTIEXTEND_MESSAGE_TERMINAL_TRACE(MULTIEXTEND_PATTERN_OUTFILE_TILTE, MULTIEXTEND_PATTERN_OUTFILE_FORMATDASH, m_filename, _size, _unit);
 

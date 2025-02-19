@@ -7,36 +7,36 @@
 
 #define VectorNDebug
 
-Vector2::Vector2()
+MultiExtend::Vector2::Vector2()
 	:x(0),y(0)
 {
 }
 
-Vector2::Vector2(float num)
+MultiExtend::Vector2::Vector2(float num)
 	:x(num), y(num)
 {
 }
 
-Vector2::Vector2(float i_x, float i_y)
+MultiExtend::Vector2::Vector2(float i_x, float i_y)
 	:x(i_x), y(i_y)
 {
 }
 
-Vector2::~Vector2() = default;
+MultiExtend::Vector2::~Vector2() = default;
 
-Vector2::Vector2(const Vector2& other)
+MultiExtend::Vector2::Vector2(const Vector2& other)
 {
 	x = other.x;
 	y = other.y;
 }
 
-Vector2::Vector2(Vector2&& other) noexcept
+MultiExtend::Vector2::Vector2(Vector2&& other) noexcept
 {
 	x = other.x;
 	y = other.y;
 }
 
-Vector2& Vector2::operator=(const Vector2& other)
+MultiExtend::Vector2& MultiExtend::Vector2::operator=(const MultiExtend::Vector2& other)
 {
 	x = other.x;
 	y = other.y;
@@ -45,37 +45,37 @@ Vector2& Vector2::operator=(const Vector2& other)
 }
 
 
-Vector2 Vector2::operator+(Vector2& other)
+MultiExtend::Vector2 MultiExtend::Vector2::operator+(MultiExtend::Vector2& other)
 {
 	return Vector2(x + other.x, y + other.y);
 }
 
-Vector2 Vector2::operator+(float num)
+MultiExtend::Vector2 MultiExtend::Vector2::operator+(float num)
 {
 	return Vector2(x + num, y + num);
 }
 
-Vector2 Vector2::operator-(Vector2& other)
+MultiExtend::Vector2 MultiExtend::Vector2::operator-(MultiExtend::Vector2& other)
 {
 	return Vector2(x - other.x, y - other.y);
 }
 
-Vector2 Vector2::operator-(float num)
+MultiExtend::Vector2 MultiExtend::Vector2::operator-(float num)
 {
 	return Vector2(x - num, y - num);
 }
 
-Vector2 Vector2::operator*(Vector2& other)
+MultiExtend::Vector2 MultiExtend::Vector2::operator*(MultiExtend::Vector2& other)
 {
 	return Vector2(x*other.x,y*other.y);
 }
 
-Vector2 Vector2::operator*(float num)
+MultiExtend::Vector2 MultiExtend::Vector2::operator*(float num)
 {
-	return Vector2(x*num, y*num);
+	return MultiExtend::Vector2(x*num, y*num);
 }
 
-Vector2& Vector2::operator+=(Vector2& other)
+MultiExtend::Vector2& MultiExtend::Vector2::operator+=(MultiExtend::Vector2& other)
 {
 #ifdef VectorDebug
 	std::cout << "value:(" << other.x << "," << other.y << ")\n";
@@ -84,7 +84,7 @@ Vector2& Vector2::operator+=(Vector2& other)
 	return *this;
 }
 
-Vector2& Vector2::operator+=(Vector2&& other)
+MultiExtend::Vector2& MultiExtend::Vector2::operator+=(MultiExtend::Vector2&& other)
 {
 #ifdef VectorDebug
 	std::cout << "value:(" << other.x << "," << other.y << ")\n";
@@ -94,77 +94,68 @@ Vector2& Vector2::operator+=(Vector2&& other)
 	return *this;
 }
 
-Vector2& Vector2::operator+=(float num)
+MultiExtend::Vector2& MultiExtend::Vector2::operator+=(float num)
 {
 	this->x += num;
 	this->y += num;
 	return *this;
 }
 
-float Vector2::length()
+float MultiExtend::Vector2::length()
 {
 	return (float)(sqrt(pow(x, 2) + pow(y, 2)));
 }
 
-Vector2 Vector2::normalize()
+MultiExtend::Vector2 MultiExtend::Vector2::normalize()
 {
 	return Vector2(x/length(), y/length());
 }
 
-float Vector2::dot(Vector2& va, Vector2& vb)
+float MultiExtend::Vector2::dot(Vector2& va, Vector2& vb)
 {
 	return va.x * vb.x + va.y * vb.y;
 }
 
-Vector3 Vector2::cross(Vector2& va, Vector2& vb)
+MultiExtend::Vector3 MultiExtend::Vector2::cross(Vector2& va, Vector2& vb)
 {
 	return Vector3(0, 0, va.x * vb.y - va.y * vb.x);
 }
 
-std::ostream& operator<<(std::ostream& out, const Vector2& vector)
+std::ostream& operator<<(std::ostream& out, const MultiExtend::Vector2& vector)
 {
 	out << "(" << vector.x << "," << vector.y << ")";
 	return out;
 }
 
-Vector3::Vector3()
+MultiExtend::Vector3::Vector3()
 	:x(0),y(0),z(0)
 {
 }
 
 
-Vector3::Vector3(float num)
+MultiExtend::Vector3::Vector3(float num)
 	:x(num), y(num), z(num)
 {}
 
-Vector3::Vector3(float i_x, float i_y, float i_z)
+MultiExtend::Vector3::Vector3(float i_x, float i_y, float i_z)
 	:x(i_x), y(i_y), z(i_z)
 {}
 
-Vector3::Vector3(const Vector3& other)
+MultiExtend::Vector3::Vector3(const Vector3& other)
 {
 	this->x = other.x;
 	this->y = other.y;
 	this->z = other.z;
 }
 
-Vector3::Vector3(Vector3&& other) noexcept
+MultiExtend::Vector3::Vector3(Vector3&& other) noexcept
 {
 	this->x = other.x;
 	this->y = other.y;
 	this->z = other.z;
 }
 
-Vector3& Vector3::operator=(Vector3&& other) noexcept
-{
-	this->x = other.x;
-	this->y = other.y;
-	this->z = other.z;
-
-	return *this;
-}
-
-Vector3& Vector3::operator=(const Vector3& other)
+MultiExtend::Vector3& MultiExtend::Vector3::operator=(MultiExtend::Vector3&& other) noexcept
 {
 	this->x = other.x;
 	this->y = other.y;
@@ -173,9 +164,18 @@ Vector3& Vector3::operator=(const Vector3& other)
 	return *this;
 }
 
-Vector3::~Vector3() = default;
+MultiExtend::Vector3& MultiExtend::Vector3::operator=(const MultiExtend::Vector3& other)
+{
+	this->x = other.x;
+	this->y = other.y;
+	this->z = other.z;
 
-std::ostream& operator<<(std::ostream& out, const Vector3& vector)
+	return *this;
+}
+
+MultiExtend::Vector3::~Vector3() = default;
+
+std::ostream& operator<<(std::ostream& out, const MultiExtend::Vector3& vector)
 {
 	out << "(" << vector.x << "," << vector.y << "," << vector.z << ")";
 	return out;

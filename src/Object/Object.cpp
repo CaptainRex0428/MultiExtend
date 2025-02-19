@@ -1,16 +1,16 @@
 #include "Object/Object.h"
 
-Object::Object()
+MultiExtend::Object::Object()
 {
-	this->m_hash = HashGenerator<Object>::generate(*this);
+	this->m_hash = MultiExtend::HashGenerator<Object>::generate(*this);
 }
 
-size_t Object::GetHash()
+size_t MultiExtend::Object::GetHash()
 {
 	return m_hash;
 }
 
-void Object::RefreshHash()
+void MultiExtend::Object::RefreshHash()
 {
-	this->m_hash = HashGenerator<Object>::generate(*this);
+	this->m_hash = MultiExtend::HashGenerator<Object>::generate(*this);
 }
