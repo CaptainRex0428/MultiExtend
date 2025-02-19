@@ -1,0 +1,43 @@
+[submodule "Dependencies/freetype"]
+	path = Dependencies/freetype
+	url = https://github.com/freetype/freetype.git
+[submodule "Dependencies/glfw"]
+	path = Dependencies/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "Dependencies/dlg"]
+	path = Dependencies/dlg
+	url = https://github.com/nyorain/dlg.git
+[submodule "Dependencies/imgui"]
+	path = Dependencies/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "Dependencies/harfbuzz"]
+	path = Dependencies/harfbuzz
+	url = https://github.com/libsdl-org/harfbuzz.git
+	branch = 8.1.1-SDL
+[submodule "Dependencies/SDL_ttf"]
+	path = Dependencies/SDL_ttf
+	url = https://github.com/libsdl-org/SDL_ttf.git
+	branch = SDL2
+[submodule "Dependencies/zlib"]
+	path = Dependencies/zlib
+	url = https://github.com/madler/zlib.git
+[submodule "Dependencies/libpng"]
+	path = Dependencies/libpng
+	url = https://github.com/pnggroup/libpng.git
+[submodule "Dependencies/SDL_image"]
+	path = Dependencies/SDL_image
+	url = https://github.com/libsdl-org/SDL_image.git
+	branch = SDL2
+[submodule "Dependencies/SDL"]
+	path = Dependencies/SDL
+	url = https://github.com/libsdl-org/SDL.git
+	branch = SDL2
+[submodule "Extend/ScrewExtend"]
+	path = Extend/ScrewExtend
+	url = https://github.com/CaptainRex0428/ScrewExtend.git
+[submodule "Dependencies/linmath"]
+	path = Dependencies/linmath
+	url = https://github.com/datenwolf/linmath.h.git
+[submodule "Dependencies/spdlog"]
+	path = Dependencies/spdlog
+	url = https://github.com/gabime/spdlog.git

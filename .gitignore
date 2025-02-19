@@ -1,0 +1,47 @@
+# Directories
+.vs/
+.vscode/
+Binaries/
+bin/
+settings/
+
+# Files
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
+*.sln
+*.log
+Makefile
+
+*.lib
+*.pdb
+*.obj
+*.pch
+
+autom4te*
+*/config.cache
+*/config.log
+*/config.status
+*/configure~
+*/libtool
+*.deps
+*.dirstamp
+*.libs
+*.lo
+*.o
+*.la
+*.lai
+*.DS_Store
+*xcuserdata
+*.xcworkspace
+
+*/SDL2_ttf.pc
+
+*/glfont
+*/showfont
+
+
+# Exclude
+!Scripts/premake
+
+example_assert_log.txt
