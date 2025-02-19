@@ -41,3 +41,9 @@
 [submodule "Dependencies/openssl"]
 	path = Dependencies/openssl
 	url = https://github.com/openssl/openssl
+[submodule "Dependencies/lua"]
+	path = Dependencies/lua
+	url = https://github.com/lua/lua
+[submodule "Dependencies/luacrypto"]
+	path = Dependencies/luacrypto
+	url = https://github.com/mkottman/luacrypto
