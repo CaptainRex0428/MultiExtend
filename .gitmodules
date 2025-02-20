@@ -48,4 +48,4 @@
 [submodule "Dependencies/openssl"]
 	path = Dependencies/openssl
 	url = https://github.com/openssl/openssl.git
-	branch = openssl-3.4
+	branch = openssl-3.4.1
