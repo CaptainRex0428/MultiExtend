@@ -45,3 +45,7 @@
 	path = Dependencies/lua
 	url = https://github.com/lua/lua
 	branch = v5.3.6
+[submodule "Dependencies/openssl"]
+	path = Dependencies/openssl
+	url = https://github.com/openssl/openssl.git
+	branch = openssl-3.4
