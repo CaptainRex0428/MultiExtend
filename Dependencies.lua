@@ -19,6 +19,12 @@ DepIncludeDir["spdlog"] = "%{wks.location}/Dependencies/spdlog/include"
 
 DepIncludeDir["linmath"] = "%{wks.location}/Dependencies/linmath"
 
+DepIncludeDir["openssl"] = "%{wks.location}/Dependencies/openssl/include"
+
+DepIncludeDir["lua"] = "%{wks.location}/Dependencies/lua"
+
+DepIncludeDir["luacrypto"] = "%{wks.location}/Dependencies/luacrypto/src"
+
 ProjIncludeDir={}
 ProjIncludeDir["MultiExtend"] = "%{wks.location}/include"
 
@@ -27,5 +33,7 @@ LibDirectories["SDL_ttf"] =  LibDir.."/SDL_ttf"
 LibDirectories["glfw"] =  LibDir.."/glfw"
 LibDirectories["glad"] =  LibDir.."/glad"
 LibDirectories["glew"] =  LibDir.."/glew"
+
+LibDirectories["openssl"] =  "%{wks.location}/Dependencies/openssl/lib"
 
 Library = {}

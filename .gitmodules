@@ -38,14 +38,10 @@
 [submodule "Dependencies/spdlog"]
 	path = Dependencies/spdlog
 	url = https://github.com/gabime/spdlog.git
-[submodule "Dependencies/luacrypto"]
-	path = Dependencies/luacrypto
-	url = https://github.com/mkottman/luacrypto
 [submodule "Dependencies/lua"]
 	path = Dependencies/lua
 	url = https://github.com/lua/lua
 	branch = v5.3.6
-[submodule "Dependencies/openssl"]
-	path = Dependencies/openssl
-	url = https://github.com/openssl/openssl.git
-	branch = openssl-3.4.1
+[submodule "Dependencies/luacrypto"]
+	path = Dependencies/luacrypto
+	url = https://github.com/CaptainRex0428/luacrypto.git
