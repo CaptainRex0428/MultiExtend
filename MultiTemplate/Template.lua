@@ -169,3 +169,77 @@ project "MultiExtendTemplateObject"
         optimize "On"
         symbols "Off"
         defines { "_DIST","NDEBUG" }
+
+
+project "MultiExtendTemplateSSL"
+    kind "ConsoleApp"
+    language "C++"
+    cppdialect "C++20"
+
+    files
+    {
+        "Template04.cpp"
+    }
+
+    includedirs
+    {
+        "%{ProjIncludeDir.MultiExtend}",
+        "%{DepIncludeDir.spdlog}",
+        "%{DepIncludeDir.luacrypto}",
+        "%{DepIncludeDir.lua}",
+        "%{DepIncludeDir.openssl}"
+
+    }
+
+    libdirs
+    {
+        "%{LibDirectories.openssl}",
+        "%{LibDirectories.lua}",
+    }
+
+    links
+    {
+        "MultiExtend",
+        "spdlog",
+
+        "libcrypto",
+        "libssl",
+        "lua",
+        "luacrypto"
+        
+    }
+
+    defines
+    {
+    }
+
+    flags
+    {
+    }
+
+    buildoptions { "/EHsc", "/Zc:preprocessor", "/Zc:__cplusplus"}
+
+    location (LocationDir)
+    targetdir (EXEDir)
+    objdir (ObjectDir)
+
+    filter "system:windows" 
+        systemversion "latest"
+        defines { "_WINDOWS","_WIN64" }
+
+    filter "configurations:Debug"
+        runtime "Debug"
+        symbols "On"
+        defines { "_DEBUG" }
+
+    filter "configurations:Release"
+        runtime "Release"
+        optimize "On"
+        symbols "On"
+        defines { "_RELEASE","NDEBUG" }
+
+    filter "configurations:Dist"
+        runtime "Release"
+        optimize "On"
+        symbols "Off"
+        defines { "_DIST","NDEBUG" }

@@ -19,8 +19,8 @@ project "lua"
 
     defines
 	{
-        "LUA_BUILD_AS_DLL",
-        "LUA_LIB"
+        "LUA_COMPAT_5_2",
+        "lua_c","LUA_CORE"
 	}
 
     flags

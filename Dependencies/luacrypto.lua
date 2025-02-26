@@ -1,5 +1,5 @@
 project "luacrypto"
-    kind "StaticLib"
+    kind "SharedLib"
     language "C"
 
     files
@@ -10,26 +10,36 @@ project "luacrypto"
 
     includedirs
     {
-       "%{DepIncludeDir.openssl}",
-       "%{DepIncludeDir.lua}",
-       "luacrypto/src",
+        "%{DepIncludeDir.openssl}",
+        "%{DepIncludeDir.lua}"
     }
 
     libdirs
     {
-        "%{LibDirectories.openssl}"
+        "%{LibDirectories.openssl}",
+        "%{LibDirectories.lua}"
     }
 
     links
     {
-        "lua",
+        "libcrypto",
         "libssl",
-        "libcrypto"
+        "lua"
+    }
+
+    linkoptions 
+    {
+        "/IMPLIB:" .. TargetDir .. "/luacrypto.lib"  -- 添加这一行
     }
 
     defines
-	{
-        
+	{   
+        "OPENSSL_API_COMPAT=0x10100000L",
+        "LUA_COMPAT_5_2",
+        "LUACRYPTO_EXPORTS",
+        "_CRT_SECURE_NO_WARNINGS",
+        "_USRDLL",
+        "lua_c","LUA_CORE"
 	}
 
     flags
@@ -48,16 +58,22 @@ project "luacrypto"
     targetdir (TargetDir)
     objdir (ObjectDir)
 
-    -- inlining    "Explicit"
+    inlining    "Explicit"
 	-- intrinsics  "Off"
 
+    postbuildcommands
+	{
+		("{COPY} %{cfg.buildtarget.relpath} "..DynamicDir)
+	}
+
     filter "system:windows" 
-        -- staticruntime "Off"
+        staticruntime "Off"
         systemversion "latest"
-        defines { "_WINDOWS" }
+        defines { "_WINDOWS","WIN32" }
+        links { "Advapi32","Crypt32","Ws2_32" } 
 
     filter "configurations:Debug"
-        runtime "Debug"
+        runtime "Release"
         symbols "On"
         defines { "_DEBUG" }
 

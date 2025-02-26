@@ -34,6 +34,7 @@ LibDirectories["glfw"] =  LibDir.."/glfw"
 LibDirectories["glad"] =  LibDir.."/glad"
 LibDirectories["glew"] =  LibDir.."/glew"
 
+LibDirectories["lua"] =  LibDir.."/lua"
 LibDirectories["openssl"] =  "%{wks.location}/Dependencies/openssl/lib"
 
 Library = {}
