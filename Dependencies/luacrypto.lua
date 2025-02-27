@@ -2,6 +2,9 @@ project "luacrypto"
     kind "SharedLib"
     language "C"
 
+
+    disablewarnings {"4099"}
+
     files
     {
         "luacrypto/src/**.c",

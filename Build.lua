@@ -26,7 +26,6 @@ group "Sandbox"
 	
 group "Dependencies"
 	include "Dependencies/lua.lua"
-	include "Dependencies/luacrypto.lua"
 	include "Dependencies/dlg.lua"
 	include "Dependencies/freetype.lua"
 	include "Dependencies/harfbuzz.lua"
@@ -39,6 +38,10 @@ group "Dependencies/SDL"
 	include "Dependencies/SDL.lua"
 	include "Dependencies/SDL_image.lua"
 	include "Dependencies/SDL_ttf.lua"
+
+group "Dependencies/crypto"
+	include "Dependencies/cryptopp.lua"
+	include "Dependencies/luacrypto.lua"
 
 group "Dependencies/OpenGL"
 	include "Dependencies/glad.lua"

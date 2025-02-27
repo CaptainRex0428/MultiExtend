@@ -1,4 +1,7 @@
 ﻿#include <iostream>
+#include <iostream>
+#include <fstream>
+#include <Windows.h>
 
 #include "MultiExtend.h"
 
@@ -10,6 +13,9 @@ extern "C"
 	#include "lcrypto.h"
 }
 
+#include "sha.h"
+#include "files.h"
+#include "hex.h"
 
 
 int TestFunction_LuaWrapper(lua_State* L, int x, int y)
@@ -37,18 +43,41 @@ int TestFunction_LuaWrapper(lua_State* L, int x, int y)
 }
 
 
-int main()
+int main(int argc, const char argv[])
 {
-	/*L = luaL_newstate();
+	MultiExtend::Init();
+
+	// lua test
+	lua_State *L = luaL_newstate();
 	luaL_openlibs(L);
 	luaL_dofile(L, "test.lua");
-	std::cout << "调用TestFunction(3,7)的结果：" << TestFunction_LuaWrapper(3, 7) << std::endl;
-	lua_close(L);*/
+	MULTIEXTEND_MESSAGE_CLIENT_DEBUG("TestFunction(3,7) >> {0}",TestFunction_LuaWrapper(L, 3, 7));
+	lua_close(L);
 
-	lua_State* L;
-	L = luaL_newstate();
-	luaopen_crypto(L);
-	lua_setglobal(L,"crypto");
+	//cryptopp test
+	std::ifstream input("test.lua",std::ios::binary);
+	if (!input)
+	{
+		MULTIEXTEND_MESSAGE_CLIENT_ERROR("cannot open input file.");
+		return 1;
+	}
+
+	CryptoPP::SHA256 hash;
+	CryptoPP::byte digest[CryptoPP::SHA256::DIGESTSIZE];
+
+	/*while (!input.eof())
+	{
+		char buffer[1024];
+		input.read(buffer, sizeof(buffer));
+		hash.Update((const byte*)buffer, input.gcount());
+	}
+
+	hash.Final(digest);
+
+	CryptoPP::HexEncoder encoder(new CryptoPP::FileSink(std::cout));
+	encoder.Put(digest, sizeof(digest));
+	encoder.MessageEnd();*/
+
 	
 	std::cin.get();
 	return 0;

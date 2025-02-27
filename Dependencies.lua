@@ -19,11 +19,11 @@ DepIncludeDir["spdlog"] = "%{wks.location}/Dependencies/spdlog/include"
 
 DepIncludeDir["linmath"] = "%{wks.location}/Dependencies/linmath"
 
-DepIncludeDir["openssl"] = "%{wks.location}/Dependencies/openssl/include"
-
 DepIncludeDir["lua"] = "%{wks.location}/Dependencies/lua"
 
 DepIncludeDir["luacrypto"] = "%{wks.location}/Dependencies/luacrypto/src"
+DepIncludeDir["openssl"] = "%{wks.location}/Dependencies/openssl/include"
+DepIncludeDir["cryptopp"] = "%{wks.location}/Dependencies/cryptopp"
 
 ProjIncludeDir={}
 ProjIncludeDir["MultiExtend"] = "%{wks.location}/include"

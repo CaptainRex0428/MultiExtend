@@ -188,14 +188,14 @@ project "MultiExtendTemplateSSL"
         "%{DepIncludeDir.spdlog}",
         "%{DepIncludeDir.luacrypto}",
         "%{DepIncludeDir.lua}",
-        "%{DepIncludeDir.openssl}"
+        "%{DepIncludeDir.openssl}",
+        "%{DepIncludeDir.cryptopp}"
 
     }
 
     libdirs
     {
-        "%{LibDirectories.openssl}",
-        "%{LibDirectories.lua}",
+        "%{LibDirectories.openssl}"
     }
 
     links
@@ -206,7 +206,9 @@ project "MultiExtendTemplateSSL"
         "libcrypto",
         "libssl",
         "lua",
-        "luacrypto"
+        "luacrypto",
+
+        "cryptopp"
         
     }
 
