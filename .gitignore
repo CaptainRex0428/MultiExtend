@@ -14,6 +14,7 @@ settings/
 Makefile
 
 *.lib
+
 *.pdb
 *.obj
 *.pch
@@ -43,6 +44,9 @@ autom4te*
 
 # Exclude
 !Scripts/premake
+!Dependencies/**/bin/
+!Dependencies/**/lib/**
+!Dependencies/**.lib
 
 example_assert_log.txt
 .cursorignore
