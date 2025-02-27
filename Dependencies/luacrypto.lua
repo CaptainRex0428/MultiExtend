@@ -39,7 +39,7 @@ project "luacrypto"
         "LUACRYPTO_EXPORTS",
         "_CRT_SECURE_NO_WARNINGS",
         "_USRDLL",
-        "lua_c","LUA_CORE"
+        "LUACRYPTO_API=__declspec(dllexport)"
 	}
 
     flags
@@ -73,7 +73,7 @@ project "luacrypto"
         links { "Advapi32","Crypt32","Ws2_32" } 
 
     filter "configurations:Debug"
-        runtime "Release"
+        runtime "Debug"
         symbols "On"
         defines { "_DEBUG" }
 

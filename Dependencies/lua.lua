@@ -20,6 +20,7 @@ project "lua"
     defines
 	{
         "LUA_COMPAT_5_2",
+        "LUA_COMPAT_MODULE",
         "lua_c","LUA_CORE"
 	}
 

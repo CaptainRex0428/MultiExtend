@@ -178,7 +178,8 @@ project "MultiExtendTemplateSSL"
 
     files
     {
-        "Template04.cpp"
+        "Template04.cpp",
+        "test.lua"
     }
 
     includedirs
@@ -211,6 +212,7 @@ project "MultiExtendTemplateSSL"
 
     defines
     {
+        
     }
 
     flags
