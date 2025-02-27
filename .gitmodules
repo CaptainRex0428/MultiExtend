@@ -45,3 +45,6 @@
 [submodule "Dependencies/luacrypto"]
 	path = Dependencies/luacrypto
 	url = https://github.com/CaptainRex0428/luacrypto.git
+[submodule "Dependencies/cryptopp"]
+	path = Dependencies/cryptopp
+	url = https://github.com/weidai11/cryptopp.git
