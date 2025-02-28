@@ -36,12 +36,7 @@ project "cryptopp"
 
     defines
 	{
-        "USE_PRECOMPILED_HEADERS",
-
-        -- 禁用自动ASM优化[^3]
-        "CRYPTOPP_DISABLE_ASM=0",
-        "CRYPTOPP_ARM_ASIMD_AVAILABLE=0",
-        "CRYPTOPP_ARM_CRC32_AVAILABLE=0" 
+        "USE_PRECOMPILED_HEADERS"
 	}
 
     flags
@@ -79,11 +74,11 @@ project "cryptopp"
             "cryptopp/x64masm.asm",
         }
 
-    filter { "files:cryptopp/dll.cpp" }
+    
+
+    filter { "files:cryptopp/dll.cpp or cryptopp/iterhash.cpp" }
         buildoptions { "/Y-", "/Yu\"\"" }
 
-    filter { "files:cryptopp/iterhash.cpp" }
-        buildoptions { "/Y-", "/Yu\"\"" }
 
     filter { "files:cryptopp/adhoc.cpp.proto" }
         buildcommands 
@@ -93,35 +88,77 @@ project "cryptopp"
         }
         buildoutputs { "adhoc.cpp.copied" }
 
-    filter { "files:**.asm" }
-        buildaction "CustomBuild"
 
-    -- x64平台
-    filter { "platforms:x64", "files:cryptopp/cpuid64.asm" }
-        prebuildcommands 
-        {
-            'ml64.exe /c /nologo /D_M_X64 /W3 /Zi /Fo"$(IntDir)cpuid64.obj" "%{file.relpath}"'
-        }
-        buildoutputs { "$(IntDir)cpuid64.obj" }
 
-    filter { "platforms:x64", "files:cryptopp/x64dll.asm" }
-        prebuildcommands 
-        {
-            'ml64.exe /c /nologo /Fo"$(IntDir)x64dll.obj" "%{file.relpath}"'
+    filter { "platforms:x64" }
+        defines { 
+            "_M_X64", 
+            "CRYPTOPP_DISABLE_ASM=0",  -- 覆盖默认配置
+            "CRYPTOPP_IMPORTS"         -- 启用DLL特性
         }
-        buildoutputs { "$(IntDir)x64dll.obj" }
+        buildoptions {
+            "/Zc:__cplusplus",         -- 强制C++标准识别
+            "/FI\"cryptopp/config_asm.h\""      -- 预包含配置文件
+        }
 
-    filter { "platforms:x64", "files:cryptopp/x64masm.asm" }
-        prebuildcommands 
+
+        -- x64 build
+    filter {'files:cryptopp/cpuid64.asm'}
+        -- A message to display while this build step is running (optional)
+        buildmessage 'Compiling %[%{file.relpath}]'
+        -- One or more commands to run (required)
+        buildcommands 
         {
-            'ml64.exe /c /nologo /Fo"$(IntDir)x64masm.obj" "%{file.relpath}"'
+            'ml64.exe /c /nologo /D_M_X64 /W3 /Zi /Fo"$(IntDir)cpuid64.obj" "%(FullPath)"'
         }
-        buildoutputs { "$(IntDir)x64masm.obj" }
+        buildoutputs { "$(IntDir)/cpuid64.obj;%(Outputs)" }
+        buildinputs {"cryptopp/config_asm.h"}
+
+    filter {'files:cryptopp/rdrand.asm'}
+        -- A message to display while this build step is running (optional)
+        buildmessage 'Compiling %[%{file.relpath}]'
+        -- One or more commands to run (required)
+        buildcommands 
+        {
+            'ml64.exe /c /nologo /D_M_X64 /W3 /Cx /Zi /Fo"$(IntDir)rdrand-x64.obj" "%(FullPath)"'
+        }
+        buildoutputs { "$(IntDir)/rdrand-x64.obj;%(Outputs)" }
+        buildinputs {"cryptopp/config_asm.h"}
+
+    filter {'files:cryptopp/rdseed.asm'}
+        -- A message to display while this build step is running (optional)
+        buildmessage 'Compiling %[%{file.relpath}]'
+        -- One or more commands to run (required)
+        buildcommands 
+        {
+            'ml64.exe /c /nologo /D_M_X64 /W3 /Cx /Zi /Fo"$(IntDir)rdseed-x64.obj" "%(FullPath)"'
+        }
+        buildoutputs { "$(IntDir)/rdseed-x64.obj;%(Outputs)" }
+        buildinputs {"cryptopp/config_asm.h"}
+
+    filter {'files:cryptopp/x64masm.asm'}
+        -- A message to display while this build step is running (optional)
+        buildmessage 'Compiling %[%{file.relpath}]'
+        -- One or more commands to run (required)
+        buildcommands 
+        {
+            'ml64.exe /c /nologo /D_M_X64 /W3 /Zi /Fo"$(IntDir)x64masm.obj" "%(FullPath)"'
+        }
+        buildoutputs { "$(IntDir)/x64masm.obj;%(Outputs)" }
+        buildinputs {"cryptopp/config_asm.h"}
 
     
-    -- 强制启用MSVC特性[^4]
-    filter { "toolset:msc*" }
-        buildoptions { "/Zc:__cplusplus" }
+    filter {'files:cryptopp/x64dll.asm'}
+        -- A message to display while this build step is running (optional)
+        buildmessage 'Compiling %[%{file.relpath}]'
+        -- One or more commands to run (required)
+        buildcommands 
+        {
+            'ml64.exe /c /nologo /D_M_X64 /W3 /Zi /Fo"$(IntDir)x64dll.obj" "%(FullPath)"'
+        }
+        buildoutputs { "$(IntDir)/x64dll.obj;%(Outputs)" }
+        buildinputs {"cryptopp/config_asm.h"}
+
 
     -- 平台配置
     filter "system:windows" 

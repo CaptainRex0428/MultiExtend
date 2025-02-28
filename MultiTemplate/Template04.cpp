@@ -65,7 +65,7 @@ int main(int argc, const char argv[])
 	CryptoPP::SHA256 hash;
 	CryptoPP::byte digest[CryptoPP::SHA256::DIGESTSIZE];
 
-	/*while (!input.eof())
+	while (!input.eof())
 	{
 		char buffer[1024];
 		input.read(buffer, sizeof(buffer));
@@ -76,7 +76,7 @@ int main(int argc, const char argv[])
 
 	CryptoPP::HexEncoder encoder(new CryptoPP::FileSink(std::cout));
 	encoder.Put(digest, sizeof(digest));
-	encoder.MessageEnd();*/
+	encoder.MessageEnd();
 
 	
 	std::cin.get();
