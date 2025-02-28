@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <chrono>
+#include <iomanip>
 
 #include "Time/Clock/ClockConfig.h"
 
@@ -24,9 +25,10 @@ namespace MultiExtend {
 
 		MULTIEXTEND_API static const tm* GetCurrentTime_sys();
 		MULTIEXTEND_API static const ClockProfile GetCurrentTime_sys_profile(const char* _timepattern = MULTIEXTEND_TIME_STRING_PATTERN_CORE);
+		MULTIEXTEND_API static const std::string GetCurrentTimeStamp_sys();
 
-		MULTIEXTEND_API static const tm* GetCurrentTime_gm();;
-		MULTIEXTEND_API static const ClockProfile GetCurrentTime_gm_profile(const char* _timepattern = MULTIEXTEND_TIME_STRING_PATTERN_CORE);;
+		MULTIEXTEND_API static const tm* GetCurrentTime_gm();
+		MULTIEXTEND_API static const ClockProfile GetCurrentTime_gm_profile(const char* _timepattern = MULTIEXTEND_TIME_STRING_PATTERN_CORE);
 
 		MULTIEXTEND_API static const MULTIEXTEND_CLOCK_STEADY::time_point GetCurrentTime_HighRes();
 		

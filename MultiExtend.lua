@@ -12,12 +12,22 @@ project "MultiExtend"
     includedirs
     {
         "include",
-        "%{DepIncludeDir.spdlog}"
+        "%{DepIncludeDir.spdlog}",
+        "%{DepIncludeDir.openssl}",
+        "%{DepIncludeDir.cryptopp}"
+    }
+
+    libdirs
+    {
+        "%{LibDirectories.openssl}"
     }
 
     links
     {
-        "spdlog"
+        "spdlog",
+        "libcrypto",
+        "libssl",
+        "cryptopp"
     }
 
     defines

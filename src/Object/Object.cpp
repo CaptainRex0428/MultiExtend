@@ -2,15 +2,16 @@
 
 MultiExtend::Object::Object()
 {
-	this->m_hash = MultiExtend::HashGenerator<Object>::generate(*this);
+	this->m_constructedTime = Clock::GetCurrentTime_gm();
 }
 
-size_t MultiExtend::Object::GetHash()
+MultiExtend::Object::~Object()
 {
-	return m_hash;
+	delete this->m_constructedTime;
+	m_constructedTime = nullptr;
 }
 
-void MultiExtend::Object::RefreshHash()
+MULTIEXTEND_API const tm* MultiExtend::Object::GetConstructedTime()
 {
-	this->m_hash = MultiExtend::HashGenerator<Object>::generate(*this);
+	return this->m_constructedTime;
 }

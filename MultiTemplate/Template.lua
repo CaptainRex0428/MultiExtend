@@ -126,13 +126,23 @@ project "MultiExtendTemplateObject"
     includedirs
     {
         "%{ProjIncludeDir.MultiExtend}",
-        "%{DepIncludeDir.spdlog}"
+        "%{DepIncludeDir.spdlog}",
+        "%{DepIncludeDir.openssl}",
+        "%{DepIncludeDir.cryptopp}"
     }
 
+    libdirs
+    {
+        "%{LibDirectories.openssl}"
+    }
+    
     links
     {
         "MultiExtend",
-        "spdlog"
+        "spdlog",
+        "libcrypto",
+        "libssl",
+        "cryptopp"
     }
 
     defines

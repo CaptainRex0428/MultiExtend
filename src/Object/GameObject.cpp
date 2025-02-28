@@ -7,7 +7,6 @@
 MultiExtend::GameObject::GameObject()
 	:Object()
 {
-	MULTIEXTEND_MESSAGE_TERMINAL_DEBUG("{0}:{1}", "GameObject Constructed(Hash)", GetHash());
 }
 
 void MultiExtend::GameObject::AddActor(Actor* actor)

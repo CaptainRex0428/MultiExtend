@@ -4,6 +4,7 @@
 #include "System/File/File.h"
 #include "System/Directory/Directory.h"
 #include "System/Operator.h"
+#include "System/Hash/HashGenerator.h"
 
 #include "Time/Clock/Clock.h"
 #include "Time/Clock/GlobalClock.h"
@@ -14,6 +15,7 @@
 #include "Debug/Log/Log.h"
 
 #include "MultiExtendDebug.h"
+
 //---------------------------------------------
 
 //----------------- Micro Define --------------

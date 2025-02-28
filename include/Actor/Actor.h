@@ -14,7 +14,7 @@ namespace MultiExtend
 		ATR_EPaused = 0b00000010
 	};
 
-	class Actor
+	class Actor : public Object
 	{
 	public:
 		MULTIEXTEND_API Actor(const char* tag = DEFAULT_ACTORTAG,

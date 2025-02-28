@@ -48,6 +48,14 @@ namespace MultiExtend {
 		return {s_time,s_time_str, s_time_point};
 	}
 
+	MULTIEXTEND_API const std::string Clock::GetCurrentTimeStamp_sys()
+	{
+		auto now = std::chrono::system_clock::now();
+		auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch());
+
+		return std::to_string(ms.count());
+	}
+
 	const tm* Clock::GetCurrentTime_gm() {
 		auto time = GetCurrentTime_time_t();
 		return gmtime(&time);

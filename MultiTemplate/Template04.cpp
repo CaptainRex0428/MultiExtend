@@ -1,5 +1,4 @@
 ﻿#include <iostream>
-#include <iostream>
 #include <fstream>
 #include <Windows.h>
 
