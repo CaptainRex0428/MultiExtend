@@ -32,7 +32,14 @@
 
 namespace MultiExtend
 {
-	MULTIEXTEND_API int Init();
+	enum InitTag: int
+	{
+		SDL = 0b00000001,
+		openGL = 0b00000010,
+		ALL = 0b11111111
+	};
+
+	MULTIEXTEND_API int Init(int inttag = ALL);
 }
 
 using namespace MultiExtend;

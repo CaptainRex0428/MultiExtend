@@ -12,9 +12,13 @@ project "MultiExtend"
     includedirs
     {
         "include",
+        
         "%{DepIncludeDir.spdlog}",
         "%{DepIncludeDir.openssl}",
-        "%{DepIncludeDir.cryptopp}"
+        "%{DepIncludeDir.cryptopp}",
+        
+        "%{DepIncludeDir.SDL}",
+        "%{DepIncludeDir.SDL_image}"
     }
 
     libdirs
@@ -27,7 +31,10 @@ project "MultiExtend"
         "spdlog",
         "libcrypto",
         "libssl",
-        "cryptopp"
+        "cryptopp",
+        "SDL",
+        "SDL_main",
+        "SDL_image"
     }
 
     defines

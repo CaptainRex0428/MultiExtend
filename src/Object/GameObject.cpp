@@ -1,8 +1,9 @@
-#include "Object/GameObject.h"
-#include "MultiExtend.h"
-
 #include <fstream>
 
+#include "SDL_image.h"
+
+#include "Object/GameObject.h"
+#include "MultiExtend.h"
 
 MultiExtend::GameObject::GameObject()
 	:Object()
@@ -49,6 +50,52 @@ void MultiExtend::GameObject::Draw()
 	{
 		actor->Draw();
 	}
+}
+
+Texture* MultiExtend::GameObject::LoadTexture(Renderer* renderer, const char* filepath)
+{
+
+	if(renderer->IsA<SDL_Renderer>())
+	{
+		return LoadTexture(renderer->GetRendererAs<SDL_Renderer>(),filepath);
+	}
+
+	return nullptr;
+}
+
+Texture* MultiExtend::GameObject::LoadTexture(SDL_Renderer* renderer, const char* filepath)
+{
+	std::ifstream f(filepath);
+
+	if (!f.good())
+	{
+		SDL_Log("File Doesn't exist :%s", filepath);
+		return nullptr;
+	}
+
+	SDL_Surface* surf = IMG_Load(filepath);
+
+	if (!surf)
+	{
+		SDL_Log("Failed to load texture file :%s", filepath);
+		return nullptr;
+	}
+
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surf);
+
+	SDL_FreeSurface(surf);
+
+	if (texture == nullptr)
+	{
+		SDL_Log("Failed to convert surface to texture :%s", filepath);
+		return nullptr;
+	}
+
+	TextureSDL* textureSDL = new TextureSDL(texture);
+
+	Get()->m_textures.emplace_back(textureSDL);
+
+	return textureSDL;
 }
 
 GameObject* MultiExtend::GameObject::Get()
