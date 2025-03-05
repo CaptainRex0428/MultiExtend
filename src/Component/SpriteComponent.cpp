@@ -1,36 +1,25 @@
 #include "Component/SpriteComponent.h"
 
-#include "Object/GameObject.h"
+#include "MultiExtend.h"
+
 
 #include "SDL.h"
 
-
 MultiExtend::SpriteComponent::SpriteComponent(
-	Renderer* renderer,
-	const char* texturefilepath,
-	const char* tag,
-	Vector3 postion,
-	Vector3 scale,
-	Vector3 rotation,
+	GameState* gameState, 
+	Renderer* renderer, 
+	const char* texturefilepath, 
+	const char* tag, 
+	Vector3 postion, 
+	Vector3 scale, 
+	Vector3 rotation, 
 	int updateorder)
-	:
-	MultiExtend::ActorComponent(tag, postion, scale, rotation, updateorder),
+	:MultiExtend::ActorComponent(tag, postion, scale, rotation, updateorder),
 	m_Texture(nullptr),
 	m_TextureRender_h(0),
 	m_TextureRender_w(0),
 	m_Renderer(renderer)
 {
-	if (texturefilepath != nullptr)
-	{
-		Texture* texture = GameObject::LoadTexture(m_Renderer, texturefilepath);
-
-		if (texture != nullptr)
-		{
-			m_Texture = texture;
-		}
-	}
-
-	SetTag(BaseSpriteComponentTypeName);
 }
 
 MultiExtend::SpriteComponent::~SpriteComponent()
@@ -46,10 +35,8 @@ void MultiExtend::SpriteComponent::SetSingleTexture(Texture* texture)
 {
 	m_Texture = texture;
 
-	if (m_Texture->IsA<SDL_Texture>())
-	{
-		SDL_QueryTexture(m_Texture->GetTextureAs<SDL_Texture>(), nullptr, nullptr, &m_TextureRender_w, &m_TextureRender_h);
-	}
+	QueryTexture(texture, m_TextureRender_w, m_TextureRender_h);
+
 }
 
 MULTIEXTEND_API void MultiExtend::SpriteComponent::Draw_SDL(SDL_Renderer * renderer)

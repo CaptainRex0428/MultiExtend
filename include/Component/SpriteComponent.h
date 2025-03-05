@@ -5,6 +5,7 @@
 
 #include "Renderer/Renderer.h"
 #include "Texture/Texture.h"
+#include "Object/GameState.h"
 
 #include "SpriteComponentConfig.h"
 
@@ -16,6 +17,7 @@ namespace MultiExtend
 	{
 	public:
 		MULTIEXTEND_API SpriteComponent(
+			GameState * gameState,
 			Renderer * renderer,
 			const char* texturefilepath = nullptr,
 			const char* tag = BaseSpriteComponentTypeName,

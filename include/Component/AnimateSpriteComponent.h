@@ -13,6 +13,8 @@ namespace MultiExtend
 	{
 	public:
 		MULTIEXTEND_API AnimateSpriteComponent(
+			float FPS,
+			GameState* gameState,
 			Renderer* renderer,
 			const char* canva_path,
 			const char* tag = BaseAnimSpriteComponentTypeName,
@@ -20,14 +22,14 @@ namespace MultiExtend
 			Vector3 scale = Vector3(1.0f, 1.0f, 1.0f),
 			Vector3 rotation = Vector3(0.0f, 0.0f, 0.0f),
 			int updateorder = DEFAULT_UPDATEORDER);
-		virtual ~AnimateSpriteComponent();
+		MULTIEXTEND_API virtual ~AnimateSpriteComponent();
 
-		virtual void Update(float delta) override;
+		MULTIEXTEND_API virtual void Update(float delta) override;
 
-		void SetAnimTextures(const std::vector<Texture*>& animateTextures);
+		MULTIEXTEND_API void SetAnimTextures(const std::vector<Texture*>& animateTextures);
 
-		float GetAnimFPS() const;
-		void SetAnimFPS(float fps);
+		MULTIEXTEND_API float GetAnimFPS() const;
+		MULTIEXTEND_API void SetAnimFPS(float fps);
 
 	private:
 		std::vector<Texture*> m_animateTextures;

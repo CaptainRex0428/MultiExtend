@@ -4,6 +4,8 @@
 
 #include "MultiExtendAPI.h"
 #include "Object/Object.h"
+#include "Renderer/Renderer.h"
+#include "Math/Vector.h" 
 
 
 namespace MultiExtend
@@ -29,6 +31,11 @@ namespace MultiExtend
 		{
 			return static_cast<T*>(GetTexture());
 		}
+
+		MULTIEXTEND_API const std::string& GetHash() const;
+
+	private:
+		std::string m_hash;
 		
 	};
 
@@ -43,4 +50,16 @@ namespace MultiExtend
 		SDL_Texture* m_Texture;
 
 	};
+
+	struct TextureRelocator
+	{
+		Texture * texture;
+		Vector2 offset;
+		Vector2 tiling;
+	};
+
+	MULTIEXTEND_API void QueryTexture(TextureRelocator & textureRelocator, float Width, float Height, Uint32* format = nullptr, int* access = nullptr);
+	MULTIEXTEND_API void QueryTexture(Texture * texture, int Width, int Height, Uint32* format = nullptr, int* access = nullptr);
+
+	MULTIEXTEND_API void RenderTexture(TextureRelocator & textureRelocator, float Width, float Height);
 }
