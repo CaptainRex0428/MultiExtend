@@ -29,17 +29,25 @@ void* MultiExtend::TextureSDL::GetTexture() const
     return m_Texture;
 }
 
-void MultiExtend::QueryTexture(TextureRelocator& textureRelocator, float Width, float Height, Uint32* format, int* access)
-{
-	Texture * texture = textureRelocator.texture;
 
-	QueryTexture(texture, Width, Height, format, access);
-}
-
-MULTIEXTEND_API void MultiExtend::QueryTexture(Texture* texture, int Width, int Height, Uint32* format, int* access)
+MULTIEXTEND_API MultiExtend::Texture* MultiExtend::QueryTexture(Texture* texture, Vector2 querySize, Uint32* format, int* access)
 {
 	if (texture->IsA<SDL_Texture>())
 	{
-		SDL_QueryTexture(texture->GetTextureAs<SDL_Texture>(), nullptr, nullptr, &Width, &Height);
+		int Width, Height;
+		Width = (int)querySize.x;
+		Height = (int)querySize.y;
+		SDL_QueryTexture(texture->GetTextureAs<SDL_Texture>(), format, access, &Width, &Height);
+		return texture;
 	}
+}
+
+MULTIEXTEND_API void MultiExtend::RenderTexture(TextureRelocator& textureRelocator, float Width, float Height)
+{
+	SDL_Rect dst;
+	dst.x = textureRelocator.offset.x;
+	dst.y = textureRelocator.offset.y;
+	dst.w = Width * textureRelocator.tiling.x;
+	dst.h = Height * textureRelocator.tiling.y;
+	SDL_RenderCopy(, textureRelocator.texture->GetTextureAs<SDL_Texture>(), nullptr, &dst);
 }

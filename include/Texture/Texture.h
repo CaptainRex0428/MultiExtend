@@ -58,8 +58,7 @@ namespace MultiExtend
 		Vector2 tiling;
 	};
 
-	MULTIEXTEND_API void QueryTexture(TextureRelocator & textureRelocator, float Width, float Height, Uint32* format = nullptr, int* access = nullptr);
-	MULTIEXTEND_API void QueryTexture(Texture * texture, int Width, int Height, Uint32* format = nullptr, int* access = nullptr);
+	MULTIEXTEND_API Texture* QueryTexture(Texture * texture, Vector2 querySize, Uint32* format = nullptr, int* access = nullptr);
 
 	MULTIEXTEND_API void RenderTexture(TextureRelocator & textureRelocator, float Width, float Height);
 }
