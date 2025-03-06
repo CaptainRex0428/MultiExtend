@@ -33,9 +33,6 @@ namespace MultiExtend
 
 		MULTIEXTEND_API virtual void SetSingleTexture(Texture * texture);
 
-	private:
-		MULTIEXTEND_API virtual void Draw_SDL(SDL_Renderer* renderer);
-
 	protected:
 		Texture * m_Texture;
 		Renderer * m_Renderer;

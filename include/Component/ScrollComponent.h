@@ -7,6 +7,19 @@
 
 namespace MultiExtend
 {
+	struct TextureScroll
+	{
+		Texture * texture;
+		TextureRelocator locator;
+	};
+
+	enum ScrollDirect
+	{
+		SCROLL_NONE = 0b00000001,
+		SCROLL_HORIZON = 0b00000010,
+		SCROLL_VERTICAL = 0b00000100
+	};
+
 	class ScrollComponent : SpriteComponent
 	{
 		MULTIEXTEND_API ScrollComponent(
@@ -26,15 +39,15 @@ namespace MultiExtend
 		MULTIEXTEND_API virtual void Update(float delta) override;
 		MULTIEXTEND_API virtual void Draw() override;
 
-		MULTIEXTEND_API void SetBGTextures(const std::vector<Texture*>& textures);
+		MULTIEXTEND_API virtual void SetScrollTextures(const std::vector<Texture*>& textures);
 
-		MULTIEXTEND_API void SetScreenSize(const Vector2 size);
+		MULTIEXTEND_API virtual void SetScreenSize(const Vector2 size);
 
 		MULTIEXTEND_API void SetScrollSpeed(float speed);
 		MULTIEXTEND_API float GetScrollSpeed() const;
 
 	private:
-		std::vector<TextureRelocator> m_ScrollTextures;
+		std::vector<TextureScroll *> m_ScrollTextures;
 		Vector2 m_ScreenSize;
 		
 		float m_ScrollSpeed;

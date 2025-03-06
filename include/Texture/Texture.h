@@ -53,12 +53,19 @@ namespace MultiExtend
 
 	struct TextureRelocator
 	{
-		Texture * texture;
 		Vector2 offset;
-		Vector2 tiling;
+		Vector2 scale;
+		Vector2 size;
 	};
 
-	MULTIEXTEND_API Texture* QueryTexture(Texture * texture, Vector2 querySize, Uint32* format = nullptr, int* access = nullptr);
+	enum TextureFlip
+	{
+		FLIP_NONE,
+		FLIP_HORIZON,
+		FLIP_VERTICAL
+	};
 
-	MULTIEXTEND_API void RenderTexture(TextureRelocator & textureRelocator, float Width, float Height);
+	MULTIEXTEND_API void QueryTexture(Texture * texture, Vector2 * sourceSize, Uint32* format = nullptr, int* access = nullptr);
+
+	MULTIEXTEND_API void RenderTexture(Renderer * renderer, Texture* texture, TextureRelocator * srcLocator, TextureRelocator * dstLocator, float rotate = 0, Vector2 * point = nullptr, TextureFlip flip = FLIP_NONE);
 }

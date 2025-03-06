@@ -35,40 +35,24 @@ void MultiExtend::SpriteComponent::SetSingleTexture(Texture* texture)
 {
 	m_Texture = texture;
 
-	QueryTexture(texture, m_TextureRender_w, m_TextureRender_h);
+	Vector2 sourceSize;
+	QueryTexture(texture, &sourceSize);
 
-}
-
-MULTIEXTEND_API void MultiExtend::SpriteComponent::Draw_SDL(SDL_Renderer * renderer)
-{
-	if (m_Texture->GetTextureAs<SDL_Texture>())
-	{
-		SDL_Rect r;
-		const Vector3 scaleresult = GetScaleResult();
-		const Vector3 posresult = GetPositionResult();
-
-		r.w = (int)(m_TextureRender_w * scaleresult.x);
-		r.h = (int)(m_TextureRender_h * scaleresult.y);
-		r.x = (int)(posresult.x - r.w / 2);
-		r.y = (int)(posresult.y - r.h / 2);
-
-		SDL_RenderCopyEx(
-			renderer,
-			m_Texture->GetTextureAs<SDL_Texture>(),
-			nullptr,
-			&r,
-			GetRotationResult().z,
-			nullptr,
-			SDL_FLIP_NONE);
-	}
 }
 
 void MultiExtend::SpriteComponent::Draw()
 {
-	if(m_Renderer->IsA<SDL_Renderer>())
-	{
-		Draw_SDL(m_Renderer->GetRendererAs<SDL_Renderer>());
-	}
-		
-	ActorComponent::Draw();
+	const Vector3 scaleResult = GetScaleResult();
+	const Vector3 posResult = GetPositionResult();
+
+	TextureRelocator renderSize;
+
+	renderSize.size.x = m_TextureRender_w * scaleResult.x;
+	renderSize.size.y = m_TextureRender_h * scaleResult.y;
+	renderSize.offset.x = posResult.x - renderSize.size.x / 2;
+	renderSize.offset.y = posResult.y - renderSize.size.y / 2;
+
+	RenderTexture(m_Renderer,m_Texture,
+		nullptr, &renderSize,
+		GetRotationResult().z);
 }

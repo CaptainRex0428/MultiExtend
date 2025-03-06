@@ -27,7 +27,7 @@ MultiExtend::Actor::~Actor()
 {
 	delete m_actor_tag;
 
-	for (auto child : m_child_actors)
+	for (Actor * child : m_child_actors)
 	{
 		child->ClearParentActor();
 	}
@@ -47,7 +47,7 @@ void MultiExtend::Actor::SetTag(const char* tag)
 
 void MultiExtend::Actor::UpdateComponents(float delta)
 {
-	for (auto component : m_components)
+	for (Component * component : m_components)
 	{
 		component->Update(delta);
 	}

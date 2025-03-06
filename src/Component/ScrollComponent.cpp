@@ -5,12 +5,12 @@ MultiExtend::ScrollComponent::ScrollComponent(
 	Renderer* renderer,
 	Vector2 screensize,
 	float scrollspeed,
-	int updateorder = DEFAULT_UPDATEORDER,
-	const char* tag = BaseSpriteComponentTypeName,
-	const char* texturefilepath = nullptr,
-	Vector3 position = Vector3(0.0f, 0.0f, 0.0f),
-	Vector3 scale = Vector3(1.0f, 1.0f, 1.0f),
-	Vector3 rotation = Vector3(0.0f, 0.0f, 0.0f))
+	int updateorder,
+	const char* tag ,
+	const char* texturefilepath,
+	Vector3 position,
+	Vector3 scale,
+	Vector3 rotation)
 	:
 	SpriteComponent(gameState,renderer, texturefilepath, tag, position, scale, rotation, updateorder),
 	m_ScrollSpeed(scrollspeed),
@@ -21,74 +21,74 @@ MultiExtend::ScrollComponent::ScrollComponent(
 
 MultiExtend::ScrollComponent::~ScrollComponent()
 {
+	for (TextureScroll* scroll : m_ScrollTextures) 
+	{
+		delete scroll;
+	}
+
+	m_ScrollTextures.clear();
 }
 
 void MultiExtend::ScrollComponent::Update(float delta)
 {
 	SpriteComponent::Update(delta);
 
-	for (auto& scrollTexture : m_ScrollTextures)
+	for (TextureScroll * scrollTexture : m_ScrollTextures)
 	{
-		scrollTexture.offset.x += m_ScrollSpeed * delta;
+		scrollTexture->locator.offset.x += m_ScrollSpeed * delta;
 
-		int w, h = 0;
-		SDL_QueryTexture(scrollTexture.texture, nullptr, nullptr, &w, &h);
+		Vector2 sourceSize;
+		QueryTexture(scrollTexture->texture,&sourceSize);
 
-		if (scrollTexture.offset.x < -w)
+		if (scrollTexture->locator.offset.x < -sourceSize.x)
 		{
 
-			scrollTexture.offset.x += m_ScrollWidth;
+			scrollTexture->locator.offset.x += m_ScrollWidth;
 		}
 	}
 }
 
 void MultiExtend::ScrollComponent::Draw()
 {
-	for (auto& scrollTexture : m_ScrollTextures)
+	for (TextureScroll * scrollTexture : m_ScrollTextures)
 	{
-		SDL_Rect rc;
-		SDL_Rect t;
+		Vector2 sourceSize;
+		QueryTexture(scrollTexture->texture, & sourceSize);
 
-		int w, h = 0;
-		SDL_QueryTexture(scrollTexture.texture, nullptr, nullptr, &w, &h);
+		TextureRelocator dst;		
 
-		rc.w = (int)(w);
-		rc.h = (int)(h);
-		rc.x = (int)(scrollTexture.offset.x);
-		rc.y = 0;
+		dst.size.x = m_ScreenSize.x;
+		dst.size.y = m_ScreenSize.y;
+		dst.offset.x = scrollTexture->locator.offset.x;
+		dst.offset.y = 0;
 
-		t.w = (int)(m_ScreenSize.x);
-		t.h = (int)(m_ScreenSize.y);
-		t.x = (int)(scrollTexture.offset.x);
-		t.y = 0;
-
-		SDL_RenderCopy(m_renderer, scrollTexture.texture, nullptr, &rc);
+		RenderTexture(m_Renderer,scrollTexture->texture,nullptr,&dst);
 	}
 
 	ActorComponent::Draw();
 
 }
 
-void MultiExtend::ScrollComponent::SetBGTextures(const std::vector<Texture*>& textures)
+void MultiExtend::ScrollComponent::SetScrollTextures(const std::vector<Texture*>& textures)
 {
 	int count = 0;
 
 	float offsetcount = 0;
 
-	for (auto tex : textures)
+	for (Texture * tex : textures)
 	{
-		TextureRelocator temp;
+		TextureScroll * temp = new TextureScroll();
 
-		temp.texture = tex;
-		temp.offset.x = offsetcount;
-		temp.offset.y = 0;
+		temp->texture = tex;
+		temp->locator.offset.x = offsetcount;
+		temp->locator.offset.y = 0;
 
 		m_ScrollTextures.emplace_back(temp);
 
-		int w, h = 0;
-		SDL_QueryTexture(tex, nullptr, nullptr, &w, &h);
+		Vector2 sourceSize;
+		QueryTexture(tex,&sourceSize);
 
-		offsetcount += w;
+		offsetcount += sourceSize.x;
 
 		count++;
 	}

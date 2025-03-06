@@ -29,25 +29,71 @@ void* MultiExtend::TextureSDL::GetTexture() const
     return m_Texture;
 }
 
-
-MULTIEXTEND_API MultiExtend::Texture* MultiExtend::QueryTexture(Texture* texture, Vector2 querySize, Uint32* format, int* access)
+void MultiExtend::QueryTexture(Texture* texture, Vector2 * sourceSize, Uint32* format, int* access)
 {
 	if (texture->IsA<SDL_Texture>())
 	{
-		int Width, Height;
-		Width = (int)querySize.x;
-		Height = (int)querySize.y;
-		SDL_QueryTexture(texture->GetTextureAs<SDL_Texture>(), format, access, &Width, &Height);
-		return texture;
+		int w,h;
+		SDL_QueryTexture(texture->GetTextureAs<SDL_Texture>(), format, access, &w, &h);
+
+		sourceSize->x = (float)w;
+		sourceSize->y = (float)h;
 	}
 }
 
-MULTIEXTEND_API void MultiExtend::RenderTexture(TextureRelocator& textureRelocator, float Width, float Height)
+void MultiExtend::RenderTexture(
+	Renderer* renderer,
+	Texture* texture,
+	TextureRelocator* srcLocator,
+	TextureRelocator* dstLocator,
+	float rotate, Vector2 * point, TextureFlip flip)
 {
-	SDL_Rect dst;
-	dst.x = textureRelocator.offset.x;
-	dst.y = textureRelocator.offset.y;
-	dst.w = Width * textureRelocator.tiling.x;
-	dst.h = Height * textureRelocator.tiling.y;
-	SDL_RenderCopy(, textureRelocator.texture->GetTextureAs<SDL_Texture>(), nullptr, &dst);
+	if(renderer->IsA<SDL_Renderer>() && texture->IsA<SDL_Texture>())
+	{
+		SDL_Rect srcRect;
+		SDL_Rect dstRect;
+
+		if(srcLocator)
+		{
+			srcRect.x = (int)srcLocator->offset.x;
+			srcRect.y = (int)srcLocator->offset.y;
+			srcRect.w = (int)srcLocator->size.x;
+			srcRect.h = (int)srcLocator->size.y;
+		}
+
+		dstRect.x = (int)dstLocator->offset.x;
+		dstRect.y = (int)dstLocator->offset.y;
+		dstRect.w = (int)dstLocator->size.x;
+		dstRect.h = (int)dstLocator->size.y;
+
+		SDL_Point center;
+		if(point)
+		{
+			center.x = (int)point->x;
+			center.y = (int)point->y;
+		}
+
+		SDL_RendererFlip textureFlip;
+		switch (flip)
+		{
+		case SDL_FLIP_NONE:
+			textureFlip = SDL_FLIP_NONE;
+			break;
+		case SDL_FLIP_HORIZONTAL:
+			textureFlip = SDL_FLIP_HORIZONTAL;
+			break;
+		case SDL_FLIP_VERTICAL:
+			textureFlip = SDL_FLIP_VERTICAL;
+			break;
+		default:
+			textureFlip = SDL_FLIP_NONE;
+			break;
+		}
+		
+		SDL_RenderCopyEx(
+			renderer->GetRendererAs<SDL_Renderer>(), 
+			texture->GetTextureAs<SDL_Texture>(), 
+			(srcLocator ? &srcRect : NULL), &dstRect,
+			rotate, point ? &center : NULL, textureFlip);
+	}
 }
