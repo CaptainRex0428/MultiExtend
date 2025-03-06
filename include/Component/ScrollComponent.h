@@ -20,8 +20,9 @@ namespace MultiExtend
 		SCROLL_VERTICAL = 0b00000100
 	};
 
-	class ScrollComponent : SpriteComponent
+	class ScrollComponent : public SpriteComponent
 	{
+	public:
 		MULTIEXTEND_API ScrollComponent(
 			GameState* gameState,
 			Renderer* renderer,
