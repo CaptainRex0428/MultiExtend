@@ -2,6 +2,7 @@
 #include "System/Hash/HashGenerator.h"
 #include "System/Operator.h"
 #include "Time/Clock/Clock.h"
+#include "MultiExtend.h"
 
 MultiExtend::Texture::Texture()
 {

@@ -18,13 +18,13 @@ namespace MultiExtend
 		MULTIEXTEND_API virtual void* GetRenderer() const = 0;
 
 		template <typename T>
-		MULTIEXTEND_API T* GetRendererAs() const
+		inline T* GetRendererAs() const
 		{
 			return static_cast<T*>(GetRenderer());
 		}
 
 		template <typename T>
-		MULTIEXTEND_API bool IsA()
+		inline bool IsA()
 		{
 			return static_cast<T*>(GetRenderer());
 		}

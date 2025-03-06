@@ -53,7 +53,7 @@ namespace MultiExtend
 	MULTIEXTEND_API Texture* LoadTexture(GameState* gameState, SDL_Renderer* renderer, const char* filepath);
 
 	template <typename T, typename... Args>
-	MULTIEXTEND_API T* CreateActor(GameState * gameState,Args&&... args)
+	inline T* CreateActor(GameState * gameState,Args&&... args)
 	{
 		T* ActorCreate = new T(std::forward<Args>(args)...);
 
@@ -69,7 +69,7 @@ namespace MultiExtend
 	};
 
 	template <typename T, typename... Args>
-	MULTIEXTEND_API T* CreateComponent(GameState * gameState, Args&&... args)
+	inline T* CreateComponent(GameState * gameState, Args&&... args)
 	{
 		T* ComponentCreate = new T(std::forward<Args>(args)...);
 
@@ -84,7 +84,7 @@ namespace MultiExtend
 	};
 
 	template <typename T, typename... Args>
-	T* CreateGameState(Args&&... args)
+	inline T* CreateGameState(Args&&... args)
 	{
 		T* GameStateCreate = new T(std::forward<Args>(args)...);
 
@@ -97,6 +97,10 @@ namespace MultiExtend
 
 		return GameStateCreate;
 	};
+
+	MULTIEXTEND_API void ClearRenderer(Renderer * renderer);
+
+	MULTIEXTEND_API void RenderPresent(Renderer* renderer);
 }
 
 using namespace MultiExtend;

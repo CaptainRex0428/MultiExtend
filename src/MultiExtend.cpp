@@ -19,6 +19,12 @@ namespace MultiExtend
 				SDL_Log("SDL init error:%s", SDL_GetError());
 				return 0;
 			};
+
+			if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
+			{
+				SDL_Log("SDL init image module error:%s", SDL_GetError());
+				return 0;
+			};
 		}
 		
 		return 1;
@@ -70,6 +76,26 @@ namespace MultiExtend
 
 		gameState->AddTexture(textureSDL);
 
+		MULTIEXTEND_MESSAGE_CLIENT_TRACE("Loaded Texture:{0}",filepath);
+
 		return textureSDL;
+	}
+
+	void ClearRenderer(Renderer* renderer)
+	{
+		if (renderer->IsA<SDL_Renderer>())
+		{
+			SDL_RenderClear(renderer->GetRendererAs<SDL_Renderer>());
+			return;
+		}
+	}
+
+	void RenderPresent(Renderer* renderer)
+	{
+		if (renderer->IsA<SDL_Renderer>())
+		{
+			SDL_RenderPresent(renderer->GetRendererAs<SDL_Renderer>());
+			return;
+		}
 	}
 }

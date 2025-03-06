@@ -21,13 +21,13 @@ namespace MultiExtend
 		MULTIEXTEND_API virtual void * GetTexture() const = 0;
 
 		template <typename T>
-		MULTIEXTEND_API T* GetTextureAs() const
+		inline T* GetTextureAs() const
 		{
 			return static_cast<T*>(GetTexture());
 		}
 
 		template <typename T>
-		MULTIEXTEND_API bool IsA()
+		inline bool IsA()
 		{
 			return static_cast<T*>(GetTexture());
 		}

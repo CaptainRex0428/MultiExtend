@@ -26,7 +26,7 @@ namespace MultiExtend
 
 		MULTIEXTEND_API virtual void Update(float delta) override;
 
-		MULTIEXTEND_API void SetAnimTextures(const std::vector<Texture*>& animateTextures);
+		MULTIEXTEND_API void SetAnimTextures(std::vector<Texture*>& animateTextures);
 
 		MULTIEXTEND_API float GetAnimFPS() const;
 		MULTIEXTEND_API void SetAnimFPS(float fps);

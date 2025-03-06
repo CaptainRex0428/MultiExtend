@@ -42,7 +42,7 @@ void MultiExtend::AnimateSpriteComponent::Update(float delta)
 	SpriteComponent::Update(delta);
 }
 
-void MultiExtend::AnimateSpriteComponent::SetAnimTextures(const std::vector<Texture*>& animateTextures)
+void MultiExtend::AnimateSpriteComponent::SetAnimTextures(std::vector<Texture*>& animateTextures)
 {
 	if(animateTextures.size() > 0)
 	{

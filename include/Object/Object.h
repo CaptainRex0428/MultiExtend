@@ -16,7 +16,7 @@ namespace MultiExtend
 		MULTIEXTEND_API const tm* GetConstructedTime();
 
 		template <typename T>
-		MULTIEXTEND_API bool IsA()
+		inline bool IsA()
 		{
 			return static_cast<T*>(this);
 		};
