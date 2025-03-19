@@ -24,7 +24,20 @@ namespace MultiExtend
 			Vector3 postion = Vector3(0.0f, 0.0f, 0.0f),
 			Vector3 scale = Vector3(1.0f, 1.0f, 1.0f),
 			Vector3 rotation = Vector3(0.0f, 0.0f, 0.0f),
+			Vector2 size = Vector2(32, 32),
 			int updateorder = DEFAULT_UPDATEORDER);
+
+		MULTIEXTEND_API SpriteComponent(
+			GameState* gameState,
+			Renderer* renderer,
+			Texture* texture = nullptr,
+			const char* tag = BaseSpriteComponentTypeName,
+			Vector3 postion = Vector3(0.0f, 0.0f, 0.0f),
+			Vector3 scale = Vector3(1.0f, 1.0f, 1.0f),
+			Vector3 rotation = Vector3(0.0f, 0.0f, 0.0f),
+			Vector2 size = Vector2(32, 32),
+			int updateorder = DEFAULT_UPDATEORDER);
+
 		MULTIEXTEND_API virtual ~SpriteComponent();
 
 		MULTIEXTEND_API virtual void Update(float delta) override;
@@ -32,6 +45,11 @@ namespace MultiExtend
 		MULTIEXTEND_API virtual void Draw() override;
 
 		MULTIEXTEND_API virtual void SetSingleTexture(Texture * texture);
+
+		MULTIEXTEND_API virtual void SetSize(Vector2 size);
+
+		MULTIEXTEND_API virtual Vector2 GetSize();
+		
 
 	protected:
 		Texture * m_Texture;

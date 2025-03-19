@@ -97,6 +97,9 @@ void MultiExtend::Actor::AddChildActor(Actor* child)
 		m_child_actors.end(),
 		child) == m_child_actors.end())
 	{
+
+		child->DettachParentActor();
+
 		int order = child->GetUpdateOrder();
 		auto iter = m_child_actors.begin();
 		for (; iter != m_child_actors.end(); ++iter)
@@ -108,6 +111,8 @@ void MultiExtend::Actor::AddChildActor(Actor* child)
 		}
 
 		m_child_actors.insert(iter, child);
+
+		child->m_parent_actor = this;
 	}
 }
 

@@ -56,16 +56,17 @@ void MultiExtend::RenderTexture(
 
 		if(srcLocator)
 		{
-			srcRect.x = (int)srcLocator->offset.x;
-			srcRect.y = (int)srcLocator->offset.y;
 			srcRect.w = (int)srcLocator->size.x;
 			srcRect.h = (int)srcLocator->size.y;
+			srcRect.x = (int)srcLocator->offset.x;
+			srcRect.y = (int)srcLocator->offset.y;
 		}
 
-		dstRect.x = (int)dstLocator->offset.x;
-		dstRect.y = (int)dstLocator->offset.y;
+		
 		dstRect.w = (int)dstLocator->size.x;
 		dstRect.h = (int)dstLocator->size.y;
+		dstRect.x = (int)dstLocator->offset.x;
+		dstRect.y = (int)dstLocator->offset.y;
 
 		SDL_Point center;
 		if(point)
@@ -77,13 +78,13 @@ void MultiExtend::RenderTexture(
 		SDL_RendererFlip textureFlip;
 		switch (flip)
 		{
-		case SDL_FLIP_NONE:
+		case FLIP_NONE:
 			textureFlip = SDL_FLIP_NONE;
 			break;
-		case SDL_FLIP_HORIZONTAL:
+		case FLIP_HORIZON:
 			textureFlip = SDL_FLIP_HORIZONTAL;
 			break;
-		case SDL_FLIP_VERTICAL:
+		case FLIP_VERTICAL:
 			textureFlip = SDL_FLIP_VERTICAL;
 			break;
 		default:

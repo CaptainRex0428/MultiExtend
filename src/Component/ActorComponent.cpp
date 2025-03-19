@@ -100,12 +100,16 @@ void MultiExtend::ActorComponent::AddChildActorComponent(MultiExtend::ActorCompo
 
 		for (; iter != m_child_actor_components.end(); ++iter)
 		{
-			break;
+			if (order < (*iter)->GetUpdateOrder())
+			{
+				break;
+			}
 		}
 
+		m_child_actor_components.insert(iter, child);
 		child->SetParentActorComponent(this);
 
-		m_child_actor_components.insert(iter, child);
+		
 	}
 }
 

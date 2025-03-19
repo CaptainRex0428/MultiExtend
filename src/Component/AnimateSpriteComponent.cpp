@@ -1,19 +1,48 @@
 #include "Component/AnimateSpriteComponent.h"
+#include "MultiExtend.h"
 
 MultiExtend::AnimateSpriteComponent::AnimateSpriteComponent(
 	float FPS,
 	GameState* gameState,
 	Renderer* renderer, 
-	const char* canva_path, 
+	std::vector<const char*> textureFilePaths,
 	const char* tag, 
 	Vector3 position, 
 	Vector3 scale,
-	Vector3 rotation, 
+	Vector3 rotation,
+	Vector2 size,
 	int updateorder):
-	SpriteComponent(gameState, renderer,canva_path,tag,position,scale,rotation),
+	SpriteComponent(gameState, renderer, textureFilePaths[0], tag, position, scale, rotation, size, updateorder),
 	m_FPS(FPS),
 	m_currentFrame(0)
 {
+	m_animateTextures.clear();
+	m_animateTextures.emplace_back(m_Texture);
+
+	auto iter = textureFilePaths.begin()+1;
+	for(;iter != textureFilePaths.end(); ++iter)
+	{
+		Texture * texture = MultiExtend::LoadTexture(gameState,renderer,*iter);
+		m_animateTextures.emplace_back(texture);
+	};
+}
+
+MultiExtend::AnimateSpriteComponent::AnimateSpriteComponent(
+	float FPS,
+	GameState* gameState,
+	Renderer* renderer,
+	std::vector<Texture*> textures,
+	const char* tag,
+	Vector3 position,
+	Vector3 scale,
+	Vector3 rotation,
+	Vector2 size,
+	int updateorder) :
+	SpriteComponent(gameState, renderer, textures[0], tag, position, scale, rotation, size, updateorder),
+	m_FPS(FPS),
+	m_currentFrame(0)
+{
+	m_animateTextures = textures;
 }
 
 MultiExtend::AnimateSpriteComponent::~AnimateSpriteComponent()

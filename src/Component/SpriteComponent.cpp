@@ -2,7 +2,6 @@
 
 #include "MultiExtend.h"
 
-
 #include "SDL.h"
 
 MultiExtend::SpriteComponent::SpriteComponent(
@@ -13,11 +12,34 @@ MultiExtend::SpriteComponent::SpriteComponent(
 	Vector3 postion, 
 	Vector3 scale, 
 	Vector3 rotation, 
+	Vector2 size,
 	int updateorder)
 	:MultiExtend::ActorComponent(tag, postion, scale, rotation, updateorder),
 	m_Texture(nullptr),
-	m_TextureRender_h(32),
-	m_TextureRender_w(32),
+	m_TextureRender_h((int)size.y),
+	m_TextureRender_w((int)size.x),
+	m_Renderer(renderer)
+{
+	if(texturefilepath)
+	{
+		m_Texture = MultiExtend::LoadTexture(gameState,renderer,texturefilepath);
+	}
+}
+
+MultiExtend::SpriteComponent::SpriteComponent(
+	GameState* gameState,
+	Renderer* renderer, 
+	Texture* texture, 
+	const char* tag, 
+	Vector3 postion, 
+	Vector3 scale, 
+	Vector3 rotation, 
+	Vector2 size,
+	int updateorder)
+	:MultiExtend::ActorComponent(tag, postion, scale, rotation, updateorder),
+	m_Texture(texture),
+	m_TextureRender_h((int)size.y),
+	m_TextureRender_w((int)size.x),
 	m_Renderer(renderer)
 {
 }
@@ -40,25 +62,34 @@ void MultiExtend::SpriteComponent::SetSingleTexture(Texture* texture)
 
 }
 
+MULTIEXTEND_API void MultiExtend::SpriteComponent::SetSize(Vector2 size)
+{
+	m_TextureRender_w = (int)size.x;
+	m_TextureRender_h = (int)size.y;
+}
+
+MULTIEXTEND_API Vector2 MultiExtend::SpriteComponent::GetSize()
+{
+	return Vector2((float)m_TextureRender_w,(float)m_TextureRender_h);
+}
+
 void MultiExtend::SpriteComponent::Draw()
 {
 	const Vector3 scaleResult = GetScaleResult();
 	const Vector3 posResult = GetPositionResult();
 
-	TextureRelocator renderSize;
+	if(m_Texture)
+	{
+		TextureRelocator renderSize;
 
-	renderSize.size.x = m_TextureRender_w * scaleResult.x;
-	renderSize.size.y = m_TextureRender_h * scaleResult.y;
-	renderSize.offset.x = posResult.x - renderSize.size.x / 2;
-	renderSize.offset.y = posResult.y - renderSize.size.y / 2;
+		// offset pivot to image center
+		renderSize.size.x = m_TextureRender_w * scaleResult.x;
+		renderSize.size.y = m_TextureRender_h * scaleResult.y;
+		renderSize.offset.x = posResult.x - renderSize.size.x / 2;
+		renderSize.offset.y = posResult.y - renderSize.size.y / 2;
 
-	/*MULTIEXTEND_MESSAGE_CLIENT_WARN("{2} ScaleResult:({0},{1})", scaleResult.x, scaleResult.y, this->GetTag());
-	MULTIEXTEND_MESSAGE_CLIENT_WARN("{2} RenderSize:({0},{1})", m_TextureRender_w, m_TextureRender_h, this->GetTag());
-
-	MULTIEXTEND_MESSAGE_CLIENT_WARN("Sprite RenderPos:({0},{1})", renderSize.offset.x, renderSize.offset.y);
-	MULTIEXTEND_MESSAGE_CLIENT_WARN("Sprite RenderSize:({0},{1})", renderSize.size.x, renderSize.size.y);*/
-
-	RenderTexture(m_Renderer,m_Texture,
-		nullptr, &renderSize,
-		GetRotationResult().z);
+		MultiExtend::RenderTexture(m_Renderer, m_Texture,
+			nullptr, &renderSize,
+			GetRotationResult().z);
+	}
 }
