@@ -75,8 +75,8 @@ MULTIEXTEND_API Vector2 MultiExtend::SpriteComponent::GetSize()
 
 void MultiExtend::SpriteComponent::Draw()
 {
-	const Vector3 scaleResult = GetScaleResult();
-	const Vector3 posResult = GetPositionResult();
+	const Vector3 scaleResult = GetScaleAbsolute();
+	const Vector3 posResult = GetPositionAbsolute();
 
 	if(m_Texture)
 	{
@@ -90,6 +90,6 @@ void MultiExtend::SpriteComponent::Draw()
 
 		MultiExtend::RenderTexture(m_Renderer, m_Texture,
 			nullptr, &renderSize,
-			GetRotationResult().z);
+			GetRotationAbsolute().z);
 	}
 }

@@ -54,12 +54,18 @@ namespace MultiExtend
 		MULTIEXTEND_API virtual void SetRenderSize(const Vector2 size);
 		MULTIEXTEND_API virtual Vector2 GetRenderSize();
 
+		MULTIEXTEND_API virtual void SetSourceSizeScale(const Vector3 size);
+		MULTIEXTEND_API virtual Vector3 GetSourceSizeScale();
+
 		MULTIEXTEND_API void SetScrollSpeed(float speed);
 		MULTIEXTEND_API float GetScrollSpeed() const;
 
 		MULTIEXTEND_API void ReverseScroll();
 
 	private:
+
+		void ScaleSourceSize(Vector2 & sourceSize);
+
 		std::vector<Texture *> m_Textures;
 		Vector3 m_sourceSizeScale;
 

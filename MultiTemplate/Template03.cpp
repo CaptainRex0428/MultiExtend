@@ -75,10 +75,21 @@ public:
 		spriteAnimateActor->SetPosition(Vector3(spriteStatic->GetSize().x,0,0));
 
 		Actor* spriteScrollActor = MultiExtend::CreateActor<Actor>(Get().m_GameState);
-		// MultiExtend::ScrollSpriteComponent * scrollSprite = new MultiExtend::ScrollSpriteComponent();
+		std::vector<const char*> scrolltextures =
+		{
+			"../MultiTemplate/assets/Farback01.png",
+			"../MultiTemplate/assets/Farback02.png"
+		};
+		MultiExtend::ScrollSpriteComponent * scrollSprite = new MultiExtend::ScrollSpriteComponent(Get().m_GameState, Get().m_renderer, 100, scrolltextures);
+		scrollSprite->SetRenderSize(Vector2(1024,100));
+		scrollSprite->SetSourceSizeScale(Vector3(1.f,1.f,1));
+		scrollSprite->SetScrollSpeed(100);
+		spriteScrollActor->AddActorComponent(scrollSprite);
+		spriteScrollActor->SetPosition(Vector3(spriteStatic->GetSize().x*2, 0, 0));
 
 		Get().m_GameActor->AddChildActor(spriteStaticActor);
 		Get().m_GameActor->AddChildActor(spriteAnimateActor);
+		Get().m_GameActor->AddChildActor(spriteScrollActor);
 
 		return true;
 	};

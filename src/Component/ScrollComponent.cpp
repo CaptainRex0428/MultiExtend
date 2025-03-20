@@ -1,4 +1,4 @@
-#include "Component/ScrollComponent.h"
+﻿#include "Component/ScrollComponent.h"
 #include "MultiExtend.h"
 
 MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
@@ -11,9 +11,9 @@ MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
 	ScrollDirect direct,
 	Vector3 sourceSizeScale,
 	Vector3 position, Vector3 scale,
-	Vector3 rotation, Vector2 renderSize) 
+	Vector3 rotation, Vector2 renderSize)
 	:
-	SpriteComponent(gameState, renderer, texturefilepaths[0], tag, position, scale, rotation, Vector2(0,0), updateorder),
+	SpriteComponent(gameState, renderer, texturefilepaths[0], tag, position, scale, rotation, Vector2(0, 0), updateorder),
 	m_ScrollSpeed(scrollspeed),
 	m_sourceSizeScale(sourceSizeScale),
 	m_renderSize(renderSize),
@@ -59,7 +59,7 @@ MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
 
 MultiExtend::ScrollSpriteComponent::~ScrollSpriteComponent()
 {
-	for (Texture* texture : m_Textures) 
+	for (Texture* texture : m_Textures)
 	{
 		delete texture;
 	}
@@ -71,60 +71,91 @@ void MultiExtend::ScrollSpriteComponent::Update(float delta)
 {
 	SpriteComponent::Update(delta);
 
-	float offset = m_ScrollSpeed * delta;
+	float direction = bReverse ? -1.0f : 1.0f;
+	float offset = direction * m_ScrollSpeed * delta;
 
 	Vector2 SourceSize;
 	QueryTexture(m_Textures[m_headTextureIdx], &SourceSize);
+	ScaleSourceSize(SourceSize);
 
 	m_headTextureOffset += offset;
-	
-	while(m_headTextureOffset > (m_scrollDirect==SCROLL_HORIZON ? SourceSize.x : SourceSize.y))
-	{
+
+	// 处理正向溢出
+	while (m_headTextureOffset > (m_scrollDirect == SCROLL_HORIZON ? SourceSize.x : SourceSize.y)) {
 		m_headTextureOffset -= (m_scrollDirect == SCROLL_HORIZON ? SourceSize.x : SourceSize.y);
-		m_headTextureIdx += 1;
-
-		if(m_headTextureIdx >= m_Textures.size())
-		{
-			m_headTextureIdx = 0;
-		}
-
+		m_headTextureIdx = (m_headTextureIdx + 1) % m_Textures.size();
 		QueryTexture(m_Textures[m_headTextureIdx], &SourceSize);
+		ScaleSourceSize(SourceSize);
+	}
+
+	// 处理反向溢出（新增负偏移处理）
+	while (m_headTextureOffset < 0) {
+		m_headTextureIdx = (m_headTextureIdx - 1 + m_Textures.size()) % m_Textures.size();
+		QueryTexture(m_Textures[m_headTextureIdx], &SourceSize);
+		ScaleSourceSize(SourceSize);
+		m_headTextureOffset += (m_scrollDirect == SCROLL_HORIZON ? SourceSize.x : SourceSize.y);
 	}
 }
 
 void MultiExtend::ScrollSpriteComponent::Draw()
 {
 	float drawDistance = 0;
-
 	int drawIdx = m_headTextureIdx;
 
-	while (drawDistance < (m_scrollDirect == SCROLL_HORIZON ? m_renderSize.x : m_renderSize.y))
+	Vector3 pos = GetPositionAbsolute();
+	Vector3 scale = GetScaleAbsolute();
+	float maxRenderSize = (m_scrollDirect == SCROLL_HORIZON) ?
+		(m_renderSize.x * scale.x) : (m_renderSize.y * scale.y);
+
+	// 根据反向标志决定绘制递进方向
+	int step = bReverse ? -1 : 1;
+
+	while (drawDistance < maxRenderSize)
 	{
-		
-		MultiExtend::TextureRelocator srcLocator;
-		MultiExtend::TextureRelocator dstLocator;
 
-		Vector2 SourceSize;
+		MultiExtend::TextureRelocator srcLocator, dstLocator;
+
+		Vector2 SourceSize, SourceSizeScaled;
+
 		QueryTexture(m_Textures[drawIdx], &SourceSize);
+		SourceSizeScaled = SourceSize;
+		ScaleSourceSize(SourceSizeScaled);
 
-		dstLocator.size.x = m_scrollDirect == SCROLL_HORIZON? :m_renderSize.x;
-		dstLocator.size.y = m_scrollDirect == SCROLL_HORIZON? m_renderSize.y:;
-		dstLocator.offset.x = ;
-		dstLocator.offset.y = ;
+		int renderTag = 1;
 
-		srcLocator.size.x = m_scrollDirect == SCROLL_HORIZON ? : m_renderSize.x;
-		srcLocator.size.y = m_scrollDirect == SCROLL_HORIZON ? m_renderSize.y : ;
-		srcLocator.offset.x =;
-		srcLocator.offset.y =;
+		// --- 计算裁剪参数（横向示例）---
+		float remainingSpace = maxRenderSize - drawDistance;
+		float srcClipStart = bReverse ?
+			(SourceSizeScaled.x - m_headTextureOffset) :
+			m_headTextureOffset;
 
-		MultiExtend::RenderTexture(m_Renderer,m_Textures[drawIdx],&srcLocator,&dstLocator);
+		srcLocator.offset.x = m_scrollDirect == SCROLL_HORIZON ?
+			(bReverse ? (SourceSize.x - m_headTextureOffset / scale.x) : m_headTextureOffset / scale.x) : 0;
+		srcLocator.size.x = m_scrollDirect == SCROLL_HORIZON ?
+			(remainingSpace / scale.x) : SourceSize.x;
 
-		drawIdx++;
+		dstLocator.offset.x = pos.x + (m_scrollDirect == SCROLL_HORIZON ? drawDistance : 0);
+		dstLocator.size.x = m_scrollDirect == SCROLL_HORIZON ?
+			remainingSpace : m_renderSize.x * scale.x;
+		
+		
+		// --- 类似逻辑处理垂直方向 ---
+		srcLocator.offset.y = m_scrollDirect == SCROLL_HORIZON ?
+			0 : (bReverse ? (SourceSize.y - m_headTextureOffset / scale.y) : m_headTextureOffset / scale.y);
+		srcLocator.size.y = m_scrollDirect == SCROLL_HORIZON ?
+			SourceSize.y : (remainingSpace / scale.y);
 
-		if(drawIdx >= m_Textures.size())
-		{
-			drawIdx = 0;
-		}
+		dstLocator.offset.y = pos.y + (m_scrollDirect == SCROLL_HORIZON ?  0 : drawDistance );
+		dstLocator.size.y = m_scrollDirect == SCROLL_HORIZON ?
+			m_renderSize.y * scale.y : remainingSpace;
+
+		MultiExtend::RenderTexture(m_Renderer, m_Textures[drawIdx], &srcLocator, &dstLocator);
+
+
+		// 更新索引和距离（考虑反向）
+		drawIdx = (drawIdx + step + m_Textures.size()) % m_Textures.size();
+		drawDistance += (m_scrollDirect == SCROLL_HORIZON) ?
+			dstLocator.size.x : dstLocator.size.y;
 
 	}
 
@@ -147,6 +178,16 @@ MULTIEXTEND_API Vector2 MultiExtend::ScrollSpriteComponent::GetRenderSize()
 	return m_renderSize;
 }
 
+MULTIEXTEND_API void MultiExtend::ScrollSpriteComponent::SetSourceSizeScale(const Vector3 size)
+{
+	m_sourceSizeScale = size;
+}
+
+MULTIEXTEND_API Vector3 MultiExtend::ScrollSpriteComponent::GetSourceSizeScale()
+{
+	return m_sourceSizeScale;
+}
+
 void MultiExtend::ScrollSpriteComponent::SetScrollSpeed(float speed)
 {
 	m_ScrollSpeed = speed;
@@ -160,4 +201,34 @@ float MultiExtend::ScrollSpriteComponent::GetScrollSpeed() const
 MULTIEXTEND_API void MultiExtend::ScrollSpriteComponent::ReverseScroll()
 {
 	this->bReverse = this->bReverse ? false : true;
+}
+
+void MultiExtend::ScrollSpriteComponent::ScaleSourceSize(Vector2& sourceSize)
+{
+	Vector3 absoluteScale = GetScaleAbsolute();
+	Vector3 scaleResult = m_sourceSizeScale * absoluteScale;
+
+	if (m_scrollDirect == SCROLL_HORIZON)
+	{
+		if (sourceSize.y * scaleResult.y < m_renderSize.y)
+		{
+			scaleResult.y = m_renderSize.y / sourceSize.y;
+		}
+
+		sourceSize *= scaleResult;
+
+		return;
+	}
+
+	if (m_scrollDirect == SCROLL_VERTICAL)
+	{
+		if (sourceSize.x * scaleResult.x < m_renderSize.x)
+		{
+			scaleResult.x = m_renderSize.x / sourceSize.x;
+		}
+
+		sourceSize *= scaleResult;
+
+		return;
+	}
 }

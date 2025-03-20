@@ -183,17 +183,17 @@ MultiExtend::ActorComponent* MultiExtend::ActorComponent::GetParentActorComponen
 	return m_parent_component;
 }
 
-const MultiExtend::Vector3& MultiExtend::ActorComponent::GetPosition()
+const MultiExtend::Vector3& MultiExtend::ActorComponent::GetPositionRelative()
 {
 	return m_position;
 }
 
-const MultiExtend::Vector3& MultiExtend::ActorComponent::GetScale()
+const MultiExtend::Vector3& MultiExtend::ActorComponent::GetScaleRelative()
 {
 	return m_scale;
 }
 
-const MultiExtend::Vector3& MultiExtend::ActorComponent::GetRotation()
+const MultiExtend::Vector3& MultiExtend::ActorComponent::GetRotationRelative()
 {
 	return m_rotation;
 }
@@ -213,7 +213,7 @@ void MultiExtend::ActorComponent::SetRotation(Vector3 rotation)
 	m_rotation = rotation;
 }
 
-const MultiExtend::Vector3 MultiExtend::ActorComponent::GetPositionResult()
+const MultiExtend::Vector3 MultiExtend::ActorComponent::GetPositionAbsolute()
 {
 
 
@@ -225,9 +225,9 @@ const MultiExtend::Vector3 MultiExtend::ActorComponent::GetPositionResult()
 
 	while (parent)
 	{
-		p_x += parent->GetPosition().x;
-		p_y += parent->GetPosition().y;
-		p_z += parent->GetPosition().z;
+		p_x += parent->GetPositionRelative().x;
+		p_y += parent->GetPositionRelative().y;
+		p_z += parent->GetPositionRelative().z;
 
 		parent = parent->GetParentActorComponent();
 	}
@@ -236,7 +236,7 @@ const MultiExtend::Vector3 MultiExtend::ActorComponent::GetPositionResult()
 
 }
 
-const MultiExtend::Vector3 MultiExtend::ActorComponent::GetScaleResult()
+const MultiExtend::Vector3 MultiExtend::ActorComponent::GetScaleAbsolute()
 {
 	float scalesize_x = m_scale.x;
 	float scalesize_y = m_scale.y;
@@ -245,9 +245,9 @@ const MultiExtend::Vector3 MultiExtend::ActorComponent::GetScaleResult()
 
 	while (parent)
 	{
-		scalesize_x *= parent->GetScale().x;
-		scalesize_y *= parent->GetScale().y;
-		scalesize_z *= parent->GetScale().z;
+		scalesize_x *= parent->GetScaleRelative().x;
+		scalesize_y *= parent->GetScaleRelative().y;
+		scalesize_z *= parent->GetScaleRelative().z;
 
 		parent = parent->GetParentActorComponent();
 	}
@@ -256,7 +256,7 @@ const MultiExtend::Vector3 MultiExtend::ActorComponent::GetScaleResult()
 
 }
 
-const MultiExtend::Vector3 MultiExtend::ActorComponent::GetRotationResult()
+const MultiExtend::Vector3 MultiExtend::ActorComponent::GetRotationAbsolute()
 {
 	float r_x = m_rotation.x;
 	float r_y = m_rotation.y;
@@ -265,9 +265,9 @@ const MultiExtend::Vector3 MultiExtend::ActorComponent::GetRotationResult()
 
 	while (parent)
 	{
-		r_x *= parent->GetRotation().x;
-		r_y *= parent->GetRotation().y;
-		r_z *= parent->GetRotation().z;
+		r_x *= parent->GetRotationRelative().x;
+		r_y *= parent->GetRotationRelative().y;
+		r_z *= parent->GetRotationRelative().z;
 
 		parent = parent->GetParentActorComponent();
 	}

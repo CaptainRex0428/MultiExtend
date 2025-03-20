@@ -70,6 +70,12 @@ MultiExtend::Vector2 MultiExtend::Vector2::operator*(MultiExtend::Vector2& other
 	return Vector2(x*other.x,y*other.y);
 }
 
+MULTIEXTEND_API MultiExtend::Vector2 MultiExtend::Vector2::operator*(Vector2&& other)
+{
+	Vector2 o = other;
+	return *this * o;
+}
+
 MultiExtend::Vector2 MultiExtend::Vector2::operator*(float num)
 {
 	return MultiExtend::Vector2(x*num, y*num);
@@ -119,6 +125,52 @@ float MultiExtend::Vector2::dot(Vector2& va, Vector2& vb)
 MultiExtend::Vector3 MultiExtend::Vector2::cross(Vector2& va, Vector2& vb)
 {
 	return Vector3(0, 0, va.x * vb.y - va.y * vb.x);
+}
+
+MULTIEXTEND_API MultiExtend::Vector2& MultiExtend::Vector2::operator=(Vector2&& other) noexcept
+{
+	this->x = other.x;
+	this->y = other.y;
+
+	return *this;
+}
+
+MULTIEXTEND_API MultiExtend::Vector2& MultiExtend::Vector2::operator*=(float& other)
+{
+	this->x *= other;
+	this->y *= other;
+
+	return *this;
+}
+
+MULTIEXTEND_API MultiExtend::Vector2& MultiExtend::Vector2::operator*=(Vector2&& other)
+{
+	this->x *= other.x;
+	this->y *= other.y;
+
+	return *this;
+}
+
+MULTIEXTEND_API MultiExtend::Vector2& MultiExtend::Vector2::operator*=(Vector2& other)
+{
+	*this *= (std::move(other));
+
+	return *this;
+}
+
+MULTIEXTEND_API MultiExtend::Vector2& MultiExtend::Vector2::operator*=(Vector3&& other)
+{
+	this->x *= other.x;
+	this->y *= other.y;
+
+	return *this;
+}
+
+MULTIEXTEND_API MultiExtend::Vector2& MultiExtend::Vector2::operator*=(Vector3& other)
+{
+	*this *= (std::move(other));
+
+	return *this;
 }
 
 std::ostream& operator<<(std::ostream& out, const MultiExtend::Vector2& vector)
@@ -171,6 +223,17 @@ MultiExtend::Vector3& MultiExtend::Vector3::operator=(const MultiExtend::Vector3
 	this->z = other.z;
 
 	return *this;
+}
+
+MULTIEXTEND_API MultiExtend::Vector3 MultiExtend::Vector3::operator*(Vector3& other)
+{
+	return Vector3(x*other.x,y*other.y,z*other.z);
+}
+
+MULTIEXTEND_API MultiExtend::Vector3 MultiExtend::Vector3::operator*(float num)
+{
+	
+	return Vector3(x * num, y * num, z * num);
 }
 
 MultiExtend::Vector3::~Vector3() = default;
