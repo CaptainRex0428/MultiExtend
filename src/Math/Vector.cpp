@@ -65,12 +65,23 @@ MultiExtend::Vector2 MultiExtend::Vector2::operator-(float num)
 	return Vector2(x - num, y - num);
 }
 
+MultiExtend::Vector2 MultiExtend::Vector2::operator*(Vector3&& other)
+{
+	Vector3 o = other;
+	return *this * o;
+}
+
+MultiExtend::Vector2 MultiExtend::Vector2::operator*(Vector3& other)
+{
+	return Vector2(x * other.x, y * other.y);
+}
+
 MultiExtend::Vector2 MultiExtend::Vector2::operator*(MultiExtend::Vector2& other)
 {
 	return Vector2(x*other.x,y*other.y);
 }
 
-MULTIEXTEND_API MultiExtend::Vector2 MultiExtend::Vector2::operator*(Vector2&& other)
+MultiExtend::Vector2 MultiExtend::Vector2::operator*(Vector2&& other)
 {
 	Vector2 o = other;
 	return *this * o;

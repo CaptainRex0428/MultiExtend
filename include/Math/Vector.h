@@ -48,6 +48,8 @@ namespace MultiExtend
 		MULTIEXTEND_API Vector2 operator-(Vector2& other);
 		MULTIEXTEND_API Vector2 operator-(float num);
 
+		MULTIEXTEND_API Vector2 operator*(Vector3&& other);
+		MULTIEXTEND_API Vector2 operator*(Vector3& other);
 		MULTIEXTEND_API Vector2 operator*(Vector2& other);
 		MULTIEXTEND_API Vector2 operator*(Vector2&& other);
 		MULTIEXTEND_API Vector2 operator*(float num);

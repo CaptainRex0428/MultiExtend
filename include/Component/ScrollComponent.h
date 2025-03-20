@@ -56,6 +56,7 @@ namespace MultiExtend
 
 		MULTIEXTEND_API virtual void SetSourceSizeScale(const Vector3 size);
 		MULTIEXTEND_API virtual Vector3 GetSourceSizeScale();
+		MULTIEXTEND_API virtual Vector3 GetLimitedSourceSizeScale();
 
 		MULTIEXTEND_API void SetScrollSpeed(float speed);
 		MULTIEXTEND_API float GetScrollSpeed() const;
@@ -63,17 +64,17 @@ namespace MultiExtend
 		MULTIEXTEND_API void ReverseScroll();
 
 	private:
-
-		void ScaleSourceSize(Vector2 & sourceSize);
+		void RefreshLimitedSizeScale();
 
 		std::vector<Texture *> m_Textures;
 		Vector3 m_sourceSizeScale;
+		Vector3 m_limitedSourceSizeScale;
 
 		Vector2 m_renderSize;
 		float m_ScrollSpeed;
 
 		int m_headTextureIdx;
-		float m_headTextureOffset;
+		float m_headTextureOffsetAfterScale;
 		
 		ScrollDirect m_scrollDirect;
 		bool bReverse;
