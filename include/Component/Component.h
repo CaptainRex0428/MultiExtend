@@ -32,6 +32,8 @@ namespace MultiExtend
 		MULTIEXTEND_API const char* GetTag();
 		MULTIEXTEND_API const int& GetComponentState();
 
+		MULTIEXTEND_API virtual void SetUpdateOrder(int order);
+
 		MULTIEXTEND_API void SetComponentState(int state);
 
 	protected:

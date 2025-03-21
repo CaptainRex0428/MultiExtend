@@ -58,15 +58,17 @@ namespace MultiExtend
 		MULTIEXTEND_API const Vector3& GetRotationRelative();
 		MULTIEXTEND_API const Vector3& GetScaleRelative();
 
-		MULTIEXTEND_API void SetPosition(Vector3 pos);
-		MULTIEXTEND_API void SetScale(Vector3 scale);
-		MULTIEXTEND_API void SetRotation(Vector3 rotation);
+		MULTIEXTEND_API void SetPositionRelative(Vector3 pos);
+		MULTIEXTEND_API void SetScaleRelative(Vector3 scale);
+		MULTIEXTEND_API void SetRotationRelative(Vector3 rotation);
 
 		MULTIEXTEND_API const Vector3 GetPositionAbsolute();
 		MULTIEXTEND_API const Vector3 GetScaleAbsolute();
 		MULTIEXTEND_API const Vector3 GetRotationAbsolute();
 
 		MULTIEXTEND_API void SetActorState(int state);
+
+		MULTIEXTEND_API void SetUpdateOrder(int order);
 
 	protected:
 		MULTIEXTEND_API virtual void SetTag(const char* tag);

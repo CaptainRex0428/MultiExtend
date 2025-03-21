@@ -43,13 +43,15 @@ namespace MultiExtend
 		MULTIEXTEND_API const Vector3& GetScaleRelative();
 		MULTIEXTEND_API const Vector3& GetRotationRelative();
 
-		MULTIEXTEND_API void SetPosition(Vector3 pos);
-		MULTIEXTEND_API void SetScale(Vector3 scale);
-		MULTIEXTEND_API void SetRotation(Vector3 rotation);
+		MULTIEXTEND_API void SetPositionRelative(Vector3 pos);
+		MULTIEXTEND_API void SetScaleRelative(Vector3 scale);
+		MULTIEXTEND_API void SetRotationRelative(Vector3 rotation);
 
 		MULTIEXTEND_API const Vector3 GetPositionAbsolute();
 		MULTIEXTEND_API const Vector3 GetScaleAbsolute();
 		MULTIEXTEND_API const Vector3 GetRotationAbsolute();
+
+		MULTIEXTEND_API virtual void SetUpdateOrder(int order) override;
 
 		MULTIEXTEND_API bool operator==(ActorComponent* other);
 

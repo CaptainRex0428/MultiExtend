@@ -198,17 +198,17 @@ const MultiExtend::Vector3& MultiExtend::ActorComponent::GetRotationRelative()
 	return m_rotation;
 }
 
-void MultiExtend::ActorComponent::SetPosition(Vector3 pos)
+void MultiExtend::ActorComponent::SetPositionRelative(Vector3 pos)
 {
 	m_position = pos;
 }
 
-void MultiExtend::ActorComponent::SetScale(Vector3 scale)
+void MultiExtend::ActorComponent::SetScaleRelative(Vector3 scale)
 {
 	m_scale = scale;
 }
 
-void MultiExtend::ActorComponent::SetRotation(Vector3 rotation)
+void MultiExtend::ActorComponent::SetRotationRelative(Vector3 rotation)
 {
 	m_rotation = rotation;
 }
@@ -274,6 +274,13 @@ const MultiExtend::Vector3 MultiExtend::ActorComponent::GetRotationAbsolute()
 
 	return Vector3(r_x, r_y, r_z);
 
+}
+
+MULTIEXTEND_API void MultiExtend::ActorComponent::SetUpdateOrder(int order)
+{
+	Component::SetUpdateOrder(order);
+
+	// may reorder
 }
 
 bool MultiExtend::ActorComponent::operator==(ActorComponent* other)

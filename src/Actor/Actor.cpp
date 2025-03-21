@@ -198,17 +198,17 @@ const MultiExtend::Vector3& MultiExtend::Actor::GetScaleRelative()
 	return m_scale;
 }
 
-void MultiExtend::Actor::SetPosition(Vector3 pos)
+void MultiExtend::Actor::SetPositionRelative(Vector3 pos)
 {
 	m_position = pos;
 }
 
-void MultiExtend::Actor::SetScale(Vector3 scale)
+void MultiExtend::Actor::SetScaleRelative(Vector3 scale)
 {
 	m_scale = scale;
 }
 
-void MultiExtend::Actor::SetRotation(Vector3 rotation)
+void MultiExtend::Actor::SetRotationRelative(Vector3 rotation)
 {
 	m_rotation = rotation;
 }
@@ -342,9 +342,9 @@ void MultiExtend::Actor::Update(float delta)
 {
 	// update self
 
-	m_actor_component_root->SetPosition(m_position);
-	m_actor_component_root->SetScale(m_scale);
-	m_actor_component_root->SetRotation(m_rotation);
+	m_actor_component_root->SetPositionRelative(m_position);
+	m_actor_component_root->SetScaleRelative(m_scale);
+	m_actor_component_root->SetRotationRelative(m_rotation);
 
 	// std::cout << "in update actor:" << m_position << std::endl;
 	// std::cout << "in update root:" << m_actor_component_root->GetPositionRelative() << std::endl;
@@ -367,5 +367,12 @@ void MultiExtend::Actor::Draw()
 	{
 		child->Draw();
 	}
+}
+
+void MultiExtend::Actor::SetUpdateOrder(int order)
+{
+	m_updateorder = order;
+
+	// may need reorder
 }
 

@@ -34,6 +34,13 @@ const int& MultiExtend::Component::GetComponentState()
 	return m_component_state;
 }
 
+MULTIEXTEND_API void MultiExtend::Component::SetUpdateOrder(int order)
+{
+	m_updateorder = order;
+
+	// may need reorder
+}
+
 void MultiExtend::Component::SetTag(const char * tag)
 {
 	size_t len = std::strlen(tag);
