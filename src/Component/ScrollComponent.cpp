@@ -1,5 +1,6 @@
 ﻿#include "Component/ScrollComponent.h"
 #include "MultiExtend.h"
+#include "Math/Math.h"
 
 MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
 	GameState* gameState,
@@ -142,15 +143,25 @@ void MultiExtend::ScrollSpriteComponent::Draw()
 		{
 		case(0):
 		{
+			
 			srcLocator.offset.x = m_scrollDirect == SCROLL_HORIZON ? (m_headTextureOffsetAfterScale / m_limitedSourceSizeScale.x) : 0;
 			srcLocator.offset.y = m_scrollDirect == SCROLL_HORIZON ? 0 : (m_headTextureOffsetAfterScale / m_limitedSourceSizeScale.y);
-			srcLocator.size.x = m_scrollDirect == SCROLL_HORIZON ? SourceSize.x : (m_renderSize.x * scale.x / m_limitedSourceSizeScale.x);
-			srcLocator.size.y = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize.y * scale.y / m_limitedSourceSizeScale.y) : SourceSize.y;
 
 			dstLocator.offset.x = pos.x;
 			dstLocator.offset.y = pos.y;
-			dstLocator.size.x = m_scrollDirect == SCROLL_HORIZON ? (SourceSizeScaled.x - m_headTextureOffsetAfterScale) : (m_renderSize.x * scale.x);
-			dstLocator.size.y = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize.y * scale.y) : (SourceSizeScaled.y - m_headTextureOffsetAfterScale);
+
+			float dstRemain = m_scrollDirect == SCROLL_HORIZON ? SourceSizeScaled.x - m_headTextureOffsetAfterScale : SourceSizeScaled.y - m_headTextureOffsetAfterScale;
+			float maxRenderSize = m_scrollDirect == SCROLL_HORIZON ? m_renderSize.x * scale.x : m_renderSize.y * scale.y;
+			Math::limit_max(dstRemain, maxRenderSize);
+
+			dstLocator.size.x = m_scrollDirect == SCROLL_HORIZON ? dstRemain : (m_renderSize.x * scale.x);
+			dstLocator.size.y = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize.y * scale.y) : dstRemain;
+
+			float srcRemain = m_scrollDirect == SCROLL_HORIZON ? dstRemain / m_limitedSourceSizeScale.x : dstRemain / m_limitedSourceSizeScale.y;
+
+			srcLocator.size.x = m_scrollDirect == SCROLL_HORIZON ? srcRemain : (m_renderSize.x * scale.x / m_limitedSourceSizeScale.x);
+			srcLocator.size.y = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize.y * scale.y / m_limitedSourceSizeScale.y) : srcRemain;
+			
 
 			break;
 		}
@@ -159,7 +170,7 @@ void MultiExtend::ScrollSpriteComponent::Draw()
 			srcLocator.offset.x = 0;
 			srcLocator.offset.y = 0;
 			srcLocator.size.x = m_scrollDirect == SCROLL_HORIZON ? (remainingSpace * SourceSize.x / SourceSizeScaled.x) : (m_renderSize.x * scale.x / m_limitedSourceSizeScale.x);
-			srcLocator.size.y = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize.x * scale.x / m_limitedSourceSizeScale.x) : (remainingSpace * SourceSize.x / SourceSizeScaled.x);
+			srcLocator.size.y = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize.y * scale.y / m_limitedSourceSizeScale.y) : (remainingSpace * SourceSize.y / SourceSizeScaled.y);
 
 			dstLocator.offset.x = m_scrollDirect == SCROLL_HORIZON ? (pos.x + drawDistance) : pos.x;
 			dstLocator.offset.y = m_scrollDirect == SCROLL_HORIZON ? pos.y : (pos.y + drawDistance);
