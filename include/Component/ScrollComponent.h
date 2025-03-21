@@ -19,8 +19,9 @@ namespace MultiExtend
 		MULTIEXTEND_API ScrollSpriteComponent(
 			GameState* gameState,
 			Renderer* renderer,
-			float scrollspeed,
 			std::vector<const char*> texturefilepaths,
+			float scrollspeed = 88,
+			float offset = 0,
 			const char* tag = BaseSpriteComponentTypeName,
 			int updateorder = DEFAULT_UPDATEORDER,
 			ScrollDirect direct = SCROLL_HORIZON,
@@ -33,8 +34,9 @@ namespace MultiExtend
 		MULTIEXTEND_API ScrollSpriteComponent(
 			GameState* gameState,
 			Renderer* renderer,
-			float scrollspeed,
 			std::vector<Texture*> textures,
+			float scrollspeed = 88,
+			float offset = 0,
 			const char* tag = BaseSpriteComponentTypeName,
 			int updateorder = DEFAULT_UPDATEORDER,
 			ScrollDirect direct = SCROLL_HORIZON,
@@ -58,13 +60,19 @@ namespace MultiExtend
 		MULTIEXTEND_API virtual Vector3 GetSourceSizeScale();
 		MULTIEXTEND_API virtual Vector3 GetLimitedSourceSizeScale();
 
+		MULTIEXTEND_API virtual void SetOffset(float offset);
+		MULTIEXTEND_API virtual const float & GetOffset();
+		MULTIEXTEND_API virtual const float & GetLimitedOffset();
+
 		MULTIEXTEND_API void SetScrollSpeed(float speed);
 		MULTIEXTEND_API float GetScrollSpeed() const;
 
 		MULTIEXTEND_API void ReverseScroll();
 
-	private:
+	protected:
+		void RefreshLimit();
 		void RefreshLimitedSizeScale();
+		void RefreshLimitedOffset();
 
 		std::vector<Texture *> m_Textures;
 		Vector3 m_sourceSizeScale;
@@ -78,5 +86,8 @@ namespace MultiExtend
 		
 		ScrollDirect m_scrollDirect;
 		bool bReverse;
+
+		float m_offset;
+		float m_limitOffset;
 	};
 }

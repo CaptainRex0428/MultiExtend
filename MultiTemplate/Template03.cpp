@@ -34,7 +34,7 @@ public:
 
 		Get().m_window = SDL_CreateWindow("ObjectTest",
 			100, 100,
-			1920, 1080, 0);
+			720,462, 0);
 
 		if (!Get().m_window)
 		{
@@ -80,16 +80,35 @@ public:
 			"../MultiTemplate/assets/Farback01.png",
 			"../MultiTemplate/assets/Farback02.png"
 		};
-		MultiExtend::ScrollSpriteComponent * scrollSprite = new MultiExtend::ScrollSpriteComponent(Get().m_GameState, Get().m_renderer, 100, scrolltextures);
+		MultiExtend::ScrollSpriteComponent * scrollSprite = new MultiExtend::ScrollSpriteComponent(Get().m_GameState, Get().m_renderer,scrolltextures);
 		scrollSprite->SetRenderSize(Vector2(512,32));
 		scrollSprite->SetSourceSizeScale(Vector3(.2f,.2f,1));
 		scrollSprite->SetScrollSpeed(80);
+		scrollSprite->SetOffset(300);
 		spriteScrollActor->AddActorComponent(scrollSprite);
 		spriteScrollActor->SetPosition(Vector3(spriteStatic->GetSize().x*2, 0, 0));
 
 		Get().m_GameActor->AddChildActor(spriteStaticActor);
 		Get().m_GameActor->AddChildActor(spriteAnimateActor);
 		Get().m_GameActor->AddChildActor(spriteScrollActor);
+
+		Actor* starScrollActor = MultiExtend::CreateActor<Actor>(Get().m_GameState);
+		std::vector<const char*> starScrolltextures =
+		{
+			"../MultiTemplate/assets/Stars.png",
+		};
+		MultiExtend::ScrollSpriteComponent* starScrollSprite = new MultiExtend::ScrollSpriteComponent(Get().m_GameState, Get().m_renderer, starScrolltextures);
+		starScrollSprite->SetRenderSize(Vector2(512, 32));
+		starScrollSprite->SetSourceSizeScale(Vector3(.3f, .3f, 1));
+		starScrollSprite->SetScrollSpeed(40);
+		starScrollSprite->SetOffset(0);
+		starScrollActor->AddActorComponent(starScrollSprite);
+		starScrollActor->SetPosition(Vector3(spriteStatic->GetSize().x * 2,0, 0));
+
+		Get().m_GameActor->AddChildActor(spriteStaticActor);
+		Get().m_GameActor->AddChildActor(spriteAnimateActor);
+		Get().m_GameActor->AddChildActor(spriteScrollActor);
+		Get().m_GameActor->AddChildActor(starScrollActor);
 
 		return true;
 	};
