@@ -57,7 +57,7 @@ public:
 		Actor * spriteStaticActor = MultiExtend::CreateActor<Actor>(Get().m_GameState);
 		MultiExtend::SpriteComponent * spriteStatic = new MultiExtend::SpriteComponent(Get().m_GameState, Get().m_renderer, "../MultiTemplate/assets/Ship01.png");
 		spriteStatic->SetSize(Vector2(64, 29));
-		spriteStatic->SetPosition(Vector3(spriteStatic->GetSize().x/2, spriteStatic->GetSize().y/2,0));
+		spriteStatic->SetPositionRelative(Vector3(spriteStatic->GetSize().x/2, spriteStatic->GetSize().y/2,0));
 		spriteStaticActor->AddActorComponent(spriteStatic);
 		
 		Actor* spriteAnimateActor = MultiExtend::CreateActor<Actor>(Get().m_GameState);
@@ -70,9 +70,9 @@ public:
 		};
 		MultiExtend::AnimateSpriteComponent* spriteAnimate = new MultiExtend::AnimateSpriteComponent(10,Get().m_GameState, Get().m_renderer,textures);
 		spriteAnimate->SetSize(Vector2(64, 29));
-		spriteAnimate->SetPosition(Vector3(spriteAnimate->GetSize().x / 2, spriteAnimate->GetSize().y / 2, 0));
+		spriteAnimate->SetPositionRelative(Vector3(spriteAnimate->GetSize().x / 2, spriteAnimate->GetSize().y / 2, 0));
 		spriteAnimateActor->AddActorComponent(spriteAnimate);
-		spriteAnimateActor->SetPosition(Vector3(spriteStatic->GetSize().x,0,0));
+		spriteAnimateActor->SetPositionRelative(Vector3(spriteStatic->GetSize().x,0,0));
 
 		Actor* spriteScrollActor = MultiExtend::CreateActor<Actor>(Get().m_GameState);
 		std::vector<const char*> scrolltextures =
@@ -86,7 +86,7 @@ public:
 		scrollSprite->SetScrollSpeed(80);
 		scrollSprite->SetOffset(300);
 		spriteScrollActor->AddActorComponent(scrollSprite);
-		spriteScrollActor->SetPosition(Vector3(spriteStatic->GetSize().x*2, 0, 0));
+		spriteScrollActor->SetPositionRelative(Vector3(spriteStatic->GetSize().x*2, 0, 0));
 
 		Get().m_GameActor->AddChildActor(spriteStaticActor);
 		Get().m_GameActor->AddChildActor(spriteAnimateActor);
@@ -103,7 +103,7 @@ public:
 		starScrollSprite->SetScrollSpeed(40);
 		starScrollSprite->SetOffset(0);
 		starScrollActor->AddActorComponent(starScrollSprite);
-		starScrollActor->SetPosition(Vector3(spriteStatic->GetSize().x * 2,0, 0));
+		starScrollActor->SetPositionRelative(Vector3(spriteStatic->GetSize().x * 2,0, 0));
 
 		Get().m_GameActor->AddChildActor(spriteStaticActor);
 		Get().m_GameActor->AddChildActor(spriteAnimateActor);

@@ -3,7 +3,7 @@
 #include "MultiExtendAPI.h"
 #include "Component/SpriteComponent.h"
 #include "Texture/Texture.h"
-#include "Object/GameState.h"
+// #include "Object/GameState.h"
 
 namespace MultiExtend
 {
