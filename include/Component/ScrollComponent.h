@@ -3,7 +3,6 @@
 #include "MultiExtendAPI.h"
 #include "Component/SpriteComponent.h"
 #include "Texture/Texture.h"
-// #include "Object/GameState.h"
 
 namespace MultiExtend
 {
@@ -17,7 +16,7 @@ namespace MultiExtend
 	{
 	public:
 		MULTIEXTEND_API ScrollSpriteComponent(
-			GameState* gameState,
+			GameStat* GameStat,
 			Renderer* renderer,
 			std::vector<const char*> texturefilepaths,
 			float scrollspeed = 88,
@@ -32,7 +31,6 @@ namespace MultiExtend
 			Vector2 renderSize = Vector2(256,32));
 
 		MULTIEXTEND_API ScrollSpriteComponent(
-			GameState* gameState,
 			Renderer* renderer,
 			std::vector<Texture*> textures,
 			float scrollspeed = 88,

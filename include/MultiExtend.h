@@ -17,7 +17,7 @@
 #include "Debug/Trace/Trace.h"
 #include "Debug/Log/Log.h"
 
-#include "Object/GameState.h"
+#include "Object/GameStat.h"
 #include "Texture/Texture.h"
 #include "Renderer/Renderer.h"
 
@@ -48,12 +48,12 @@ namespace MultiExtend
 
 	MULTIEXTEND_API int Init(int inttag = ALL);
 
-	MULTIEXTEND_API Texture* LoadTexture(GameState* gameState, Renderer* renderer, const char* filepath);
+	MULTIEXTEND_API Texture* LoadTexture(GameStat* GameStat, Renderer* renderer, const char* filepath);
 
-	MULTIEXTEND_API Texture* LoadTexture(GameState* gameState, SDL_Renderer* renderer, const char* filepath);
+	MULTIEXTEND_API Texture* LoadTexture(GameStat* GameStat, SDL_Renderer* renderer, const char* filepath);
 
 	template <typename T, typename... Args>
-	inline T* CreateActor(GameState * gameState,Args&&... args)
+	inline T* CreateActor(GameStat * GameStat,Args&&... args)
 	{
 		T* ActorCreate = new T(std::forward<Args>(args)...);
 
@@ -64,12 +64,12 @@ namespace MultiExtend
 			return nullptr;
 		};
 
-		gameState->AddActor(ActorCreate);
+		GameStat->AddActor(ActorCreate);
 		return ActorCreate;
 	};
 
 	template <typename T, typename... Args>
-	inline T* CreateComponent(GameState * gameState, Args&&... args)
+	inline T* CreateComponent(GameStat * GameStat, Args&&... args)
 	{
 		T* ComponentCreate = new T(std::forward<Args>(args)...);
 
@@ -84,18 +84,18 @@ namespace MultiExtend
 	};
 
 	template <typename T, typename... Args>
-	inline T* CreateGameState(Args&&... args)
+	inline T* CreateGameStat(Args&&... args)
 	{
-		T* GameStateCreate = new T(std::forward<Args>(args)...);
+		T* GameStatCreate = new T(std::forward<Args>(args)...);
 
-		if (!dynamic_cast<GameState*>(GameStateCreate))
+		if (!dynamic_cast<GameStat*>(GameStatCreate))
 		{
-			MULTIEXTEND_MESSAGE_CLIENT_WARN("Faild to create a GameState. Class Error.");
-			delete GameStateCreate;
+			MULTIEXTEND_MESSAGE_CLIENT_WARN("Faild to create a GameStat. Class Error.");
+			delete GameStatCreate;
 			return nullptr;
 		};
 
-		return GameStateCreate;
+		return GameStatCreate;
 	};
 
 	MULTIEXTEND_API void ClearRenderer(Renderer * renderer);

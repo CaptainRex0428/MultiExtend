@@ -5,7 +5,7 @@
 
 #include "Renderer/Renderer.h"
 #include "Texture/Texture.h"
-#include "Object/GameState.h"
+#include "Object/GameStat.h"
 
 #include "SpriteComponentConfig.h"
 
@@ -17,7 +17,7 @@ namespace MultiExtend
 	{
 	public:
 		MULTIEXTEND_API SpriteComponent(
-			GameState * gameState,
+			GameStat * gameState,
 			Renderer * renderer,
 			const char* texturefilepath = nullptr,
 			const char* tag = BaseSpriteComponentTypeName,
@@ -28,7 +28,6 @@ namespace MultiExtend
 			int updateorder = DEFAULT_UPDATEORDER);
 
 		MULTIEXTEND_API SpriteComponent(
-			GameState* gameState,
 			Renderer* renderer,
 			Texture* texture = nullptr,
 			const char* tag = BaseSpriteComponentTypeName,
@@ -41,13 +40,11 @@ namespace MultiExtend
 		MULTIEXTEND_API virtual ~SpriteComponent();
 
 		MULTIEXTEND_API virtual void Update(float delta) override;
-
 		MULTIEXTEND_API virtual void Draw() override;
 
-		MULTIEXTEND_API virtual void SetSingleTexture(Texture * texture);
+		MULTIEXTEND_API virtual void SetTexture(Texture * texture);
 
 		MULTIEXTEND_API virtual void SetSize(Vector2 size);
-
 		MULTIEXTEND_API virtual Vector2 GetSize();
 		
 

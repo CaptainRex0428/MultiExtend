@@ -9,6 +9,7 @@
 #include "Component/SpriteComponent.h"
 #include "Component/AnimateSpriteComponent.h"
 #include "Component/ScrollComponent.h"
+#include "Component/TileMapComponent.h"
 
 #include "SDL.h"
 #include "SDL_image.h"
@@ -54,13 +55,13 @@ public:
 		Get().m_renderer = new MultiExtend::RendererSDL(renderer);
 		Get().m_isRunning = true;
 
-		Actor * spriteStaticActor = MultiExtend::CreateActor<Actor>(Get().m_GameState);
-		MultiExtend::SpriteComponent * spriteStatic = new MultiExtend::SpriteComponent(Get().m_GameState, Get().m_renderer, "../MultiTemplate/assets/Ship01.png");
+		Actor * spriteStaticActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
+		MultiExtend::SpriteComponent * spriteStatic = new MultiExtend::SpriteComponent(Get().m_GameStat, Get().m_renderer, "../MultiTemplate/assets/Ship01.png");
 		spriteStatic->SetSize(Vector2(64, 29));
 		spriteStatic->SetPositionRelative(Vector3(spriteStatic->GetSize().x/2, spriteStatic->GetSize().y/2,0));
 		spriteStaticActor->AddActorComponent(spriteStatic);
 		
-		Actor* spriteAnimateActor = MultiExtend::CreateActor<Actor>(Get().m_GameState);
+		Actor* spriteAnimateActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
 		std::vector<const char *> textures = 
 		{
 			"../MultiTemplate/assets/Ship01.png",
@@ -68,51 +69,67 @@ public:
 			"../MultiTemplate/assets/Ship03.png",
 			"../MultiTemplate/assets/Ship04.png"
 		};
-		MultiExtend::AnimateSpriteComponent* spriteAnimate = new MultiExtend::AnimateSpriteComponent(10,Get().m_GameState, Get().m_renderer,textures);
+		MultiExtend::AnimateSpriteComponent* spriteAnimate = new MultiExtend::AnimateSpriteComponent(10,Get().m_GameStat, Get().m_renderer,textures);
 		spriteAnimate->SetSize(Vector2(64, 29));
 		spriteAnimate->SetPositionRelative(Vector3(spriteAnimate->GetSize().x / 2, spriteAnimate->GetSize().y / 2, 0));
 		spriteAnimateActor->AddActorComponent(spriteAnimate);
 		spriteAnimateActor->SetPositionRelative(Vector3(spriteStatic->GetSize().x,0,0));
 
-		Actor* spriteScrollActor = MultiExtend::CreateActor<Actor>(Get().m_GameState);
+		Actor* spriteScrollActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
 		std::vector<const char*> scrolltextures =
 		{
 			"../MultiTemplate/assets/Farback01.png",
 			"../MultiTemplate/assets/Farback02.png"
 		};
-		MultiExtend::ScrollSpriteComponent * scrollSprite = new MultiExtend::ScrollSpriteComponent(Get().m_GameState, Get().m_renderer,scrolltextures);
+		MultiExtend::ScrollSpriteComponent * scrollSprite = new MultiExtend::ScrollSpriteComponent(Get().m_GameStat, Get().m_renderer,scrolltextures);
 		scrollSprite->SetRenderSize(Vector2(512,32));
 		scrollSprite->SetSourceSizeScale(Vector3(.2f,.2f,1));
 		scrollSprite->SetScrollSpeed(80);
 		scrollSprite->SetOffset(300);
 		spriteScrollActor->AddActorComponent(scrollSprite);
-		spriteScrollActor->SetPositionRelative(Vector3(spriteStatic->GetSize().x*2, 0, 0));
+		spriteScrollActor->SetPositionRelative(Vector3(spriteAnimateActor->GetPositionAbsolute().x + spriteAnimate->GetSize().x, 0, 0));
 
 		Get().m_GameActor->AddChildActor(spriteStaticActor);
 		Get().m_GameActor->AddChildActor(spriteAnimateActor);
 		Get().m_GameActor->AddChildActor(spriteScrollActor);
 
-		Actor* starScrollActor = MultiExtend::CreateActor<Actor>(Get().m_GameState);
+		Actor* starScrollActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
 		std::vector<const char*> starScrolltextures =
 		{
 			"../MultiTemplate/assets/Stars.png",
 		};
-		MultiExtend::ScrollSpriteComponent* starScrollSprite = new MultiExtend::ScrollSpriteComponent(Get().m_GameState, Get().m_renderer, starScrolltextures);
+		MultiExtend::ScrollSpriteComponent* starScrollSprite = new MultiExtend::ScrollSpriteComponent(Get().m_GameStat, Get().m_renderer, starScrolltextures);
 		starScrollSprite->SetRenderSize(Vector2(512, 32));
 		starScrollSprite->SetSourceSizeScale(Vector3(.3f, .3f, 1));
 		starScrollSprite->SetScrollSpeed(40);
 		starScrollSprite->SetOffset(0);
 		starScrollActor->AddActorComponent(starScrollSprite);
-		starScrollActor->SetPositionRelative(Vector3(spriteStatic->GetSize().x * 2,0, 0));
+		starScrollActor->SetPositionRelative(Vector3(spriteAnimateActor->GetPositionAbsolute().x + spriteAnimate->GetSize().x,0, 0));
+
+		Actor* tileMapActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
+		MultiExtend::TileMapComponent* tileMapA = new MultiExtend::TileMapComponent(Get().m_GameStat, Get().m_renderer, "../MultiTemplate/assets/Tiles.png");
+		tileMapA->SetSrcPosition(Vector2(97,1));
+		tileMapA->SetSrcSize(Vector2(30, 30));
+		tileMapA->SetDstSize(Vector2(32, 32));
+
+		MultiExtend::TileMapComponent* tileMapB = new MultiExtend::TileMapComponent(Get().m_GameStat, Get().m_renderer, "../MultiTemplate/assets/Tiles.png");
+		tileMapB->SetSrcPosition(Vector2(65, 1));
+		tileMapB->SetSrcSize(Vector2(30, 30));
+		tileMapB->SetDstSize(Vector2(32, 32));
+		tileMapB->SetPositionRelative(Vector3(33,0,0));
+
+		tileMapActor->AddActorComponent(tileMapA);
+		tileMapActor->AddActorComponent(tileMapB);
+		tileMapActor->SetPositionRelative(Vector3(starScrollActor->GetPositionAbsolute().x + starScrollSprite->GetRenderSize().x, 0, 0));
 
 		Get().m_GameActor->AddChildActor(spriteStaticActor);
 		Get().m_GameActor->AddChildActor(spriteAnimateActor);
 		Get().m_GameActor->AddChildActor(spriteScrollActor);
 		Get().m_GameActor->AddChildActor(starScrollActor);
+		Get().m_GameActor->AddChildActor(tileMapActor);
 
 		return true;
 	};
-
 
 	static void Runloop()
 	{
@@ -141,8 +158,8 @@ private:
 	:m_window(nullptr), m_renderer(nullptr), m_isRunning(false),
 	m_tickcount(0),m_delta(0)
 	{
-		m_GameState = MultiExtend::CreateGameState<GameState>();
-		m_GameActor = MultiExtend::CreateActor<Actor>(m_GameState);
+		m_GameStat = MultiExtend::CreateGameStat<GameStat>();
+		m_GameActor = MultiExtend::CreateActor<Actor>(m_GameStat);
 	};
 	
 	virtual ~GameObject()
@@ -216,7 +233,7 @@ private:
 	long long int m_tickcount;
 	float m_delta;
 
-	GameState * m_GameState;
+	GameStat * m_GameStat;
 	Actor * m_GameActor;
 };
 

@@ -3,7 +3,7 @@
 #include "Math/Math.h"
 
 MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
-	GameState* gameState,
+	GameStat* GameStat,
 	Renderer* renderer,
 	std::vector<const char*> texturefilepaths,
 	float scrollspeed,
@@ -15,7 +15,7 @@ MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
 	Vector3 position, Vector3 scale,
 	Vector3 rotation, Vector2 renderSize)
 	:
-	SpriteComponent(gameState, renderer, texturefilepaths[0], tag, position, scale, rotation, Vector2(0, 0), updateorder),
+	SpriteComponent(GameStat, renderer, texturefilepaths[0], tag, position, scale, rotation, Vector2(0, 0), updateorder),
 	m_ScrollSpeed(scrollspeed),
 	m_sourceSizeScale(sourceSizeScale),
 	m_limitedSourceSizeScale(sourceSizeScale),
@@ -33,7 +33,7 @@ MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
 	auto iter = texturefilepaths.begin() + 1;
 	for (; iter != texturefilepaths.end(); ++iter)
 	{
-		Texture* texture = MultiExtend::LoadTexture(gameState, renderer, *iter);
+		Texture* texture = MultiExtend::LoadTexture(GameStat, renderer, *iter);
 		m_Textures.emplace_back(texture);
 	};
 
@@ -41,7 +41,6 @@ MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
 }
 
 MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
-	GameState* gameState,
 	Renderer* renderer,
 	std::vector<Texture*> textures,
 	float scrollspeed,
@@ -53,7 +52,7 @@ MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
 	Vector3 position, Vector3 scale,
 	Vector3 rotation, Vector2 renderSize)
 	:
-	SpriteComponent(gameState, renderer, textures[0], tag, position, scale, rotation, Vector2(0, 0), updateorder),
+	SpriteComponent(renderer, textures[0], tag, position, scale, rotation, Vector2(0, 0), updateorder),
 	m_ScrollSpeed(scrollspeed),
 	m_sourceSizeScale(sourceSizeScale),
 	m_limitedSourceSizeScale(sourceSizeScale),
@@ -105,7 +104,7 @@ void MultiExtend::ScrollSpriteComponent::Update(float delta)
 	// 处理反向溢出
 	while (m_headTextureOffsetAfterScale < 0) {
 
-		m_headTextureIdx = (m_headTextureIdx - 1 + m_Textures.size()) % m_Textures.size();
+		m_headTextureIdx = (m_headTextureIdx - 1 + (int)m_Textures.size()) % (int)m_Textures.size();
 
 		QueryTexture(m_Textures[m_headTextureIdx], &SourceSize);
 		SourceSizeScaled = SourceSize * m_limitedSourceSizeScale;

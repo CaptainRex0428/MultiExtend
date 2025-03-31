@@ -11,14 +11,16 @@
 #include "Debug/Message/Message.h"
 #include "Debug/Message/MessageMicro.h"
 
+#include "GameStatConfig.h"
+
 namespace MultiExtend
 {
 
-	class GameState : public Object
+	class GameStat : public Object
 	{
 	public:
-		MULTIEXTEND_API GameState();
-		MULTIEXTEND_API virtual ~GameState() = default;
+		MULTIEXTEND_API GameStat();
+		MULTIEXTEND_API virtual ~GameStat() = default;
 
 		MULTIEXTEND_API void AddActor(Actor* actor);
 		MULTIEXTEND_API void RemoveActor(Actor* actor);

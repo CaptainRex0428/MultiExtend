@@ -3,7 +3,7 @@
 
 MultiExtend::AnimateSpriteComponent::AnimateSpriteComponent(
 	float FPS,
-	GameState* gameState,
+	GameStat* gameStat,
 	Renderer* renderer, 
 	std::vector<const char*> textureFilePaths,
 	const char* tag, 
@@ -12,7 +12,7 @@ MultiExtend::AnimateSpriteComponent::AnimateSpriteComponent(
 	Vector3 rotation,
 	Vector2 size,
 	int updateorder):
-	SpriteComponent(gameState, renderer, textureFilePaths[0], tag, position, scale, rotation, size, updateorder),
+	SpriteComponent(gameStat, renderer, textureFilePaths[0], tag, position, scale, rotation, size, updateorder),
 	m_FPS(FPS),
 	m_currentFrame(0)
 {
@@ -22,14 +22,13 @@ MultiExtend::AnimateSpriteComponent::AnimateSpriteComponent(
 	auto iter = textureFilePaths.begin()+1;
 	for(;iter != textureFilePaths.end(); ++iter)
 	{
-		Texture * texture = MultiExtend::LoadTexture(gameState,renderer,*iter);
+		Texture * texture = MultiExtend::LoadTexture(gameStat,renderer,*iter);
 		m_animateTextures.emplace_back(texture);
 	};
 }
 
 MultiExtend::AnimateSpriteComponent::AnimateSpriteComponent(
 	float FPS,
-	GameState* gameState,
 	Renderer* renderer,
 	std::vector<Texture*> textures,
 	const char* tag,
@@ -38,7 +37,7 @@ MultiExtend::AnimateSpriteComponent::AnimateSpriteComponent(
 	Vector3 rotation,
 	Vector2 size,
 	int updateorder) :
-	SpriteComponent(gameState, renderer, textures[0], tag, position, scale, rotation, size, updateorder),
+	SpriteComponent(renderer, textures[0], tag, position, scale, rotation, size, updateorder),
 	m_FPS(FPS),
 	m_currentFrame(0)
 {
@@ -65,7 +64,7 @@ void MultiExtend::AnimateSpriteComponent::Update(float delta)
 
 		resetIdx = resetIdx < m_animateTextures.size() ? resetIdx :(m_animateTextures.size()-1);
 
-		SetSingleTexture(m_animateTextures[resetIdx]);
+		SetTexture(m_animateTextures[resetIdx]);
 	}
 
 	SpriteComponent::Update(delta);

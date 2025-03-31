@@ -5,7 +5,7 @@
 #include "SDL.h"
 
 MultiExtend::SpriteComponent::SpriteComponent(
-	GameState* gameState, 
+	GameStat* gameStat, 
 	Renderer* renderer, 
 	const char* texturefilepath, 
 	const char* tag, 
@@ -22,12 +22,11 @@ MultiExtend::SpriteComponent::SpriteComponent(
 {
 	if(texturefilepath)
 	{
-		m_Texture = MultiExtend::LoadTexture(gameState,renderer,texturefilepath);
+		m_Texture = MultiExtend::LoadTexture(gameStat,renderer,texturefilepath);
 	}
 }
 
 MultiExtend::SpriteComponent::SpriteComponent(
-	GameState* gameState,
 	Renderer* renderer, 
 	Texture* texture, 
 	const char* tag, 
@@ -53,12 +52,15 @@ void MultiExtend::SpriteComponent::Update(float delta)
 	ActorComponent::Update(delta);
 }
 
-void MultiExtend::SpriteComponent::SetSingleTexture(Texture* texture)
+void MultiExtend::SpriteComponent::SetTexture(Texture* texture)
 {
-	m_Texture = texture;
+	if(m_Texture)
+	{
+		m_Texture = texture;
+	}
 
-	Vector2 sourceSize;
-	QueryTexture(texture, &sourceSize);
+	// Vector2 sourceSize;
+	// QueryTexture(texture, &sourceSize);
 
 }
 
@@ -92,4 +94,6 @@ void MultiExtend::SpriteComponent::Draw()
 			nullptr, &renderSize,
 			GetRotationAbsolute().z);
 	}
+
+	ActorComponent::Draw();
 }

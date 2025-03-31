@@ -1,14 +1,14 @@
 #include <fstream>
 
 #include "MultiExtend.h"
-#include "Object/GameState.h"
+#include "Object/GameStat.h"
 
-MultiExtend::GameState::GameState()
+MultiExtend::GameStat::GameStat()
 	:Object()
 {
 }
 
-void MultiExtend::GameState::AddActor(Actor* actor)
+void MultiExtend::GameStat::AddActor(Actor* actor)
 {
 	if (std::find(this->m_actors.begin(), m_actors.end(), actor) == m_actors.end())
 	{
@@ -25,28 +25,28 @@ void MultiExtend::GameState::AddActor(Actor* actor)
 	}
 }
 
-void MultiExtend::GameState::RemoveActor(Actor* actor)
+void MultiExtend::GameStat::RemoveActor(Actor* actor)
 {
 	auto it = std::remove_if(m_actors.begin(), m_actors.end(),
         [actor](Actor* ac) -> bool {return *actor->GetTag() == *ac->GetTag(); });
     m_actors.erase(it);
 }
 
-void MultiExtend::GameState::AddTexture(Texture* texture)
+void MultiExtend::GameStat::AddTexture(Texture* texture)
 {
 	
 	m_textures.emplace_back(texture);
 	
 }
 
-void MultiExtend::GameState::RemoveTexture(Texture* texture)
+void MultiExtend::GameStat::RemoveTexture(Texture* texture)
 {
 	auto it = std::remove_if(m_textures.begin(), m_textures.end(),
 		[texture](Texture* tx) -> bool {return texture->GetHash() == tx->GetHash(); });
 	m_textures.erase(it);
 }
 
-void MultiExtend::GameState::Update(float delta)
+void MultiExtend::GameStat::Update(float delta)
 {
 	/*for (auto actor : Get()->m_actors)
 	{

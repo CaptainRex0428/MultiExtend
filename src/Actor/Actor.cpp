@@ -1,5 +1,5 @@
 #include "Actor/Actor.h"
-#include "Object/GameState.h"
+#include "Object/GameStat.h"
 
 MultiExtend::Actor::Actor(const char* tag,
 	Vector3 position,

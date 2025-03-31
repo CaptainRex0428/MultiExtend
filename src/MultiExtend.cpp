@@ -30,21 +30,21 @@ namespace MultiExtend
 		return 1;
 	};
 	
-	Texture* LoadTexture(GameState* gameState, Renderer* renderer, const char* filepath)
+	Texture* LoadTexture(GameStat* GameStat, Renderer* renderer, const char* filepath)
 	{
-		if(!gameState) return nullptr;
+		if(!GameStat) return nullptr;
 
 		if (renderer->IsA<SDL_Renderer>())
 		{
-			return LoadTexture(gameState,renderer->GetRendererAs<SDL_Renderer>(), filepath);
+			return LoadTexture(GameStat,renderer->GetRendererAs<SDL_Renderer>(), filepath);
 		}
 
 		return nullptr;
 	}
 	
-	Texture* LoadTexture(GameState* gameState, SDL_Renderer* renderer, const char* filepath)
+	Texture* LoadTexture(GameStat* GameStat, SDL_Renderer* renderer, const char* filepath)
 	{
-		if (!gameState) return nullptr;
+		if (!GameStat) return nullptr;
 
 		std::ifstream f(filepath);
 
@@ -74,7 +74,7 @@ namespace MultiExtend
 
 		TextureSDL* textureSDL = new TextureSDL(texture);
 
-		gameState->AddTexture(textureSDL);
+		GameStat->AddTexture(textureSDL);
 
 		MULTIEXTEND_MESSAGE_CLIENT_TRACE("Loaded Texture:{0}",filepath);
 
