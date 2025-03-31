@@ -113,6 +113,7 @@ project "MultiExtendTemplateEntity"
         symbols "Off"
         defines { "_DIST","NDEBUG" }
 
+
 project "MultiExtendTemplateObject"
     kind "ConsoleApp"
     language "C++"
@@ -120,7 +121,7 @@ project "MultiExtendTemplateObject"
 
     files
     {
-        "Template03.cpp", "assets/**"
+        "Template03.cpp", "../assets/**"
     }
 
     includedirs
