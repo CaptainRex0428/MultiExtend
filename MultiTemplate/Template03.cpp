@@ -127,12 +127,63 @@ public:
 		tileMapActor->AddActorComponent(tileMapB);
 		tileMapActor->SetPositionRelative(Vector3(starScrollActor->GetPositionAbsolute().x + starScrollSprite->GetRenderSize().x, 0, 0));
 
+		std::vector<const char*> ActorStepTextures =
+		{
+			"../assets/Character01.png",
+			"../assets/Character02.png",
+			"../assets/Character03.png",
+			"../assets/Character04.png",
+			"../assets/Character05.png",
+			"../assets/Character06.png"
+		};
+		DynamicAnimateSpriteUnit * AnimateUnit_ActorStep = new DynamicAnimateSpriteUnit(Get().m_GameStat,Get().m_renderer, ActorStepTextures,"Step",LOOP,nullptr);
+
+		std::vector<const char*> JUMPtextures =
+		{
+			"../assets/Character07.png",
+			"../assets/Character08.png",
+			"../assets/Character09.png",
+			"../assets/Character10.png",
+			"../assets/Character11.png",
+			"../assets/Character12.png",
+			"../assets/Character13.png",
+			"../assets/Character14.png",
+			"../assets/Character15.png",
+		};
+		DynamicAnimateSpriteUnit* AnimateUnit_ActorJump = new DynamicAnimateSpriteUnit(Get().m_GameStat, Get().m_renderer, JUMPtextures, "Jump", ONCE, nullptr);
+
+		std::vector<const char*> Punchtextures =
+		{
+			"../assets/Character16.png",
+			"../assets/Character17.png",
+			"../assets/Character18.png"
+		};
+		DynamicAnimateSpriteUnit* AnimateUnit_ActorPunch = new DynamicAnimateSpriteUnit(Get().m_GameStat, Get().m_renderer, Punchtextures, "Punch", ONCE, nullptr);
+
+		std::vector<DynamicAnimateSpriteUnit*> dynamicAnimateSpriteUnits = 
+		{
+			AnimateUnit_ActorStep,
+			AnimateUnit_ActorJump,
+			AnimateUnit_ActorPunch
+		};
+		DynamicAnimateSpriteComponent * PlayerBaseComp = new DynamicAnimateSpriteComponent(Get().m_renderer, dynamicAnimateSpriteUnits);
+
+		PlayerBaseComp->SetDefaultDynamicSpriteUnit("Step");
+		PlayerBaseComp->SetCurrentDynamicSpriteUnit("Step");
+		PlayerBaseComp->SetAnimFPS(10);
+		PlayerBaseComp->SetSize(Vector2(64, 29));
+
+		Actor* PlayerBaseActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
+		PlayerBaseActor->AddActorComponent(PlayerBaseComp);
+		PlayerBaseActor->SetPositionRelative(Vector3(0,32,0));
+		
 
 		Get().m_GameActor->AddChildActor(spriteStaticActor);
 		Get().m_GameActor->AddChildActor(spriteAnimateActor);
 		Get().m_GameActor->AddChildActor(spriteScrollActor);
 		Get().m_GameActor->AddChildActor(starScrollActor);
 		Get().m_GameActor->AddChildActor(tileMapActor);
+		Get().m_GameActor->AddChildActor(PlayerBaseActor);
 
 		return true;
 	};

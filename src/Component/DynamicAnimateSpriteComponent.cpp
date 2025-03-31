@@ -129,6 +129,8 @@ void MultiExtend::DynamicAnimateSpriteComponent::Update(float delta)
 		size_t resetIdx = (int)m_currentFrame;
 		resetIdx = resetIdx < m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures().size() ? resetIdx : (m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures().size() - 1);
 		SpriteComponent::SetTexture(m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures()[resetIdx]);
+
+		MULTIEXTEND_MESSAGE_CLIENT_DEBUG(m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures()[resetIdx]->GetHash());
 	}
 
 	SpriteComponent::Update(delta);
@@ -246,6 +248,6 @@ void MultiExtend::DynamicAnimateSpriteComponent::SetCurrentFrame(float frame)
 	
 	if (m_DynamicAnimateSpriteUnit_Current->GetUpdateType() == ONCE)
 	{
-		MultiExtend::Math::limit_max(m_currentFrame, m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures().size()-1);
+		MultiExtend::Math::limit_max(m_currentFrame, float(m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures().size()-1));
 	}
 }

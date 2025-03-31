@@ -23,14 +23,14 @@ namespace MultiExtend
 			Renderer* renderer,
 			std::vector<const char*> textureFilePaths,
 			const char* groupTag,
-			DynamicAnimateSpriteUnitUpdateType updateType,
-			DynamicAnimateSpriteUnit* animateUnitNext);
+			DynamicAnimateSpriteUnitUpdateType updateType = LOOP,
+			DynamicAnimateSpriteUnit* animateUnitNext = nullptr);
 
 		MULTIEXTEND_API DynamicAnimateSpriteUnit(
 			std::vector<Texture*> textures,
 			const char* groupTag,
-			DynamicAnimateSpriteUnitUpdateType updateType,
-			DynamicAnimateSpriteUnit* animateUnitNext);
+			DynamicAnimateSpriteUnitUpdateType updateType = LOOP,
+			DynamicAnimateSpriteUnit* animateUnitNext = nullptr);
 
 		MULTIEXTEND_API virtual ~DynamicAnimateSpriteUnit();
 
