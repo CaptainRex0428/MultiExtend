@@ -10,6 +10,7 @@
 #include "Component/AnimateSpriteComponent.h"
 #include "Component/ScrollComponent.h"
 #include "Component/TileMapComponent.h"
+#include "Component/DynamicAnimateSpriteComponent.h"
 
 #include "SDL.h"
 #include "SDL_image.h"
@@ -107,12 +108,16 @@ public:
 		starScrollActor->SetPositionRelative(Vector3(spriteAnimateActor->GetPositionAbsolute().x + spriteAnimate->GetSize().x,0, 0));
 
 		Actor* tileMapActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
-		MultiExtend::TileMapComponent* tileMapA = new MultiExtend::TileMapComponent(Get().m_GameStat, Get().m_renderer, "../assets/Tiles.png");
+
+		const char * tileMapPath = "../assets/Tiles.png";
+		Texture * tileMap = MultiExtend::LoadTexture(Get().m_GameStat, Get().m_renderer, tileMapPath);
+
+		MultiExtend::TileMapComponent* tileMapA = new MultiExtend::TileMapComponent(Get().m_renderer, tileMap);
 		tileMapA->SetSrcPosition(Vector2(97,1));
 		tileMapA->SetSrcSize(Vector2(30, 30));
 		tileMapA->SetDstSize(Vector2(32, 32));
 
-		MultiExtend::TileMapComponent* tileMapB = new MultiExtend::TileMapComponent(Get().m_GameStat, Get().m_renderer, "../assets/Tiles.png");
+		MultiExtend::TileMapComponent* tileMapB = new MultiExtend::TileMapComponent(Get().m_renderer, tileMap);
 		tileMapB->SetSrcPosition(Vector2(65, 1));
 		tileMapB->SetSrcSize(Vector2(30, 30));
 		tileMapB->SetDstSize(Vector2(32, 32));
@@ -121,6 +126,7 @@ public:
 		tileMapActor->AddActorComponent(tileMapA);
 		tileMapActor->AddActorComponent(tileMapB);
 		tileMapActor->SetPositionRelative(Vector3(starScrollActor->GetPositionAbsolute().x + starScrollSprite->GetRenderSize().x, 0, 0));
+
 
 		Get().m_GameActor->AddChildActor(spriteStaticActor);
 		Get().m_GameActor->AddChildActor(spriteAnimateActor);

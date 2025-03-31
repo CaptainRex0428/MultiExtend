@@ -5,7 +5,7 @@
 #include "MultiExtendAPI.h"
 #include "SpriteComponent.h"
 
-#define BaseAnimSpriteComponentTypeName "BaseAnimSpriteComponent"
+#include "AnimateSpriteComponentConfig.h"
 
 namespace MultiExtend
 {
@@ -43,6 +43,9 @@ namespace MultiExtend
 
 		MULTIEXTEND_API float GetAnimFPS() const;
 		MULTIEXTEND_API void SetAnimFPS(float fps);
+
+	private:
+		MULTIEXTEND_API void SetCurrentFrame(float frame);
 
 	private:
 		std::vector<Texture*> m_animateTextures;

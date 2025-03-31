@@ -52,19 +52,13 @@ void MultiExtend::AnimateSpriteComponent::Update(float delta)
 {
 	if (m_animateTextures.size() > 0)
 	{
-		m_currentFrame += m_FPS * delta;
-
-		// Wrap current frame if needed (set from begin)
-		while (m_currentFrame > m_animateTextures.size())
-		{
-			m_currentFrame -= m_animateTextures.size();
-		}
+		SetCurrentFrame(m_currentFrame + m_FPS * delta);
 
 		size_t resetIdx = (int)m_currentFrame;
 
 		resetIdx = resetIdx < m_animateTextures.size() ? resetIdx :(m_animateTextures.size()-1);
 
-		SetTexture(m_animateTextures[resetIdx]);
+		SpriteComponent::SetTexture(m_animateTextures[resetIdx]);
 	}
 
 	SpriteComponent::Update(delta);
@@ -89,4 +83,13 @@ void MultiExtend::AnimateSpriteComponent::SetAnimFPS(float fps)
 	m_FPS = fps > 0? fps : 0;
 }
 
+void MultiExtend::AnimateSpriteComponent::SetCurrentFrame(float frame)
+{
+	m_currentFrame = frame;
 
+	// Wrap current frame if needed (set from begin)
+	while (m_currentFrame > m_animateTextures.size())
+	{
+		m_currentFrame -= m_animateTextures.size();
+	}
+}
