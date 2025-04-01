@@ -1,4 +1,4 @@
-#include "Component/DynamicAnimateSpriteComponent.h"
+#include "Component/Sprite/DynamicAnimateSpriteComponent.h"
 #include "MultiExtend.h"
 #include "Math/Math.h"
 

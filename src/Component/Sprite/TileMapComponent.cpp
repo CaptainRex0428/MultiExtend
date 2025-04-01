@@ -1,4 +1,4 @@
-#include "Component/TileMapComponent.h"
+#include "Component/Sprite/TileMapComponent.h"
 
 #include "MultiExtend.h"
 

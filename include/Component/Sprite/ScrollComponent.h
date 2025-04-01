@@ -1,7 +1,7 @@
 #pragma once
 
 #include "MultiExtendAPI.h"
-#include "Component/SpriteComponent.h"
+#include "Component/Sprite/SpriteComponent.h"
 #include "Texture/Texture.h"
 
 namespace MultiExtend

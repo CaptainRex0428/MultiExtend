@@ -1,7 +1,7 @@
 #pragma once
 
 #include "MultiExtendAPI.h"
-#include "ActorComponent.h"
+#include "Component/ActorComponent.h"
 
 #include "Renderer/Renderer.h"
 #include "Texture/Texture.h"

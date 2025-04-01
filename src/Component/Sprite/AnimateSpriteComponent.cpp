@@ -1,4 +1,4 @@
-#include "Component/AnimateSpriteComponent.h"
+#include "Component/Sprite/AnimateSpriteComponent.h"
 #include "MultiExtend.h"
 
 MultiExtend::AnimateSpriteComponent::AnimateSpriteComponent(

@@ -1,4 +1,4 @@
-﻿#include "Component/ScrollComponent.h"
+﻿#include "Component/Sprite/ScrollComponent.h"
 #include "MultiExtend.h"
 #include "Math/Math.h"
 

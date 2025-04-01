@@ -1,4 +1,4 @@
-#include "Component/SpriteComponent.h"
+#include "Component/Sprite/SpriteComponent.h"
 
 #include "MultiExtend.h"
 
