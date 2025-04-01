@@ -74,6 +74,8 @@ void MultiExtend::Actor::AddComponent(BasicComponent* component)
 		}
 
 		m_components.insert(iter, component);
+
+		component->SetOwner(this);
 	}
 }
 
@@ -83,6 +85,7 @@ void MultiExtend::Actor::RemoveComponent(BasicComponent* component)
 		m_components.end(),
 		[component](BasicComponent* comp) -> bool { return *component->GetTag() == *comp->GetTag(); });
 	m_components.erase(it);
+	(*it)->SetOwner(nullptr);
 }
 
 void MultiExtend::Actor::AddActorComponent(ActorComponent* actor_component)
