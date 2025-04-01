@@ -102,6 +102,9 @@ MultiExtend::Operator& MultiExtend::Operator::Get() {
 
 MULTIEXTEND_API int MultiExtend::Operator::Init()
 {
+	
+	MULTIEXTEND_TIMER_TRACE_TAG(InitOperatorInfo);
+
 	MULTIEXTEND_MESSAGE_CLIENT_INFO("Operator Init");
 	
 	std::string Mac = this->GetMacAddress();

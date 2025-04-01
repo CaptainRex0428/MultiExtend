@@ -14,13 +14,18 @@ MultiExtend::DynamicAnimateSpriteUnit::DynamicAnimateSpriteUnit(
 	m_AnimateUnitNext(animateUnitNext)
 {
 	m_AnimateTextures.clear();
-
-	auto iter = textureFilePaths.begin();
-	for (; iter != textureFilePaths.end(); ++iter)
+	
 	{
-		Texture* texture = MultiExtend::LoadTexture(gameStat, renderer, *iter);
-		m_AnimateTextures.emplace_back(texture);
-	};
+		MULTIEXTEND_TIMER_TRACE_TAG(DynamicAnimateSpriteUnitLoadTexture);
+
+		auto iter = textureFilePaths.begin();
+		for (; iter != textureFilePaths.end(); ++iter)
+		{
+			Texture* texture = MultiExtend::LoadTexture(gameStat, renderer, *iter);
+			m_AnimateTextures.emplace_back(texture);
+		};
+	}
+	
 }
 
 MultiExtend::DynamicAnimateSpriteUnit::DynamicAnimateSpriteUnit(
@@ -107,6 +112,8 @@ MultiExtend::DynamicAnimateSpriteComponent::~DynamicAnimateSpriteComponent()
 
 void MultiExtend::DynamicAnimateSpriteComponent::Update(float delta)
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(UpdateDynamicAnimateSpriteComponent);
+
 	if (m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures().size() > 0)
 	{
 		if(m_DynamicAnimateSpriteUnit_Current->GetUpdateType() == ONCE && isFinished())

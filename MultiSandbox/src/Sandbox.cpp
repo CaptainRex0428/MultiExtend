@@ -52,7 +52,7 @@ namespace MultiExtendSandbox
 
 		while (Get().m_isRunning)
 		{
-			MULTIEXTEND_TIMER_TRACE_STORE(loopFrame);
+			MULTIEXTEND_TIMER_TRACE_RETURN(loopFrame);
 			
 			MULTIEXTEND_THREAD_DELAY_MICRO(1);
 
@@ -88,7 +88,7 @@ namespace MultiExtendSandbox
 
 	int Sandbox::PullEvents()
 	{
-		MULTIEXTEND_TIMER_TRACE_NSTORE();
+		MULTIEXTEND_TIMER_TRACE_TAG(DealEvents);
 
 		MULTIEXTEND_THREAD_DELAY_MICRO(3000);
 
@@ -97,7 +97,7 @@ namespace MultiExtendSandbox
 
 	int Sandbox::Update()
 	{
-		MULTIEXTEND_TIMER_TRACE_NSTORE();
+		MULTIEXTEND_TIMER_TRACE_TAG(UpdateFrame);
 
 		MULTIEXTEND_THREAD_DELAY_MICRO(3000);
 
@@ -106,7 +106,7 @@ namespace MultiExtendSandbox
 
 	int Sandbox::Output()
 	{
-		MULTIEXTEND_TIMER_TRACE_NSTORE();
+		MULTIEXTEND_TIMER_TRACE_TAG(GenerateOutput);
 
 		MULTIEXTEND_THREAD_DELAY_MICRO(3000);
 

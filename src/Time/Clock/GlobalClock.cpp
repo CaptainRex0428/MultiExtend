@@ -1,4 +1,5 @@
 #include "Time/Clock/GlobalClock.h"
+#include "MultiExtend.h"
 
 namespace MultiExtend{
 	GlobalClock::GlobalClock()
@@ -31,6 +32,8 @@ namespace MultiExtend{
 
 	int GlobalClock::Init()
 	{
+		MULTIEXTEND_TIMER_TRACE_TAG(InitGlobalClock);
+
 		return Get().Initialize();
 	}
 	

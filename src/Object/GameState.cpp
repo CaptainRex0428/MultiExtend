@@ -48,6 +48,8 @@ void MultiExtend::GameStat::RemoveTexture(Texture* texture)
 
 void MultiExtend::GameStat::Update(float delta)
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(UpdateGameStat);
+
 	/*for (auto actor : Get()->m_actors)
 	{
 		actor->Update(delta);

@@ -9,4 +9,6 @@ int main(int argc, char * argv[])
 	}
 
 	auto time = MultiExtend::GlobalClock::GetProcessStartTime();
+
+	return 0;
 }

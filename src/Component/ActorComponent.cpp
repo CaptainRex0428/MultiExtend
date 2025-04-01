@@ -1,7 +1,6 @@
 #include "Component/ActorComponent.h"
 
-
-#include "Component/ActorComponent.h"
+#include "MultiExtend.h"
 
 MultiExtend::ActorComponent::ActorComponent(
 	const char* tag,
@@ -31,6 +30,8 @@ MultiExtend::ActorComponent::~ActorComponent()
 
 void MultiExtend::ActorComponent::UpdateComponents(float delta)
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(UpdateComponents);
+
 	for (auto component : m_components)
 	{
 		component->Update(delta);
@@ -83,6 +84,8 @@ MultiExtend::Component* MultiExtend::ActorComponent::GetComponent(const char* co
 
 void MultiExtend::ActorComponent::UpdateChildActorComponents(float delta)
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(UpdateChildActorComponents);
+
 	for (auto child : m_child_actor_components)
 	{
 		child->Update(delta);
@@ -133,6 +136,8 @@ const std::vector<MultiExtend::ActorComponent*>& MultiExtend::ActorComponent::Ge
 
 MultiExtend::ActorComponent* MultiExtend::ActorComponent::GetChildActorComponent(const char* component_tag)
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(GetChildActorComponent);
+
 	for (auto child : m_child_actor_components)
 	{
 		if (*child->GetTag() == *component_tag)
@@ -146,6 +151,8 @@ MultiExtend::ActorComponent* MultiExtend::ActorComponent::GetChildActorComponent
 
 void MultiExtend::ActorComponent::AttachParentActorComponent(MultiExtend::ActorComponent* parent)
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(AttachParentActorComponent);
+
 	if (std::find(m_child_actor_components.begin(),
 		m_child_actor_components.end(),
 		parent) == m_child_actor_components.end())
@@ -215,7 +222,7 @@ void MultiExtend::ActorComponent::SetRotationRelative(Vector3 rotation)
 
 const MultiExtend::Vector3 MultiExtend::ActorComponent::GetPositionAbsolute()
 {
-
+	MULTIEXTEND_TIMER_TRACE_TAG(GetActorComponentWorldPosition);
 
 	float p_x = m_position.x;
 	float p_y = m_position.y;
@@ -238,6 +245,8 @@ const MultiExtend::Vector3 MultiExtend::ActorComponent::GetPositionAbsolute()
 
 const MultiExtend::Vector3 MultiExtend::ActorComponent::GetScaleAbsolute()
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(GetActorComponentWorldScale);
+
 	float scalesize_x = m_scale.x;
 	float scalesize_y = m_scale.y;
 	float scalesize_z = m_scale.z;
@@ -258,6 +267,8 @@ const MultiExtend::Vector3 MultiExtend::ActorComponent::GetScaleAbsolute()
 
 const MultiExtend::Vector3 MultiExtend::ActorComponent::GetRotationAbsolute()
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(GetActorComponentWorldRotation);
+
 	float r_x = m_rotation.x;
 	float r_y = m_rotation.y;
 	float r_z = m_rotation.z;
@@ -301,6 +312,8 @@ void MultiExtend::ActorComponent::ClearParentActorComponent()
 
 void MultiExtend::ActorComponent::Update(float delta)
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(UpdateActorComponent);
+
 	// update self
 
 	for (auto child : m_child_actor_components)
@@ -318,6 +331,8 @@ void MultiExtend::ActorComponent::Update(float delta)
 
 void MultiExtend::ActorComponent::Draw()
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(DrawActorComponent);
+
 	// draw self
 
 	for (auto component : m_components)

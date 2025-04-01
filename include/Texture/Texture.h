@@ -15,7 +15,7 @@ namespace MultiExtend
 	class Texture : public Object
 	{
 	public:
-		MULTIEXTEND_API Texture();
+		MULTIEXTEND_API Texture(const char * filePath);
 		MULTIEXTEND_API virtual ~Texture();
 
 		MULTIEXTEND_API virtual void * GetTexture() const = 0;
@@ -33,22 +33,22 @@ namespace MultiExtend
 		}
 
 		MULTIEXTEND_API const std::string& GetHash() const;
+		MULTIEXTEND_API const char * GetFilePath() const;
 
 	private:
 		std::string m_hash;
-		
+		const char* m_FilePath;
 	};
 
 	class TextureSDL : public Texture
 	{
 	public:
-		MULTIEXTEND_API TextureSDL(SDL_Texture* texture);
+		MULTIEXTEND_API TextureSDL(SDL_Texture* texture, const char * filePath);
 
 		MULTIEXTEND_API virtual void* GetTexture() const override;
 
 	private:
 		SDL_Texture* m_Texture;
-
 	};
 
 	struct TextureRelocator

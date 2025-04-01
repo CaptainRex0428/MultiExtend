@@ -4,6 +4,7 @@
 #include <tuple>
 
 #include "MultiExtendAPI.h"
+#include "Vector.h"
 
 namespace MultiExtend
 {
@@ -34,6 +35,16 @@ namespace MultiExtend
 		MULTIEXTEND_API static double& limit_max(double& src, double max);
 		MULTIEXTEND_API static float& limit_max(float& src, float max);
 		MULTIEXTEND_API static int& limit_max(int& src, int max);
+
+		MULTIEXTEND_API static bool NearZero(double& src);
+		MULTIEXTEND_API static bool NearZero(double&& src);
+		MULTIEXTEND_API static bool NearZero(float& src);
+		MULTIEXTEND_API static bool NearZero(float&& src);
+		MULTIEXTEND_API static bool NearZero(Vector2& src);
+		MULTIEXTEND_API static bool NearZero(Vector2&& src);
+		MULTIEXTEND_API static bool NearZero(Vector3& src);
+		MULTIEXTEND_API static bool NearZero(Vector3&& src);
+		
 
 		// transfer Byte size to specific unit output in double
 		MULTIEXTEND_API static double ByteSizeTo(int bytesize, SystemSizeUnit unit);

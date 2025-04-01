@@ -50,6 +50,8 @@ MultiExtend::AnimateSpriteComponent::~AnimateSpriteComponent()
 
 void MultiExtend::AnimateSpriteComponent::Update(float delta)
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(UpdateAnimateSpriteComponent);
+
 	if (m_animateTextures.size() > 0)
 	{
 		SetCurrentFrame(m_currentFrame + m_FPS * delta);

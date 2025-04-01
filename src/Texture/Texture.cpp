@@ -4,24 +4,36 @@
 #include "Time/Clock/Clock.h"
 #include "MultiExtend.h"
 
-MultiExtend::Texture::Texture()
+MultiExtend::Texture::Texture(const char * filePath)
+	:m_FilePath(filePath)
 {
-	std::string mac = Operator::Get().GetMacAddress();
-	std::string time = Clock::GetCurrentTimeStamp_sys();
-	m_hash = SHAGenerator::GenerateSHA256Hash(mac, time);
+	{
+		MULTIEXTEND_TIMER_TRACE_TAG(GenerateTextureHash);
+
+		std::string mac = Operator::Get().GetMacAddress();
+		std::string time = Clock::GetCurrentTimeStamp_sys();
+		m_hash = SHAGenerator::GenerateSHA256Hash(mac, time);
+	}
+	
 }
 
 MultiExtend::Texture::~Texture()
 {
+	m_FilePath = nullptr;
 }
 
-MULTIEXTEND_API const std::string& MultiExtend::Texture::GetHash() const
+const std::string& MultiExtend::Texture::GetHash() const
 {
 	return m_hash;
 }
 
-MultiExtend::TextureSDL::TextureSDL(SDL_Texture* texture) 
-	:m_Texture(texture)
+const char* MultiExtend::Texture::GetFilePath() const
+{
+	return m_FilePath;
+}
+
+MultiExtend::TextureSDL::TextureSDL(SDL_Texture* texture, const char * filePath) 
+	:Texture(filePath),m_Texture(texture)
 {
 }
 

@@ -1,5 +1,7 @@
 #include "Math/Math.h"
 
+#include <cmath>
+
 int MultiExtend::Math::Clamp(int src, int min, int max)
 {
 	if (src <= min)
@@ -103,6 +105,46 @@ int& MultiExtend::Math::limit_max(int& src, int max)
 	}
 
 	return src;
+}
+
+bool MultiExtend::Math::NearZero(double& src)
+{
+	return NearZero(std::move(src));
+}
+
+bool MultiExtend::Math::NearZero(double&& src)
+{
+	return std::abs(src) < 0.0001;
+}
+
+bool MultiExtend::Math::NearZero(float& src)
+{
+	return NearZero(std::move(src));
+}
+
+bool MultiExtend::Math::NearZero(float&& src)
+{
+	return NearZero(double(src));
+}
+
+bool MultiExtend::Math::NearZero(Vector2& src)
+{
+	return NearZero(std::move(Vector3(src)));
+}
+
+bool MultiExtend::Math::NearZero(Vector2&& src)
+{
+	return  NearZero(std::move(Vector3(src)));
+}
+
+bool MultiExtend::Math::NearZero(Vector3& src)
+{
+	return NearZero(std::move(src));
+}
+
+bool MultiExtend::Math::NearZero(Vector3&& src)
+{
+	return std::abs(src.length()) < 0.0001;
 }
 
 double MultiExtend::Math::ByteSizeTo(int bytesize, SystemSizeUnit unit)

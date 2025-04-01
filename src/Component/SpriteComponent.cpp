@@ -49,6 +49,8 @@ MultiExtend::SpriteComponent::~SpriteComponent()
 
 void MultiExtend::SpriteComponent::Update(float delta)
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(UpdateSpriteComponent);
+
 	ActorComponent::Update(delta);
 }
 
@@ -77,6 +79,8 @@ MULTIEXTEND_API Vector2 MultiExtend::SpriteComponent::GetSize()
 
 void MultiExtend::SpriteComponent::Draw()
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(DrawSpriteComponent);
+
 	const Vector3 scaleResult = GetScaleAbsolute();
 	const Vector3 posResult = GetPositionAbsolute();
 

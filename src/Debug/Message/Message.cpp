@@ -4,6 +4,8 @@
 #include "Debug/Message/MessageConfig.h"
 #include "Time/Clock/ClockConfig.h"
 
+#include "MultiExtend.h"
+
 #include <iostream>
 
 #include "spdlog/sinks/stdout_color_sinks.h"
@@ -25,6 +27,8 @@ namespace MultiExtend
 
 	void Message::Init()
 	{
+		MULTIEXTEND_TIMER_TRACE_TAG(InitMultiMessage);
+
 		spdlog::set_pattern(MULTIEXTEND_MICRO_CONTACT(MULTIEXTEND_MICRO_CONTACT(MULTIEXTEND_PATTERN_SPDLOG_HEADER, MULTIEXTEND_TIME_STRING_PATTERN_CORE), MULTIEXTEND_PATTERN_SPDLOG_INFO));
 
 		m_TerminalMessager = spdlog::stderr_color_mt("Terminal");

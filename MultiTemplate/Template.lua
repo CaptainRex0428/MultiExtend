@@ -125,25 +125,30 @@ project "MultiExtendTemplateObject"
     }
 
     includedirs
-   {
-     "%{ProjIncludeDir.MultiExtend}",
-     "%{DepIncludeDir.SDL}",
-     "%{DepIncludeDir.SDL_image}",
-     "%{DepIncludeDir.spdlog}",
-     "%{DepIncludeDir.cryptopp}"
-   }
+    {
+        "%{ProjIncludeDir.MultiExtend}",
+        "%{DepIncludeDir.SDL}",
+        "%{DepIncludeDir.SDL_image}",
+        "%{DepIncludeDir.spdlog}",
+        "%{DepIncludeDir.cryptopp}"
+    }
 
-   links
-   {
-     "MultiExtend",
-     "SDL",
-     "SDL_main",
-     "SDL_image",
+    links
+    {
+        "MultiExtend",
+        "SDL",
+        "SDL_main",
+        "SDL_image",
 
-     "spdlog",
-     "cryptopp"
-     
-   }
+        "spdlog",
+        "cryptopp"
+        
+    }
+
+    defines 
+    { 
+      
+    }
    
    location (LocationDir)
    targetdir (EXEDir)

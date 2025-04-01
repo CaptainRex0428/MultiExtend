@@ -7,6 +7,8 @@
 
 #include "MultiExtendAPI.h"
 
+// #include "MultiExtend.h"
+
 #include "sha.h"
 #include "hex.h"
 
@@ -18,6 +20,8 @@ namespace MultiExtend
 		template <typename... Args>
 		inline static std::string GenerateSHA256Hash(Args&&... args)
 		{
+			// MULTIEXTEND_TIMER_TRACE_TAG(GenerateSHA256Hash);
+
 			auto ToString = [](const auto& arg) {
 				std::ostringstream oss;
 				oss << arg;

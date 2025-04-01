@@ -12,13 +12,21 @@ project "MultiSandbox"
     {
         "include",
         "%{ProjIncludeDir.MultiExtend}",
-        "%{DepIncludeDir.spdlog}"
+        "%{DepIncludeDir.spdlog}",
+        "%{DepIncludeDir.SDL}",
+        "%{DepIncludeDir.SDL_image}",
+        "%{DepIncludeDir.cryptopp}"
     }
 
     links
     {
         "MultiExtend",
-        "spdlog"
+        "spdlog",
+        "SDL",
+        "SDL_main",
+        "SDL_image",
+
+        "cryptopp"
     }
 
     defines

@@ -1,11 +1,11 @@
-
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 #include <Windows.h>
 
 #include "MultiExtend.h"
 #include "Math/Math.h"
 #include "Math/Color.h"
+#include "Object/Game.h"
 #include "Component/SpriteComponent.h"
 #include "Component/AnimateSpriteComponent.h"
 #include "Component/ScrollComponent.h"
@@ -15,6 +15,10 @@
 #include "SDL.h"
 #include "SDL_image.h"
 
+
+GameFrameMode frameMode = CUSTOM;
+const int limitFPS = 60;
+const int limitFrameTime = 1000 / limitFPS;
 
 class GameObject
 {
@@ -29,6 +33,8 @@ public:
 
 	static bool Initialize()
 	{
+		MultiExtend::Trace::Start();
+
 		if (!MultiExtend::Init())
 		{
 			return false;
@@ -44,8 +50,13 @@ public:
 			return false;
 		}
 
+	/* 
 		SDL_Renderer* renderer = SDL_CreateRenderer(Get().m_window, -1,
-			SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	*/
+
+		SDL_Renderer* renderer = SDL_CreateRenderer(Get().m_window, -1,
+			SDL_RENDERER_ACCELERATED | (frameMode == VSYNC ? SDL_RENDERER_PRESENTVSYNC : 0));
 
 		if (!renderer)
 		{
@@ -193,20 +204,51 @@ public:
 	{
 		while (Get().m_isRunning)
 		{
-			Get().ProcessInput();
-			Get().UpdateGame();
-			Get().GenerateOuput();
+
+			// 返回自 SDL 库初始化（通过 SDL_Init()）以来经过的毫秒数（ms）
+			Uint32 frame_start = SDL_GetTicks();
+
+			{
+				MULTIEXTEND_TIMER_TRACE_TAG(ProcessLoop);
+
+				Get().ProcessInput();
+				Get().UpdateGame();
+				Get().GenerateOuput();
+
+				switch (frameMode) {
+				case CUSTOM:
+				{
+					Uint32 frame_time = SDL_GetTicks() - frame_start;
+					if (frame_time < limitFrameTime) {
+						SDL_Delay(limitFrameTime - frame_time);
+					}
+					break;
+				}
+				case VSYNC:
+					break;
+				case UNLIMITED:
+				default:
+					break;
+				}
+			}
+
+			// 统计帧率
+			Uint32 frameCost = SDL_GetTicks() - frame_start;
+			MULTIEXTEND_MESSAGE_CLIENT_DEBUG("FPS:{0:.2f}", 1000.0f / frameCost);
 		}
 	};
 
 	static void ShutDown()
 	{
+
 		IMG_Quit();
 
 		SDL_DestroyWindow(Get().m_window);
 		SDL_DestroyRenderer(Get().m_renderer->GetRendererAs<SDL_Renderer>());
 
 		SDL_Quit();
+
+		MultiExtend::Trace::Stop();
 
 		Get().m_isRunning = false;
 	};
@@ -243,6 +285,8 @@ private:
 
 	void ProcessInput()
 	{
+		MULTIEXTEND_TIMER_TRACE_TAG(ProcessInput);
+
 		SDL_Event event;
 		while (SDL_PollEvent(&event))
 		{
@@ -301,13 +345,22 @@ private:
 	
 	void UpdateGame()
 	{
-		int ticks = SDL_GetTicks();
+		MULTIEXTEND_TIMER_TRACE_TAG(UpdateGame);
 
+		static auto last_time = MULTIEXTEND_CLOCK_HIGHRES::now();
+
+		auto current_time = MULTIEXTEND_CLOCK_HIGHRES::now();
+
+		m_delta = std::chrono::duration<float>(current_time - last_time).count();
+
+		last_time = current_time;
+
+		// int ticks = SDL_GetTicks();
 		// limit the frame time span to 16ms
 		// while (!SDL_TICKS_PASSED(ticks = SDL_GetTicks(), m_tickcount + 16));
 
-		m_delta = (ticks - m_tickcount) / 1000.0f;
-		m_tickcount = ticks;
+		// m_delta = (ticks - m_tickcount) / 1000.0f;
+		// m_tickcount = ticks;
 
 		// MultiExtend::Math::limit_min(m_delta, 0.05f);
 
@@ -316,6 +369,9 @@ private:
 
 	void GenerateOuput()
 	{
+
+		MULTIEXTEND_TIMER_TRACE_TAG(GenerateOuput);
+
 		SDL_SetRenderDrawColor(Get().m_renderer->GetRendererAs<SDL_Renderer>(), 30,30,30,30);
 		ClearRenderer(Get().m_renderer);
 

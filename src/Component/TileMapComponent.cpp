@@ -56,12 +56,16 @@ MultiExtend::TileMapComponent::~TileMapComponent()
 }
 
 void MultiExtend::TileMapComponent::Update(float delta)
-{
+{	
+	MULTIEXTEND_TIMER_TRACE_TAG(UpdateTileMapComponent);
+
 	ActorComponent::Update(delta);
 }
 
 void MultiExtend::TileMapComponent::Draw()
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(DrawTileMapComponent);
+
 	const Vector3 scaleResult = GetScaleAbsolute();
 	const Vector3 posResult = GetPositionAbsolute();
 

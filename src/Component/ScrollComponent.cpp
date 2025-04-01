@@ -81,6 +81,8 @@ MultiExtend::ScrollSpriteComponent::~ScrollSpriteComponent()
 
 void MultiExtend::ScrollSpriteComponent::Update(float delta)
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(UpdateScrollSpriteComponent);
+
 	SpriteComponent::Update(delta);
 
 	float direction = bReverse ? -1.0f : 1.0f;
@@ -115,6 +117,9 @@ void MultiExtend::ScrollSpriteComponent::Update(float delta)
 
 void MultiExtend::ScrollSpriteComponent::Draw()
 {
+	
+	MULTIEXTEND_TIMER_TRACE_TAG(DrawScrollSpriteComponent);
+
 	float drawDistance = 0;
 	int drawIdx = m_headTextureIdx;
 
@@ -286,12 +291,16 @@ void MultiExtend::ScrollSpriteComponent::ReverseScroll()
 
 void MultiExtend::ScrollSpriteComponent::RefreshLimit()
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(RefreshLimit);
+
 	this->RefreshLimitedSizeScale();
 	this->RefreshLimitedOffset();
 }
 
 void MultiExtend::ScrollSpriteComponent::RefreshLimitedSizeScale()
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(RefreshLimitedSizeScale);
+
 	auto iter = m_Textures.begin();
 	
 	m_limitedSourceSizeScale = m_sourceSizeScale;
@@ -331,6 +340,8 @@ void MultiExtend::ScrollSpriteComponent::RefreshLimitedSizeScale()
 
 void MultiExtend::ScrollSpriteComponent::RefreshLimitedOffset()
 {
+	MULTIEXTEND_TIMER_TRACE_TAG(RefreshLimitedOffset);
+
 	auto iter = m_Textures.begin();
 
 	m_limitOffset = m_offset;

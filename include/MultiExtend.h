@@ -1,6 +1,7 @@
 #pragma once
 
 //------------------ Dependencies -----------------
+#include "SDL.h"
 #include "SDL_image.h"
 
 //------------------ Base tool ---------------
@@ -48,9 +49,7 @@ namespace MultiExtend
 
 	MULTIEXTEND_API int Init(int inttag = ALL);
 
-	MULTIEXTEND_API Texture* LoadTexture(GameStat* GameStat, Renderer* renderer, const char* filepath);
-
-	MULTIEXTEND_API Texture* LoadTexture(GameStat* GameStat, SDL_Renderer* renderer, const char* filepath);
+	
 
 	template <typename T, typename... Args>
 	inline T* CreateActor(GameStat * GameStat,Args&&... args)
@@ -97,6 +96,10 @@ namespace MultiExtend
 
 		return GameStatCreate;
 	};
+
+	MULTIEXTEND_API Texture* LoadTexture(GameStat* GameStat, Renderer* renderer, const char* filepath);
+
+	MULTIEXTEND_API TextureSDL* LoadTexture(GameStat* GameStat, SDL_Renderer* renderer, const char* filepath);
 
 	MULTIEXTEND_API void ClearRenderer(Renderer * renderer);
 
