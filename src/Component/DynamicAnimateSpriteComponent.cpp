@@ -96,7 +96,8 @@ MultiExtend::DynamicAnimateSpriteComponent::DynamicAnimateSpriteComponent(
 	m_currentFrame(0),
 	bResetCurrentFrame(false),
 	m_DynamicAnimateSpriteUnit_Default(dynamicAnimateSpriteUnits[0]),
-	m_DynamicAnimateSpriteUnit_Current(dynamicAnimateSpriteUnits[0])
+	m_DynamicAnimateSpriteUnit_Current(dynamicAnimateSpriteUnits[0]),
+	m_DynamicAnimateSpriteUnits(dynamicAnimateSpriteUnits)
 {
 }
 
@@ -130,7 +131,8 @@ void MultiExtend::DynamicAnimateSpriteComponent::Update(float delta)
 		resetIdx = resetIdx < m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures().size() ? resetIdx : (m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures().size() - 1);
 		SpriteComponent::SetTexture(m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures()[resetIdx]);
 
-		MULTIEXTEND_MESSAGE_CLIENT_DEBUG(m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures()[resetIdx]->GetHash());
+		// MULTIEXTEND_MESSAGE_CLIENT_DEBUG(m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures().size());
+		// MULTIEXTEND_MESSAGE_CLIENT_DEBUG(m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures()[resetIdx]->GetHash());
 	}
 
 	SpriteComponent::Update(delta);
@@ -169,13 +171,16 @@ void MultiExtend::DynamicAnimateSpriteComponent::SetCurrentDynamicSpriteUnit(int
 
 void MultiExtend::DynamicAnimateSpriteComponent::SetCurrentDynamicSpriteUnit(const char* tag)
 {
+
+	// MULTIEXTEND_MESSAGE_CLIENT_DEBUG(this->m_DynamicAnimateSpriteUnits.size());
+
 	auto iter = m_DynamicAnimateSpriteUnits.begin();
 	for (; iter != m_DynamicAnimateSpriteUnits.end(); ++iter)
 	{
 		DynamicAnimateSpriteUnit * SpriteUnit = *iter;
 		const char * groupTag = SpriteUnit->GetGroupTag();
 
-		if(groupTag == tag)
+		if(*groupTag == *tag)
 		{
 			this->m_DynamicAnimateSpriteUnit_Current = *iter;
 			this->bResetCurrentFrame = true;

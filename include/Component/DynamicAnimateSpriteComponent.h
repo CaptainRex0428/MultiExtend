@@ -12,7 +12,8 @@ namespace MultiExtend
 	enum DynamicAnimateSpriteUnitUpdateType
 	{
 		LOOP,
-		ONCE
+		ONCE,
+		CIRCLE
 	};
 
 	class DynamicAnimateSpriteUnit

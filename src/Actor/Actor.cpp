@@ -295,9 +295,7 @@ MultiExtend::Actor* MultiExtend::Actor::GetChildActor(const char* actor_tag)
 
 MultiExtend::ActorComponent* MultiExtend::Actor::GetActorComponent(const char* actor_component_tag)
 {
-	m_actor_component_root->GetChildActorComponent(actor_component_tag);
-
-	return nullptr;
+	return m_actor_component_root->GetChildActorComponent(actor_component_tag);
 }
 
 MultiExtend::ActorComponent* MultiExtend::Actor::GetActorComponentRoot()

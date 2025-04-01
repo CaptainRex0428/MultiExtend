@@ -170,12 +170,13 @@ public:
 
 		PlayerBaseComp->SetDefaultDynamicSpriteUnit("Step");
 		PlayerBaseComp->SetCurrentDynamicSpriteUnit("Step");
-		PlayerBaseComp->SetAnimFPS(10);
-		PlayerBaseComp->SetSize(Vector2(64, 29));
+		PlayerBaseComp->SetAnimFPS(12);
+		PlayerBaseComp->SetSize(Vector2(64, 64));
+		PlayerBaseComp->SetTag("PlayerBaseComp");
 
-		Actor* PlayerBaseActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
+		Actor* PlayerBaseActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat, "PlayerBase");
 		PlayerBaseActor->AddActorComponent(PlayerBaseComp);
-		PlayerBaseActor->SetPositionRelative(Vector3(0,32,0));
+		PlayerBaseActor->SetPositionRelative(Vector3(PlayerBaseComp->GetSize().x/2, spriteStatic->GetSize().y + PlayerBaseComp->GetSize().y / 2,0));
 		
 
 		Get().m_GameActor->AddChildActor(spriteStaticActor);
@@ -254,19 +255,61 @@ private:
 				continue;
 			}
 		}
+
+		// handle keyboard input
+		const Uint8* state = SDL_GetKeyboardState(NULL);
+
+		if (state[SDL_SCANCODE_ESCAPE])
+		{
+			m_isRunning = false;
+		}
+
+		if (state[SDL_SCANCODE_SPACE])
+		{
+			// player base
+			Actor * PlayerBase = Get().m_GameActor->GetChildActor("PlayerBase");
+
+			if(PlayerBase)
+			{	
+				MultiExtend::Component* BaseComp = PlayerBase->GetActorComponent("PlayerBaseComp");
+				MultiExtend::DynamicAnimateSpriteComponent* PlayerBaseComp = static_cast<MultiExtend::DynamicAnimateSpriteComponent*>(BaseComp);
+
+				if(PlayerBaseComp && PlayerBaseComp->bCanChangeCurrentUnit())
+				{
+					PlayerBaseComp->SetCurrentDynamicSpriteUnit("Jump");
+				}
+			};
+		}
+
+		if (state[SDL_SCANCODE_Q])
+		{
+			// player base
+			Actor* PlayerBase = Get().m_GameActor->GetChildActor("PlayerBase");
+
+			if (PlayerBase)
+			{
+				MultiExtend::Component* BaseComp = PlayerBase->GetActorComponent("PlayerBaseComp");
+				MultiExtend::DynamicAnimateSpriteComponent* PlayerBaseComp = static_cast<MultiExtend::DynamicAnimateSpriteComponent*>(BaseComp);
+
+				if (PlayerBaseComp && PlayerBaseComp->bCanChangeCurrentUnit())
+				{
+					PlayerBaseComp->SetCurrentDynamicSpriteUnit("Punch");
+				}
+			};
+		}
 	};
 	
 	void UpdateGame()
 	{
-		int ticks;
+		int ticks = SDL_GetTicks();
 
 		// limit the frame time span to 16ms
-		while (!SDL_TICKS_PASSED(ticks = SDL_GetTicks(), m_tickcount + 16));
+		// while (!SDL_TICKS_PASSED(ticks = SDL_GetTicks(), m_tickcount + 16));
 
 		m_delta = (ticks - m_tickcount) / 1000.0f;
 		m_tickcount = ticks;
 
-		MultiExtend::Math::limit_min(m_delta, 0.05f);
+		// MultiExtend::Math::limit_min(m_delta, 0.05f);
 
 		m_GameActor->Update(m_delta);
 	};

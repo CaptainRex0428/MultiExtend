@@ -36,7 +36,7 @@ namespace MultiExtend
 
 		MULTIEXTEND_API void SetComponentState(int state);
 
-	protected:
+	// protected:
 		MULTIEXTEND_API virtual void SetTag(const char * type);
 
 	protected:
