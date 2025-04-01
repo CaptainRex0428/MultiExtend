@@ -1,5 +1,7 @@
 #include "Component/MovementComponent.h"
-#include "Math/Math.h"
+
+#include "Actor/Actor.h"
+
 MultiExtend::MovementComponent::MovementComponent(
 	Actor* Owner,
 	const char* tag,
@@ -34,12 +36,12 @@ void MultiExtend::MovementComponent::Update(float deltaTime)
 	}
 }
 
-Vector3 MultiExtend::MovementComponent::GetAngularSpeed() const
+MultiExtend::Vector3 MultiExtend::MovementComponent::GetAngularSpeed() const
 {
 	return m_AngularSpeed;
 }
 
-Vector3 MultiExtend::MovementComponent::GetForwardSpeed() const
+MultiExtend::Vector3 MultiExtend::MovementComponent::GetForwardSpeed() const
 {
 	return m_ForwardSpeed;
 }

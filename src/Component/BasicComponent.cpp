@@ -1,4 +1,5 @@
 #include "Component/BasicComponent.h"
+#include "Actor/Actor.h"
 
 MultiExtend::BasicComponent::BasicComponent(
 	Actor* Owner,
@@ -14,7 +15,7 @@ MultiExtend::BasicComponent::~BasicComponent()
 	
 }
 
-Actor* MultiExtend::BasicComponent::GetOwner() const
+MultiExtend::Actor* MultiExtend::BasicComponent::GetOwner() const
 {
 	return m_Owner;
 }

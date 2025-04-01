@@ -1,8 +1,8 @@
 #pragma once
 
 #include "MultiExtendAPI.h"
-
 #include "Component/BasicComponent.h"
+#include "Math/Math.h"
 
 namespace MultiExtend
 {

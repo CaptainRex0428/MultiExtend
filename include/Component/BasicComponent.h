@@ -1,14 +1,12 @@
 #pragma once
 
-#include "MultiExtend.h"
 #include "Component/Component.h"
 #include "Component/BasicComponentConfig.h"
 
-#include "Actor/Actor.h"
-
-
 namespace MultiExtend
 {
+	class Actor;
+
 	class BasicComponent : public Component
 	{
 	public:

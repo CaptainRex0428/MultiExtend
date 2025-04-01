@@ -2,6 +2,8 @@
 #include "Actor/Actor.h"
 #include "Object/GameStat.h"
 
+#include "Component/BasicComponent.h"
+
 MultiExtend::Actor::Actor(const char* tag,
 	Vector3 position,
 	Vector3 scale,
@@ -54,7 +56,7 @@ void MultiExtend::Actor::UpdateComponents(float delta)
 	}
 }
 
-void MultiExtend::Actor::AddComponent(Component* component)
+void MultiExtend::Actor::AddComponent(BasicComponent* component)
 {
 
 	if (std::find(m_components.begin(),
@@ -75,11 +77,11 @@ void MultiExtend::Actor::AddComponent(Component* component)
 	}
 }
 
-void MultiExtend::Actor::RemoveComponent(Component* component)
+void MultiExtend::Actor::RemoveComponent(BasicComponent* component)
 {
 	auto it = std::remove_if(m_components.begin(),
 		m_components.end(),
-		[component](Component* comp) -> bool { return *component->GetTag() == *comp->GetTag(); });
+		[component](BasicComponent* comp) -> bool { return *component->GetTag() == *comp->GetTag(); });
 	m_components.erase(it);
 }
 
@@ -321,12 +323,12 @@ void MultiExtend::Actor::SetActorComponentRoot(ActorComponent* actor_component)
 	m_actor_component_root = actor_component;
 }
 
-const std::vector<MultiExtend::Component*>& MultiExtend::Actor::GetComponents()
+const std::vector<MultiExtend::BasicComponent*>& MultiExtend::Actor::GetComponents()
 {
 	return m_components;
 }
 
-MultiExtend::Component* MultiExtend::Actor::GetComponent(const char* component_tag)
+MultiExtend::BasicComponent* MultiExtend::Actor::GetComponent(const char* component_tag)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(GetComponent);
 

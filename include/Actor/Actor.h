@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "Component/ActorComponent.h"
+#include "Component/BasicComponent.h"
 
 #include "ActorConfig.h"
 
@@ -29,10 +30,10 @@ namespace MultiExtend
 		MULTIEXTEND_API virtual void Draw();
 
 		MULTIEXTEND_API void UpdateComponents(float delta);
-		MULTIEXTEND_API void AddComponent(Component* component);
-		MULTIEXTEND_API void RemoveComponent(Component* component);
-		MULTIEXTEND_API const std::vector<Component*>& GetComponents();
-		MULTIEXTEND_API Component* GetComponent(const char* component_tag);
+		MULTIEXTEND_API void AddComponent(BasicComponent* component);
+		MULTIEXTEND_API void RemoveComponent(BasicComponent* component);
+		MULTIEXTEND_API const std::vector<BasicComponent*>& GetComponents();
+		MULTIEXTEND_API BasicComponent* GetComponent(const char* component_tag);
 
 		MULTIEXTEND_API void AddActorComponent(ActorComponent* actor_component);
 		MULTIEXTEND_API void RemoveActorComponent(ActorComponent* actor_component);
@@ -93,7 +94,7 @@ namespace MultiExtend
 
 		ActorComponent* m_actor_component_root;
 
-		std::vector<Component*> m_components;
+		std::vector<BasicComponent*> m_components;
 
 		std::vector<Actor*> m_child_actors;
 
