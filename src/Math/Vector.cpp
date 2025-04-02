@@ -126,7 +126,13 @@ float MultiExtend::Vector2::length()
 MultiExtend::Vector2 MultiExtend::Vector2::normalize()
 {
 	float len = length();
-	return Vector2(x/ len, y/ len);
+
+	if(len!=1)
+	{
+		return Vector2(x / len, y / len);
+	}
+	
+	return *this;
 }
 
 float MultiExtend::Vector2::dot(Vector2& va, Vector2& vb)
@@ -295,7 +301,12 @@ MultiExtend::Vector3 MultiExtend::Vector3::normalize()
 {
 	float len = length();
 
-	return Vector3(x/len,y/len,z/len);
+	if(len != 1)
+	{
+		return Vector3(x / len, y / len, z / len);
+	}
+
+	return *this;
 }
 
 MultiExtend::Vector3::~Vector3() = default;
