@@ -9,13 +9,14 @@ namespace MultiExtend
 	{
 		
 	public:
+		static_assert(Rows > 0 && Cols > 0, "Matrix row & column must be greater than zero.");
+
 		Matrix()
 			:data({}) 
 		{
 		}
 
 		// 访问元素（行主序）
-
 		Matrix(std::initializer_list<T> InitializeList) 
 		{
 			assert(InitializeList.size() == Rows * Cols && "Invalid initializer list size");
@@ -39,4 +40,8 @@ namespace MultiExtend
 	private:
 		std::array<T, Rows* Cols> data;
 	};
+
+
+	typedef Matrix<float, 3, 3> Matrix3x3;
+	typedef Matrix<float, 4, 4> Matrix4x4;
 }

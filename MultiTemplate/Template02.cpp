@@ -65,12 +65,10 @@ int main(int argc, char** argv)
 	Entity::write("Template02 test line.");
 	Entity::print();
 
-	Matrix<float,3,3> matrix3x3{
-		1,1,1,
-		1,1,1,
-		1,1,1};
-
-	auto a = matrix3x3(1,2);
+	Matrix3x3 matrix3x3{
+		1,2,3,
+		4,5,6,
+		7,8,9};
 
 	std::cin.get();
 
