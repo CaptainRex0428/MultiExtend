@@ -21,14 +21,16 @@ namespace MultiExtend
 		Vector3 GetAngularSpeed() const;
 		Vector3 GetForwardSpeed() const;
 
-		void SetAngularSpeed(float speed);
+		void SetAngularSpeed(Vector3 speed);
 		void SetForwardSpeed(float speed);
+		void SetForwardDirect(Vector3 direct);
 
 	private:
 		// rotation (radians/second)
 		Vector3 m_AngularSpeed;
 		
 		// forward (units/second)
-		Vector3 m_ForwardSpeed;
+		Vector3 m_ForwardDirect;
+		float m_ForwardSpeed;
 	};
 }

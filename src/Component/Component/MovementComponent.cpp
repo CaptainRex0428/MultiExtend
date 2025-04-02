@@ -7,7 +7,7 @@ MultiExtend::MovementComponent::MovementComponent(
 	const char* tag,
 	int updateorder)
 	:BasicComponent(Owner, tag, updateorder), 
-	m_AngularSpeed(0), m_ForwardSpeed(0)
+	m_AngularSpeed(0), m_ForwardDirect(0), m_ForwardSpeed(0)
 {
 }
 
@@ -46,7 +46,7 @@ MultiExtend::Vector3 MultiExtend::MovementComponent::GetForwardSpeed() const
 	return m_ForwardSpeed;
 }
 
-void MultiExtend::MovementComponent::SetAngularSpeed(float speed)
+void MultiExtend::MovementComponent::SetAngularSpeed(Vector3 speed)
 {
 	m_AngularSpeed = speed;
 }
@@ -54,4 +54,9 @@ void MultiExtend::MovementComponent::SetAngularSpeed(float speed)
 void MultiExtend::MovementComponent::SetForwardSpeed(float speed)
 {
 	m_ForwardSpeed = speed;
+}
+
+void MultiExtend::MovementComponent::SetForwardDirect(Vector3 direct)
+{
+	m_ForwardDirect = direct.normalize();
 }
