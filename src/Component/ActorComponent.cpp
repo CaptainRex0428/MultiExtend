@@ -239,7 +239,7 @@ const MultiExtend::Vector3 MultiExtend::ActorComponent::GetPositionAbsolute()
 		parent = parent->GetParentActorComponent();
 	}
 
-	return Vector3(p_x, p_y, p_z);
+	return Vector3{p_x, p_y, p_z};
 
 }
 
@@ -261,7 +261,7 @@ const MultiExtend::Vector3 MultiExtend::ActorComponent::GetScaleAbsolute()
 		parent = parent->GetParentActorComponent();
 	}
 
-	return Vector3(scalesize_x, scalesize_y, scalesize_z);
+	return Vector3{scalesize_x, scalesize_y, scalesize_z};
 
 }
 
@@ -283,7 +283,7 @@ const MultiExtend::Vector3 MultiExtend::ActorComponent::GetRotationAbsolute()
 		parent = parent->GetParentActorComponent();
 	}
 
-	return Vector3(r_x, r_y, r_z);
+	return Vector3{r_x, r_y, r_z};
 
 }
 

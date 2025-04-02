@@ -15,7 +15,7 @@ MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
 	Vector3 position, Vector3 scale,
 	Vector3 rotation, Vector2 renderSize)
 	:
-	SpriteComponent(GameStat, renderer, texturefilepaths[0], tag, position, scale, rotation, Vector2(0, 0), updateorder),
+	SpriteComponent(GameStat, renderer, texturefilepaths[0], tag, position, scale, rotation, Vector2{0, 0}, updateorder),
 	m_ScrollSpeed(scrollspeed),
 	m_sourceSizeScale(sourceSizeScale),
 	m_limitedSourceSizeScale(sourceSizeScale),
@@ -52,7 +52,7 @@ MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
 	Vector3 position, Vector3 scale,
 	Vector3 rotation, Vector2 renderSize)
 	:
-	SpriteComponent(renderer, textures[0], tag, position, scale, rotation, Vector2(0, 0), updateorder),
+	SpriteComponent(renderer, textures[0], tag, position, scale, rotation, Vector2{0, 0}, updateorder),
 	m_ScrollSpeed(scrollspeed),
 	m_sourceSizeScale(sourceSizeScale),
 	m_limitedSourceSizeScale(sourceSizeScale),

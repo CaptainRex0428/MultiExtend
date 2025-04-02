@@ -1,5 +1,7 @@
 #include "MultiExtend.h"
 
+#include "Math/Matrix.h"
+
 class Entity
 {
 public:
@@ -51,7 +53,7 @@ private:
 	MULTIEXTEND_FILE* m_fileA;
 };
 
-int main()
+int main(int argc, char** argv)
 {
 	MultiExtend::Message::Init();
 
@@ -63,5 +65,14 @@ int main()
 	Entity::write("Template02 test line.");
 	Entity::print();
 
+	Matrix<float,3,3> matrix3x3{
+		1,1,1,
+		1,1,1,
+		1,1,1};
+
+	auto a = matrix3x3(1,2);
+
 	std::cin.get();
+
+	return 0;
 }

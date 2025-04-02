@@ -2,6 +2,9 @@
 
 #include <cmath>
 
+#undef PI
+#define PI 3.141592653589793238462643383279502884
+
 int MultiExtend::Math::Clamp(int src, int min, int max)
 {
 	if (src <= min)
@@ -222,4 +225,34 @@ std::tuple<const char*, double> MultiExtend::Math::ByteSizeConvert(uintmax_t byt
 	unit = "PB";
 
 	return { unit,size };
+}
+
+double MultiExtend::Math::DegreeToRadians(double degree)
+{
+	return degree * 2 * PI / 360;
+}
+
+MultiExtend::Vector2 MultiExtend::Math::DegreeToRadians(Vector2& degree)
+{
+	return Vector2{(float)DegreeToRadians(degree.x), (float)DegreeToRadians(degree.y)};
+}
+
+MultiExtend::Vector3 MultiExtend::Math::DegreeToRadians(Vector3& degree)
+{
+	return Vector3{(float)DegreeToRadians(degree.x), (float)DegreeToRadians(degree.y), (float)DegreeToRadians(degree.z)};
+}
+
+double MultiExtend::Math::RadiansToDegree(double radians)
+{
+	return (radians * 360) / (2 * PI);
+}
+
+MultiExtend::Vector2 MultiExtend::Math::RadiansToDegree(Vector2& radians)
+{
+	return Vector2{(float)RadiansToDegree(radians.x), (float)RadiansToDegree(radians.y)};
+}
+
+MultiExtend::Vector3 MultiExtend::Math::RadiansToDegree(Vector3& radians)
+{
+	return Vector3{(float)RadiansToDegree(radians.x), (float)RadiansToDegree(radians.y), (float)RadiansToDegree(radians.z)};
 }

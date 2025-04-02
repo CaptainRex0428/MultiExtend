@@ -51,6 +51,14 @@ namespace MultiExtend
 
 		// transfer Byte size to a proper unit output in double
 		MULTIEXTEND_API static std::tuple<const char*, double> ByteSizeConvert(uintmax_t bytesize);
+
+		MULTIEXTEND_API static double DegreeToRadians(double degree);
+		MULTIEXTEND_API static Vector2 DegreeToRadians(Vector2 & degree);
+		MULTIEXTEND_API static Vector3 DegreeToRadians(Vector3 & degree);
+
+		MULTIEXTEND_API static double RadiansToDegree(double radians);
+		MULTIEXTEND_API static Vector2 RadiansToDegree(Vector2 & radians);
+		MULTIEXTEND_API static Vector3 RadiansToDegree(Vector3 & radians);
 	};
 	
 }

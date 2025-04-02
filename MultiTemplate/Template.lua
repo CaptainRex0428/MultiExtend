@@ -11,13 +11,22 @@ project "MultiExtendTemplateFile"
     includedirs
     {
         "%{ProjIncludeDir.MultiExtend}",
-        "%{DepIncludeDir.spdlog}"
+        "%{DepIncludeDir.SDL}",
+        "%{DepIncludeDir.SDL_image}",
+        "%{DepIncludeDir.spdlog}",
+        "%{DepIncludeDir.cryptopp}"
     }
 
     links
     {
         "MultiExtend",
-        "spdlog"
+        "SDL",
+        "SDL_main",
+        "SDL_image",
+
+        "spdlog",
+        "cryptopp"
+        
     }
 
     defines
@@ -69,13 +78,22 @@ project "MultiExtendTemplateEntity"
     includedirs
     {
         "%{ProjIncludeDir.MultiExtend}",
-        "%{DepIncludeDir.spdlog}"
+        "%{DepIncludeDir.SDL}",
+        "%{DepIncludeDir.SDL_image}",
+        "%{DepIncludeDir.spdlog}",
+        "%{DepIncludeDir.cryptopp}"
     }
 
     links
     {
         "MultiExtend",
-        "spdlog"
+        "SDL",
+        "SDL_main",
+        "SDL_image",
+
+        "spdlog",
+        "cryptopp"
+        
     }
 
     defines
@@ -194,8 +212,22 @@ project "MultiExtendTemplateSSL"
         "%{DepIncludeDir.luacrypto}",
         "%{DepIncludeDir.lua}",
         "%{DepIncludeDir.openssl}",
-        "%{DepIncludeDir.cryptopp}"
+        "%{DepIncludeDir.cryptopp}",
+        "%{DepIncludeDir.SDL}",
+        "%{DepIncludeDir.SDL_image}",
 
+    }
+
+    links
+    {
+        "MultiExtend",
+        "SDL",
+        "SDL_main",
+        "SDL_image",
+
+        "spdlog",
+        "cryptopp"
+        
     }
 
     libdirs

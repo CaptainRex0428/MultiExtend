@@ -74,7 +74,7 @@ MULTIEXTEND_API void MultiExtend::SpriteComponent::SetSize(Vector2 size)
 
 MULTIEXTEND_API Vector2 MultiExtend::SpriteComponent::GetSize()
 {
-	return Vector2((float)m_TextureRender_w,(float)m_TextureRender_h);
+	return Vector2{(float)m_TextureRender_w,(float)m_TextureRender_h};
 }
 
 void MultiExtend::SpriteComponent::Draw()

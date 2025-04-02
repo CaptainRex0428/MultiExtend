@@ -24,11 +24,11 @@ namespace MultiExtend
 			const char* tag = BaseSpriteComponentTypeName,
 			int updateorder = DEFAULT_UPDATEORDER,
 			ScrollDirect direct = SCROLL_HORIZON,
-			Vector3 sourceSizeScale = Vector3(1.0f, 1.0f, 1.0f),
-			Vector3 position = Vector3(0.0f, 0.0f, 0.0f),
-			Vector3 scale = Vector3(1.0f, 1.0f, 1.0f),
-			Vector3 rotation = Vector3(0.0f, 0.0f, 0.0f),
-			Vector2 renderSize = Vector2(256,32));
+			Vector3 sourceSizeScale = Vector3{1.0f, 1.0f, 1.0f},
+			Vector3 position = Vector3{ 0.0f, 0.0f, 0.0f },
+			Vector3 scale = Vector3{ 1.0f, 1.0f, 1.0f },
+			Vector3 rotation = Vector3{ 0.0f, 0.0f, 0.0f },
+			Vector2 renderSize = Vector2{256,32});
 
 		MULTIEXTEND_API ScrollSpriteComponent(
 			Renderer* renderer,
@@ -38,11 +38,11 @@ namespace MultiExtend
 			const char* tag = BaseSpriteComponentTypeName,
 			int updateorder = DEFAULT_UPDATEORDER,
 			ScrollDirect direct = SCROLL_HORIZON,
-			Vector3 sourceSizeScale = Vector3(1.0f, 1.0f, 1.0f),
-			Vector3 position = Vector3(0.0f, 0.0f, 0.0f),
-			Vector3 scale = Vector3(1.0f, 1.0f, 1.0f),
-			Vector3 rotation = Vector3(0.0f, 0.0f, 0.0f),
-			Vector2 renderSize = Vector2(256, 32));
+			Vector3 sourceSizeScale = Vector3{ 1.0f, 1.0f, 1.0f },
+			Vector3 postion = Vector3{ 0.0f, 0.0f, 0.0f },
+			Vector3 scale = Vector3{ 1.0f, 1.0f, 1.0f },
+			Vector3 rotation = Vector3{ 0.0f, 0.0f, 0.0f },
+			Vector2 renderSize = Vector2{ 256,32 });
 
 		MULTIEXTEND_API virtual ~ScrollSpriteComponent();
 

@@ -21,20 +21,20 @@ namespace MultiExtend
 			Renderer * renderer,
 			const char* texturefilepath = nullptr,
 			const char* tag = BaseSpriteComponentTypeName,
-			Vector3 postion = Vector3(0.0f, 0.0f, 0.0f),
-			Vector3 scale = Vector3(1.0f, 1.0f, 1.0f),
-			Vector3 rotation = Vector3(0.0f, 0.0f, 0.0f),
-			Vector2 size = Vector2(32, 32),
+			Vector3 postion = Vector3{0.0f, 0.0f, 0.0f},
+			Vector3 scale = Vector3{1.0f, 1.0f, 1.0f},
+			Vector3 rotation = Vector3{0.0f, 0.0f, 0.0f},
+			Vector2 size = Vector2{32, 32},
 			int updateorder = DEFAULT_UPDATEORDER);
 
 		MULTIEXTEND_API SpriteComponent(
 			Renderer* renderer,
 			Texture* texture = nullptr,
 			const char* tag = BaseSpriteComponentTypeName,
-			Vector3 postion = Vector3(0.0f, 0.0f, 0.0f),
-			Vector3 scale = Vector3(1.0f, 1.0f, 1.0f),
-			Vector3 rotation = Vector3(0.0f, 0.0f, 0.0f),
-			Vector2 size = Vector2(32, 32),
+			Vector3 postion = Vector3{ 0.0f, 0.0f, 0.0f },
+			Vector3 scale = Vector3{ 1.0f, 1.0f, 1.0f },
+			Vector3 rotation = Vector3{ 0.0f, 0.0f, 0.0f },
+			Vector2 size = Vector2{ 32, 32 },
 			int updateorder = DEFAULT_UPDATEORDER);
 
 		MULTIEXTEND_API virtual ~SpriteComponent();

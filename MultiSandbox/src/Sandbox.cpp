@@ -46,7 +46,7 @@ namespace MultiExtendSandbox
 	{
 		MultiExtend::Trace::Start();
 
-		double loopFrame = 0;
+		long double loopFrame = 0;
 
 		int loopTime = 0;
 

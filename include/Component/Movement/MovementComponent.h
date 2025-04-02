@@ -19,18 +19,17 @@ namespace MultiExtend
 		MULTIEXTEND_API void Update(float deltaTime) override; 
 
 		Vector3 GetAngularSpeed() const;
-		Vector3 GetForwardSpeed() const;
+		float GetForwardSpeed() const;
+		Vector3 GetForwardDirectRelative() const;
 
 		void SetAngularSpeed(Vector3 speed);
 		void SetForwardSpeed(float speed);
-		void SetForwardDirect(Vector3 direct);
 
 	private:
-		// rotation (radians/second)
+		// rotation (degree/second)
 		Vector3 m_AngularSpeed;
 		
 		// forward (units/second)
-		Vector3 m_ForwardDirect;
 		float m_ForwardSpeed;
 	};
 }

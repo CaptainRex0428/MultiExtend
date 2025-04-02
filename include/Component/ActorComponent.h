@@ -13,9 +13,9 @@ namespace MultiExtend
 	public:
 		MULTIEXTEND_API ActorComponent(
 			const char* tag = DEFAULT_ACTORCOMPONENTNAME,
-			Vector3 postion = Vector3(0.0f, 0.0f, 0.0f),
-			Vector3 scale = Vector3(1.0f, 1.0f, 1.0f),
-			Vector3 rotation = Vector3(0.0f, 0.0f, 0.0f),
+			Vector3 postion = Vector3{0.0f, 0.0f, 0.0f},
+			Vector3 scale = Vector3{1.0f, 1.0f, 1.0f},
+			Vector3 rotation = Vector3{0.0f, 0.0f, 0.0f},
 			int updateorder = DEFAULT_UPDATEORDER);
 		MULTIEXTEND_API virtual ~ActorComponent();
 

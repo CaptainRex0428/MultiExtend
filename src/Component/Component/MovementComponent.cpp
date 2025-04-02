@@ -7,7 +7,7 @@ MultiExtend::MovementComponent::MovementComponent(
 	const char* tag,
 	int updateorder)
 	:BasicComponent(Owner, tag, updateorder), 
-	m_AngularSpeed(0), m_ForwardDirect(0), m_ForwardSpeed(0)
+	m_AngularSpeed(Vector3{0,0,0}), m_ForwardSpeed(0)
 {
 }
 
@@ -30,7 +30,7 @@ void MultiExtend::MovementComponent::Update(float deltaTime)
 	{
 		Vector3 pos = GetOwner()->GetPositionRelative();
 		
-		pos += m_ForwardSpeed * deltaTime;
+		pos += GetForwardDirectRelative() * m_ForwardSpeed * deltaTime;
 
 		GetOwner()->SetPositionRelative(pos);
 	}
@@ -41,9 +41,18 @@ MultiExtend::Vector3 MultiExtend::MovementComponent::GetAngularSpeed() const
 	return m_AngularSpeed;
 }
 
-MultiExtend::Vector3 MultiExtend::MovementComponent::GetForwardSpeed() const
+float MultiExtend::MovementComponent::GetForwardSpeed() const
 {
 	return m_ForwardSpeed;
+}
+
+MultiExtend::Vector3 MultiExtend::MovementComponent::GetForwardDirectRelative() const
+{
+	Vector3 rot = GetOwner()->GetRotationRelative();
+	Vector3 basicDirect {1,0,0};
+
+
+	return Vector3{0,0,1};
 }
 
 void MultiExtend::MovementComponent::SetAngularSpeed(Vector3 speed)
@@ -54,9 +63,4 @@ void MultiExtend::MovementComponent::SetAngularSpeed(Vector3 speed)
 void MultiExtend::MovementComponent::SetForwardSpeed(float speed)
 {
 	m_ForwardSpeed = speed;
-}
-
-void MultiExtend::MovementComponent::SetForwardDirect(Vector3 direct)
-{
-	m_ForwardDirect = direct.normalize();
 }

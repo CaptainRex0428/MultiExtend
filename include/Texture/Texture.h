@@ -53,8 +53,8 @@ namespace MultiExtend
 
 	struct TextureRelocator
 	{
-		Vector2 offset = Vector2(0,0);
-		Vector2 size = Vector2(32, 32);
+		Vector2 offset = Vector2{0,0};
+		Vector2 size = Vector2{32, 32};
 	};
 
 	enum TextureFlip

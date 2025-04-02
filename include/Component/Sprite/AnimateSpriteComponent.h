@@ -18,10 +18,10 @@ namespace MultiExtend
 			Renderer* renderer,
 			std::vector<const char *> textureFilePaths,
 			const char* tag = BaseAnimSpriteComponentTypeName,
-			Vector3 postion = Vector3(0.0f, 0.0f, 0.0f),
-			Vector3 scale = Vector3(1.0f, 1.0f, 1.0f),
-			Vector3 rotation = Vector3(0.0f, 0.0f, 0.0f),
-			Vector2 size = Vector2(32,32),
+			Vector3 position = Vector3{0.0f, 0.0f, 0.0f},
+			Vector3 scale = Vector3{1.0f, 1.0f, 1.0f},
+			Vector3 rotation = Vector3{0.0f, 0.0f, 0.0f},
+			Vector2 size = Vector2{32,32},
 			int updateorder = DEFAULT_UPDATEORDER);
 
 		MULTIEXTEND_API AnimateSpriteComponent(
@@ -29,10 +29,10 @@ namespace MultiExtend
 			Renderer* renderer,
 			std::vector<Texture*> textures,
 			const char* tag = BaseAnimSpriteComponentTypeName,
-			Vector3 postion = Vector3(0.0f, 0.0f, 0.0f),
-			Vector3 scale = Vector3(1.0f, 1.0f, 1.0f),
-			Vector3 rotation = Vector3(0.0f, 0.0f, 0.0f),
-			Vector2 size = Vector2(32, 32),
+			Vector3 position = Vector3{ 0.0f, 0.0f, 0.0f },
+			Vector3 scale = Vector3{ 1.0f, 1.0f, 1.0f },
+			Vector3 rotation = Vector3{ 0.0f, 0.0f, 0.0f },
+			Vector2 size = Vector2{ 32,32 },
 			int updateorder = DEFAULT_UPDATEORDER);
 
 		MULTIEXTEND_API virtual ~AnimateSpriteComponent();

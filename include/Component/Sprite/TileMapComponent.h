@@ -17,25 +17,25 @@ namespace MultiExtend
 			GameStat* gameState,
 			Renderer* renderer,
 			const char* texturefilepath = nullptr,
-			Vector2 srcPosition = Vector2(0, 0),
-			Vector2 srcSize = Vector2(256, 256),
-			Vector2 dstSize = Vector2(256,256),
+			Vector2 srcPosition = Vector2{0, 0},
+			Vector2 srcSize = Vector2{256, 256},
+			Vector2 dstSize = Vector2{256,256},
 			const char* tag = DEFAULT_TILEMAPCOMPONENTNAME,
-			Vector3 postion = Vector3(0.0f, 0.0f, 0.0f),
-			Vector3 scale = Vector3(1.0f, 1.0f, 1.0f),
-			Vector3 rotation = Vector3(0.0f, 0.0f, 0.0f),
+			Vector3 postion = Vector3{0.0f, 0.0f, 0.0f},
+			Vector3 scale = Vector3{1.0f, 1.0f, 1.0f},
+			Vector3 rotation = Vector3{0.0f, 0.0f, 0.0f},
 			int updateorder = DEFAULT_UPDATEORDER);
 
 		MULTIEXTEND_API TileMapComponent(
 			Renderer* renderer,
 			Texture* texture = nullptr,
-			Vector2 srcPosition = Vector2(0, 0),
-			Vector2 srcSize = Vector2(256, 256),
-			Vector2 dstSize = Vector2(256, 256),
+			Vector2 srcPosition = Vector2{ 0, 0 },
+			Vector2 srcSize = Vector2{ 256, 256 },
+			Vector2 dstSize = Vector2{ 256,256 },
 			const char* tag = DEFAULT_TILEMAPCOMPONENTNAME,
-			Vector3 postion = Vector3(0.0f, 0.0f, 0.0f),
-			Vector3 scale = Vector3(1.0f, 1.0f, 1.0f),
-			Vector3 rotation = Vector3(0.0f, 0.0f, 0.0f),
+			Vector3 postion = Vector3{ 0.0f, 0.0f, 0.0f },
+			Vector3 scale = Vector3{ 1.0f, 1.0f, 1.0f },
+			Vector3 rotation = Vector3{ 0.0f, 0.0f, 0.0f },
 			int updateorder = DEFAULT_UPDATEORDER);
 
 		MULTIEXTEND_API virtual ~TileMapComponent();
