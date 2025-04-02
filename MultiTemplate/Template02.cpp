@@ -65,10 +65,13 @@ int main(int argc, char** argv)
 	Entity::write("Template02 test line.");
 	Entity::print();
 
-	Matrix3x3 matrix3x3{
-		1,2,3,
-		4,5,6,
-		7,8,9};
+	Vector3 v{1,1,1};
+	Matrix4x4 m{1,0,0,0,
+				0,1,0,0,
+				0,0,1,0,
+				0,0,0,1};
+
+	auto a = m * v;
 
 	std::cin.get();
 
