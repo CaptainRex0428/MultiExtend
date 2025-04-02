@@ -262,7 +262,7 @@ MultiExtend::Vector3 MultiExtend::Vector3::operator*(Vector3& other)
 	return Vector3(x*other.x,y*other.y,z*other.z);
 }
 
-MultiExtend::Vector3 MultiExtend::Vector3::operator*(float num)
+MultiExtend::Vector3 MultiExtend::Vector3::operator*(float& num)
 {
 	
 	return Vector3(x * num, y * num, z * num);
@@ -330,4 +330,31 @@ MultiExtend::Vector4::Vector4()
 
 MultiExtend::Vector4::~Vector4()
 {
+}
+
+MultiExtend::Vector3 MultiExtend::Cross(const Vector2& vectorA, const Vector2& vectorB)
+{
+	return Vector3(0,0,vectorA.x * vectorB.y - vectorA.y * vectorB.x);
+}
+
+MultiExtend::Vector3 MultiExtend::Cross(const Vector3& vectorA, const Vector3& vectorB)
+{
+	return Vector3(vectorA.y*vectorB.z-vectorA.z*vectorB.y,
+				   vectorA.z*vectorB.x-vectorA.x*vectorB.z,
+				   vectorA.x*vectorB.y-vectorA.y*vectorB.x);
+}
+
+float MultiExtend::Dot(const Vector2& vectorA, const Vector2& vectorB)
+{
+	return vectorA.x*vectorB.x + vectorA.y*vectorB.y;
+}
+
+float MultiExtend::Dot(const Vector3& vectorA, const Vector3& vectorB)
+{
+	return vectorA.x * vectorB.x + vectorA.y * vectorB.y + vectorA.z * vectorB.z;
+}
+
+float MultiExtend::Dot(const Vector4& vectorA, const Vector4& vectorB)
+{
+	return vectorA.x * vectorB.x + vectorA.y * vectorB.y + vectorA.z * vectorB.z + vectorA.w * vectorB.w;
 }

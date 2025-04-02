@@ -15,7 +15,7 @@ namespace MultiExtend
 		MULTIEXTEND_API Vector2();
 		MULTIEXTEND_API Vector2(float num);
 		MULTIEXTEND_API Vector2(float i_x, float i_y);
-		
+
 		MULTIEXTEND_API Vector2(Vector2&& other) noexcept;
 		MULTIEXTEND_API Vector2(const Vector2& other);
 
@@ -35,7 +35,7 @@ namespace MultiExtend
 		MULTIEXTEND_API Vector2 operator*(Vector2&& other);
 		MULTIEXTEND_API Vector2 operator*(Vector3& other);
 		MULTIEXTEND_API Vector2 operator*(Vector3&& other);
-		
+
 		MULTIEXTEND_API Vector2& operator+=(float& num);
 		MULTIEXTEND_API Vector2& operator+=(Vector2& other);
 		MULTIEXTEND_API Vector2& operator+=(Vector2&& other);
@@ -51,7 +51,7 @@ namespace MultiExtend
 
 		MULTIEXTEND_API static float dot(Vector2& va, Vector2& vb);
 		MULTIEXTEND_API static Vector3 cross(Vector2& va, Vector2& vb);
-		
+
 	public:
 		float x, y;
 
@@ -76,7 +76,7 @@ namespace MultiExtend
 		MULTIEXTEND_API Vector3& operator=(Vector3&& other) noexcept;
 
 		MULTIEXTEND_API Vector3 operator*(Vector3& other);
-		MULTIEXTEND_API Vector3 operator*(float num);
+		MULTIEXTEND_API Vector3 operator*(float& num);
 
 		MULTIEXTEND_API Vector3& operator+=(float& num);
 		MULTIEXTEND_API Vector3& operator+=(Vector3& other);
@@ -96,9 +96,16 @@ namespace MultiExtend
 		MULTIEXTEND_API Vector4();
 		MULTIEXTEND_API ~Vector4();
 	public:
-		float x,y,z,w;
+		float x, y, z, w;
 	};
 
+
+	MULTIEXTEND_API Vector3 Cross(const Vector2& vectorA, const Vector2& vectorB);
+	MULTIEXTEND_API Vector3 Cross(const Vector3& vectorA, const Vector3& vectorB);
+
+	MULTIEXTEND_API float Dot(const Vector2& vectorA, const Vector2& vectorB);
+	MULTIEXTEND_API float Dot(const Vector3& vectorA, const Vector3& vectorB);
+	MULTIEXTEND_API float Dot(const Vector4& vectorA, const Vector4& vectorB);
 
 }
 
