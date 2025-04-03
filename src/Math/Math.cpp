@@ -80,6 +80,16 @@ int& MultiExtend::Math::limit_min(int& src, int min)
 	return src;
 }
 
+size_t& MultiExtend::Math::limit_min(size_t& src, size_t min)
+{
+	if (src < min)
+	{
+		src = min;
+	}
+
+	return src;
+}
+
 double& MultiExtend::Math::limit_max(double& src, double max)
 {
 	if (src > max)
@@ -101,6 +111,16 @@ float& MultiExtend::Math::limit_max(float& src, float max)
 }
 
 int& MultiExtend::Math::limit_max(int& src, int max)
+{
+	if (src > max)
+	{
+		src = max;
+	}
+
+	return src;
+}
+
+size_t& MultiExtend::Math::limit_max(size_t& src, size_t max)
 {
 	if (src > max)
 	{

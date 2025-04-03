@@ -31,10 +31,12 @@ namespace MultiExtend
 		MULTIEXTEND_API static double& limit_min(double& src, double min);
 		MULTIEXTEND_API static float& limit_min(float& src, float min);
 		MULTIEXTEND_API static int& limit_min(int& src, int min);
+		MULTIEXTEND_API static size_t& limit_min(size_t& src, size_t min);
 
 		MULTIEXTEND_API static double& limit_max(double& src, double max);
 		MULTIEXTEND_API static float& limit_max(float& src, float max);
 		MULTIEXTEND_API static int& limit_max(int& src, int max);
+		MULTIEXTEND_API static size_t& limit_max(size_t& src, size_t max);
 
 		MULTIEXTEND_API static bool NearZero(double& src);
 		MULTIEXTEND_API static bool NearZero(double&& src);

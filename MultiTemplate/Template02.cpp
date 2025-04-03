@@ -66,7 +66,7 @@ int main(int argc, char** argv)
 	Entity::print();
 
 	Vector3 v{1,1,1};
-	Matrix4x4 m{1,0,0,0,
+	Matrix4x4 m{1,0,0,1,
 				0,1,0,0,
 				0,0,1,0,
 				0,0,0,1};

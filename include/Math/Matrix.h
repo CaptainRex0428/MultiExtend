@@ -27,29 +27,29 @@ namespace MultiExtend
 		// 访问元素（行主序）
 		T& operator()(size_t row, size_t col) 
 		{
-			// Math::limit_max(row,Rows-1);
-			// Math::limit_max(col,Cols-1);
+			Math::limit_max(row,Rows-1);
+			Math::limit_max(col,Cols-1);
 
 			return data[row * Cols + col];
 		}
 
 		const T& operator()(size_t row, size_t col) const 
 		{
-			// Math::limit_max(row, Rows-1);
-			// Math::limit_max(col, Cols-1);
+			Math::limit_max(row, Rows-1);
+			Math::limit_max(col, Cols-1);
 
 			return data[row * Cols + col];
 		}
 
-		T& operator()(size_t idx)
+		T& operator[](size_t idx)
 		{
-			// Math::limit_max(idx, Rows * Cols-1);
+			Math::limit_max(idx, Rows * Cols-1);
 			return data[idx];
 		}
 
-		const T& operator()(size_t idx) const
+		const T& operator[](size_t idx) const
 		{
-			// Math::limit_max(idx, Rows * Cols - 1);
+			Math::limit_max(idx, Rows * Cols - 1);
 			return data[idx];
 		}
 
@@ -107,11 +107,25 @@ namespace MultiExtend
 		return result;
 	}
 
-	Matrix4x1 operator*(Matrix4x4 & matrix, Vector3 & vector) 
+	Matrix4x1 operator*(Matrix4x4& matrix, Vector3& vector) 
 	{
-		Matrix4x1 vectorM {vector.x,vector.y,vector.z,1};
-		return matrix * vectorM;
-	}
+
+		MultiExtend::Matrix4x1 vectorM{ vector.x,vector.y,vector.z,1 };
+		MultiExtend::Matrix4x1 result = matrix * vectorM;
+
+		return result;
+
+	};;
+
+	Matrix4x1 operator*(Matrix4x4& matrix, Vector4& vector)
+	{
+
+		MultiExtend::Matrix4x1 vectorM{ vector.x,vector.y,vector.z,vector.w };
+		MultiExtend::Matrix4x1 result = matrix * vectorM;
+
+		return result;
+
+	};;
 
 	// 单位矩阵
 	template<typename T, size_t N>
