@@ -21,6 +21,33 @@ MultiExtend::Color::Color(Color&& other) noexcept
 	this->m_a = other.m_a;
 }
 
+float MultiExtend::Color::operator[](VectorFilterDimension1D index)
+{
+	uint8_t idx = (uint8_t)index % 4;
+
+	if (idx == 0)
+	{
+		return m_r;
+	}
+
+	if (idx == 1)
+	{
+		return m_g;
+	}
+
+	if (idx == 2)
+	{
+		return m_b;
+	}
+
+	if (idx == 3)
+	{
+		return m_a;
+	}
+
+	return 0;
+}
+
 MultiExtend::Color::Color(float r, float g, float b, float a)
 {
 	this->m_r = MultiExtend::Math::Clamp(r);
@@ -43,56 +70,6 @@ MultiExtend::Color::Color(int r, int g, int b, int a)
 	this->m_g = ((float)MultiExtend::Math::Clamp(g, 0, 255)) / 255;
 	this->m_b = ((float)MultiExtend::Math::Clamp(b, 0, 255)) / 255;
 	this->m_a = ((float)MultiExtend::Math::Clamp(a, 0, 255)) / 255;
-}
-
-float MultiExtend::Color::operator[](ColorFloatIndex index)
-{
-	if (index == r || index == x)
-	{
-		return m_r;
-	}
-
-	if (index == g || index == y)
-	{
-		return m_g;
-	}
-
-	if (index == b || index == z)
-	{
-		return m_b;
-	}
-
-	if (index == a || index == w)
-	{
-		return m_a;
-	}
-
-	return 0;
-}
-
-int MultiExtend::Color::operator[](ColorByteIndex index)
-{
-	if (index == R || index == X)
-	{
-		return (int) (m_r * 255);
-	}
-
-	if (index == G || index == Y)
-	{
-		return (int) (m_g * 255);
-	}
-
-	if (index == B || index == Z)
-	{
-		return (int) (m_b * 255);
-	}
-
-	if (index == A || index == W)
-	{
-		return (int) (m_a * 255);
-	}
-
-	return 0;
 }
 
 MultiExtend::Color& MultiExtend::Color::operator=(const Color& other)

@@ -70,7 +70,7 @@ public:
 		Actor * spriteStaticActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
 		MultiExtend::SpriteComponent * spriteStatic = new MultiExtend::SpriteComponent(Get().m_GameStat, Get().m_renderer, "../assets/Ship01.png");
 		spriteStatic->SetSize(Vector2{64, 29});
-		spriteStatic->SetPositionRelative(Vector3{spriteStatic->GetSize().x/2, spriteStatic->GetSize().y/2,0});
+		spriteStatic->SetPositionRelative(Vector3{spriteStatic->GetSize()[x]/2, spriteStatic->GetSize()[y]/2,0});
 		spriteStaticActor->AddActorComponent(spriteStatic);
 		
 		Actor* spriteAnimateActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
@@ -83,9 +83,9 @@ public:
 		};
 		MultiExtend::AnimateSpriteComponent* spriteAnimate = new MultiExtend::AnimateSpriteComponent(10,Get().m_GameStat, Get().m_renderer,textures);
 		spriteAnimate->SetSize(Vector2{64, 29});
-		spriteAnimate->SetPositionRelative(Vector3{spriteAnimate->GetSize().x / 2, spriteAnimate->GetSize().y / 2, 0});
+		spriteAnimate->SetPositionRelative(Vector3{spriteAnimate->GetSize()[x] / 2, spriteAnimate->GetSize()[y] / 2, 0});
 		spriteAnimateActor->AddActorComponent(spriteAnimate);
-		spriteAnimateActor->SetPositionRelative(Vector3{spriteStatic->GetSize().x,0,0});
+		spriteAnimateActor->SetPositionRelative(Vector3{spriteStatic->GetSize()[x],0,0});
 
 		Actor* spriteScrollActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
 		std::vector<const char*> scrolltextures =
@@ -99,7 +99,7 @@ public:
 		scrollSprite->SetScrollSpeed(80);
 		scrollSprite->SetOffset(300);
 		spriteScrollActor->AddActorComponent(scrollSprite);
-		spriteScrollActor->SetPositionRelative(Vector3{spriteAnimateActor->GetPositionAbsolute().x + spriteAnimate->GetSize().x, 0, 0});
+		spriteScrollActor->SetPositionRelative(Vector3{spriteAnimateActor->GetPositionAbsolute()[x] + spriteAnimate->GetSize()[x], 0, 0});
 
 		Get().m_GameActor->AddChildActor(spriteStaticActor);
 		Get().m_GameActor->AddChildActor(spriteAnimateActor);
@@ -116,7 +116,7 @@ public:
 		starScrollSprite->SetScrollSpeed(40);
 		starScrollSprite->SetOffset(0);
 		starScrollActor->AddActorComponent(starScrollSprite);
-		starScrollActor->SetPositionRelative(Vector3{spriteAnimateActor->GetPositionAbsolute().x + spriteAnimate->GetSize().x,0, 0});
+		starScrollActor->SetPositionRelative(Vector3{spriteAnimateActor->GetPositionAbsolute()[x] + spriteAnimate->GetSize()[x],0, 0});
 
 		Actor* tileMapActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
 
@@ -136,7 +136,7 @@ public:
 
 		tileMapActor->AddActorComponent(tileMapA);
 		tileMapActor->AddActorComponent(tileMapB);
-		tileMapActor->SetPositionRelative(Vector3{starScrollActor->GetPositionAbsolute().x + starScrollSprite->GetRenderSize().x, 0, 0});
+		tileMapActor->SetPositionRelative(Vector3{starScrollActor->GetPositionAbsolute()[x] + starScrollSprite->GetRenderSize()[x], 0, 0});
 
 		std::vector<const char*> ActorStepTextures =
 		{
@@ -187,7 +187,7 @@ public:
 
 		Actor* PlayerBaseActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat, "PlayerBase");
 		PlayerBaseActor->AddActorComponent(PlayerBaseComp);
-		PlayerBaseActor->SetPositionRelative(Vector3{PlayerBaseComp->GetSize().x/2, spriteStatic->GetSize().y + PlayerBaseComp->GetSize().y / 2,0});
+		PlayerBaseActor->SetPositionRelative(Vector3{PlayerBaseComp->GetSize()[x]/2, spriteStatic->GetSize()[y] + PlayerBaseComp->GetSize()[y] / 2,0});
 		
 
 		Get().m_GameActor->AddChildActor(spriteStaticActor);

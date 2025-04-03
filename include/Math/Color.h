@@ -3,22 +3,10 @@
 #include <stdint.h>
 
 #include "MultiExtendAPI.h"
+#include "Vector.h"
 
 namespace MultiExtend
 {
-
-	enum ColorFloatIndex
-	{
-		r, g, b, a,
-		x, y, z, w
-	};
-
-	enum ColorByteIndex
-	{
-		R, G, B, A,
-		X, Y, Z, W
-	};
-
 	class Color
 	{
 	public:
@@ -30,8 +18,7 @@ namespace MultiExtend
 		MULTIEXTEND_API Color(Color& other);
 		MULTIEXTEND_API Color(Color&& other) noexcept;
 
-		MULTIEXTEND_API float operator[](ColorFloatIndex index);
-		MULTIEXTEND_API int operator[](ColorByteIndex index);
+		MULTIEXTEND_API float operator[](VectorFilterDimension1D index);
 
 		MULTIEXTEND_API Color& operator=(const Color& other);
 

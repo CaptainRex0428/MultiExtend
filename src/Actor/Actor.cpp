@@ -226,16 +226,16 @@ const MultiExtend::Vector3 MultiExtend::Actor::GetPositionAbsolute()
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(CalculateWorldPosition);
 
-	float p_x = m_position.x;
-	float p_y = m_position.y;
-	float p_z = m_position.z;
+	float p_x = m_position[x];
+	float p_y = m_position[y];
+	float p_z = m_position[z];
 	Actor* parent = GetParentActor();
 
 	while (parent)
 	{
-		p_x += parent->GetPositionRelative().x;
-		p_y += parent->GetPositionRelative().y;
-		p_z += parent->GetPositionRelative().z;
+		p_x += parent->GetPositionRelative()[x];
+		p_y += parent->GetPositionRelative()[y];
+		p_z += parent->GetPositionRelative()[z];
 
 		parent = parent->GetParentActor();
 	}
@@ -247,16 +247,16 @@ const MultiExtend::Vector3 MultiExtend::Actor::GetScaleAbsolute()
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(CalculateWorldScale);
 
-	float scalesize_x = m_scale.x;
-	float scalesize_y = m_scale.y;
-	float scalesize_z = m_scale.z;
+	float scalesize_x = m_scale[x];
+	float scalesize_y = m_scale[y];
+	float scalesize_z = m_scale[z];
 	Actor* parent = GetParentActor();
 
 	while (parent)
 	{
-		scalesize_x *= parent->GetScaleRelative().x;
-		scalesize_y *= parent->GetScaleRelative().y;
-		scalesize_z *= parent->GetScaleRelative().z;
+		scalesize_x *= parent->GetScaleRelative()[x];
+		scalesize_y *= parent->GetScaleRelative()[y];
+		scalesize_z *= parent->GetScaleRelative()[z];
 
 		parent = parent->GetParentActor();
 	}
@@ -268,16 +268,16 @@ const MultiExtend::Vector3 MultiExtend::Actor::GetRotationAbsolute()
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(CalculateWorldRotation);
 
-	float r_x = m_rotation.x;
-	float r_y = m_rotation.y;
-	float r_z = m_rotation.z;
+	float r_x = m_rotation[x];
+	float r_y = m_rotation[y];
+	float r_z = m_rotation[z];
 	Actor* parent = GetParentActor();
 
 	while (parent)
 	{
-		r_x *= parent->GetRotationRelative().x;
-		r_y *= parent->GetRotationRelative().y;
-		r_z *= parent->GetRotationRelative().z;
+		r_x *= parent->GetRotationRelative()[x];
+		r_y *= parent->GetRotationRelative()[y];
+		r_z *= parent->GetRotationRelative()[z];
 
 		parent = parent->GetParentActor();
 	}

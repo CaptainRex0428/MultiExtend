@@ -90,17 +90,17 @@ void MultiExtend::ScrollSpriteComponent::Update(float delta)
 
 	Vector2 SourceSize;
 	QueryTexture(m_Textures[m_headTextureIdx], &SourceSize);
-	Vector2 SourceSizeScaled = SourceSize * m_limitedSourceSizeScale;
+	Vector2 SourceSizeScaled = SourceSize * Vector2{m_limitedSourceSizeScale[x],m_limitedSourceSizeScale[y]};
 
 	m_headTextureOffsetAfterScale += offset;
 
 	// 处理正向溢出
-	while (m_headTextureOffsetAfterScale > (m_scrollDirect == SCROLL_HORIZON ? SourceSizeScaled.x : SourceSizeScaled.y)) 
+	while (m_headTextureOffsetAfterScale > (m_scrollDirect == SCROLL_HORIZON ? SourceSizeScaled[x] : SourceSizeScaled[y])) 
 	{
-		m_headTextureOffsetAfterScale -= (m_scrollDirect == SCROLL_HORIZON ? SourceSizeScaled.x : SourceSizeScaled.y);
+		m_headTextureOffsetAfterScale -= (m_scrollDirect == SCROLL_HORIZON ? SourceSizeScaled[x] : SourceSizeScaled[y]);
 		m_headTextureIdx = (m_headTextureIdx + 1) % m_Textures.size();
 		QueryTexture(m_Textures[m_headTextureIdx], &SourceSize);
-		SourceSizeScaled = SourceSize * m_limitedSourceSizeScale;
+		SourceSizeScaled = SourceSize * Vector2{ m_limitedSourceSizeScale[x],m_limitedSourceSizeScale[y] };
 	}
 
 	// 处理反向溢出
@@ -109,9 +109,9 @@ void MultiExtend::ScrollSpriteComponent::Update(float delta)
 		m_headTextureIdx = (m_headTextureIdx - 1 + (int)m_Textures.size()) % (int)m_Textures.size();
 
 		QueryTexture(m_Textures[m_headTextureIdx], &SourceSize);
-		SourceSizeScaled = SourceSize * m_limitedSourceSizeScale;
+		SourceSizeScaled = SourceSize * Vector2{ m_limitedSourceSizeScale[x],m_limitedSourceSizeScale[y] };
 
-		m_headTextureOffsetAfterScale += (m_scrollDirect == SCROLL_HORIZON ? SourceSizeScaled.x : SourceSizeScaled.y);
+		m_headTextureOffsetAfterScale += (m_scrollDirect == SCROLL_HORIZON ? SourceSizeScaled[x] : SourceSizeScaled[y]);
 	}
 }
 
@@ -126,7 +126,7 @@ void MultiExtend::ScrollSpriteComponent::Draw()
 	Vector3 pos = GetPositionAbsolute();
 	Vector3 scale = GetScaleAbsolute();
 	float maxRenderSize = (m_scrollDirect == SCROLL_HORIZON) ?
-		(m_renderSize.x * scale.x) : (m_renderSize.y * scale.y);
+		(m_renderSize[x] * scale[x]) : (m_renderSize[y] * scale[y]);
 
 	while (drawDistance < maxRenderSize)
 	{
@@ -134,7 +134,7 @@ void MultiExtend::ScrollSpriteComponent::Draw()
 
 		Vector2 SourceSize, SourceSizeScaled;
 		QueryTexture(m_Textures[drawIdx], &SourceSize);
-		SourceSizeScaled = SourceSize * m_limitedSourceSizeScale;
+		SourceSizeScaled = SourceSize * Vector2{ m_limitedSourceSizeScale[x],m_limitedSourceSizeScale[y] };
 
 		float offset = this->m_limitOffset;
 
@@ -146,7 +146,7 @@ void MultiExtend::ScrollSpriteComponent::Draw()
 		{
 			drawTag = 0;
 		}
-		else if (remainingSpace < (m_scrollDirect == SCROLL_HORIZON ? SourceSizeScaled.x : SourceSizeScaled.y))
+		else if (remainingSpace < (m_scrollDirect == SCROLL_HORIZON ? SourceSizeScaled[x] : SourceSizeScaled[y]))
 		{
 			drawTag = 2;
 		}
@@ -156,58 +156,58 @@ void MultiExtend::ScrollSpriteComponent::Draw()
 		case(0):
 		{
 			
-			srcLocator.offset.x = m_scrollDirect == SCROLL_HORIZON ? (m_headTextureOffsetAfterScale / m_limitedSourceSizeScale.x) : offset;
-			srcLocator.offset.y = m_scrollDirect == SCROLL_HORIZON ? offset : (m_headTextureOffsetAfterScale / m_limitedSourceSizeScale.y);
+			srcLocator.offset[x] = m_scrollDirect == SCROLL_HORIZON ? (m_headTextureOffsetAfterScale / m_limitedSourceSizeScale[x]) : offset;
+			srcLocator.offset[y] = m_scrollDirect == SCROLL_HORIZON ? offset : (m_headTextureOffsetAfterScale / m_limitedSourceSizeScale[y]);
 
-			dstLocator.offset.x = pos.x;
-			dstLocator.offset.y = pos.y;
+			dstLocator.offset[x] = pos[x];
+			dstLocator.offset[y] = pos[y];
 
-			float dstRemain = m_scrollDirect == SCROLL_HORIZON ? SourceSizeScaled.x - m_headTextureOffsetAfterScale : SourceSizeScaled.y - m_headTextureOffsetAfterScale;
-			float maxRenderSize = m_scrollDirect == SCROLL_HORIZON ? m_renderSize.x * scale.x : m_renderSize.y * scale.y;
+			float dstRemain = m_scrollDirect == SCROLL_HORIZON ? SourceSizeScaled[x] - m_headTextureOffsetAfterScale : SourceSizeScaled[y] - m_headTextureOffsetAfterScale;
+			float maxRenderSize = m_scrollDirect == SCROLL_HORIZON ? m_renderSize[x] * scale[x] : m_renderSize[y] * scale[y];
 			Math::limit_max(dstRemain, maxRenderSize);
 
-			dstLocator.size.x = m_scrollDirect == SCROLL_HORIZON ? dstRemain : (m_renderSize.x * scale.x);
-			dstLocator.size.y = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize.y * scale.y) : dstRemain;
+			dstLocator.size[x] = m_scrollDirect == SCROLL_HORIZON ? dstRemain : (m_renderSize[x] * scale[x]);
+			dstLocator.size[y] = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize[y] * scale[y]) : dstRemain;
 
-			float srcRemain = m_scrollDirect == SCROLL_HORIZON ? dstRemain / m_limitedSourceSizeScale.x : dstRemain / m_limitedSourceSizeScale.y;
+			float srcRemain = m_scrollDirect == SCROLL_HORIZON ? dstRemain / m_limitedSourceSizeScale[x] : dstRemain / m_limitedSourceSizeScale[y];
 
-			srcLocator.size.x = m_scrollDirect == SCROLL_HORIZON ? srcRemain : (m_renderSize.x * scale.x / m_limitedSourceSizeScale.x);
-			srcLocator.size.y = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize.y * scale.y / m_limitedSourceSizeScale.y) : srcRemain;
+			srcLocator.size[x] = m_scrollDirect == SCROLL_HORIZON ? srcRemain : (m_renderSize[x] * scale[x] / m_limitedSourceSizeScale[x]);
+			srcLocator.size[y] = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize[y] * scale[y] / m_limitedSourceSizeScale[y]) : srcRemain;
 			
 
 			break;
 		}
 		case(2):
 		{
-			srcLocator.offset.x = m_scrollDirect == SCROLL_HORIZON ? 0 : offset;
-			srcLocator.offset.y = m_scrollDirect == SCROLL_HORIZON ? offset : 0;
-			srcLocator.size.x = m_scrollDirect == SCROLL_HORIZON ? (remainingSpace * SourceSize.x / SourceSizeScaled.x) : (m_renderSize.x * scale.x / m_limitedSourceSizeScale.x);
-			srcLocator.size.y = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize.y * scale.y / m_limitedSourceSizeScale.y) : (remainingSpace * SourceSize.y / SourceSizeScaled.y);
+			srcLocator.offset[x] = m_scrollDirect == SCROLL_HORIZON ? 0 : offset;
+			srcLocator.offset[y] = m_scrollDirect == SCROLL_HORIZON ? offset : 0;
+			srcLocator.size[x] = m_scrollDirect == SCROLL_HORIZON ? (remainingSpace * SourceSize[x] / SourceSizeScaled[x]) : (m_renderSize[x] * scale[x] / m_limitedSourceSizeScale[x]);
+			srcLocator.size[y] = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize[y] * scale[y] / m_limitedSourceSizeScale[y]) : (remainingSpace * SourceSize[y] / SourceSizeScaled[y]);
 
-			dstLocator.offset.x = m_scrollDirect == SCROLL_HORIZON ? (pos.x + drawDistance) : pos.x;
-			dstLocator.offset.y = m_scrollDirect == SCROLL_HORIZON ? pos.y : (pos.y + drawDistance);
-			dstLocator.size.x = m_scrollDirect == SCROLL_HORIZON ? remainingSpace : (m_renderSize.x * scale.x);
-			dstLocator.size.y = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize.y * scale.y) : remainingSpace;
+			dstLocator.offset[x] = m_scrollDirect == SCROLL_HORIZON ? (pos[x] + drawDistance) : pos[x];
+			dstLocator.offset[y] = m_scrollDirect == SCROLL_HORIZON ? pos[y] : (pos[y] + drawDistance);
+			dstLocator.size[x] = m_scrollDirect == SCROLL_HORIZON ? remainingSpace : (m_renderSize[x] * scale[x]);
+			dstLocator.size[y] = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize[y] * scale[y]) : remainingSpace;
 			
 			break;
 		}
 		case(1):
 		default:
 		{
-			srcLocator.offset.x = m_scrollDirect == SCROLL_HORIZON ? 0 : offset;
-			srcLocator.offset.y = m_scrollDirect == SCROLL_HORIZON ? offset : 0;
-			srcLocator.size.x = m_scrollDirect == SCROLL_HORIZON ? SourceSize.x : (m_renderSize.x * scale.x / m_limitedSourceSizeScale.x);
-			srcLocator.size.y = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize.y * scale.y / m_limitedSourceSizeScale.y) : SourceSize.y;
+			srcLocator.offset[x] = m_scrollDirect == SCROLL_HORIZON ? 0 : offset;
+			srcLocator.offset[y] = m_scrollDirect == SCROLL_HORIZON ? offset : 0;
+			srcLocator.size[x] = m_scrollDirect == SCROLL_HORIZON ? SourceSize[x] : (m_renderSize[x] * scale[x] / m_limitedSourceSizeScale[x]);
+			srcLocator.size[y] = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize[y] * scale[y] / m_limitedSourceSizeScale[y]) : SourceSize[y];
 
-			dstLocator.offset.x = m_scrollDirect == SCROLL_HORIZON ? (pos.x + drawDistance) : pos.x;
-			dstLocator.offset.y = m_scrollDirect == SCROLL_HORIZON ? pos.y : (pos.y + drawDistance);
-			dstLocator.size.x = m_scrollDirect == SCROLL_HORIZON ? SourceSizeScaled.x : (m_renderSize.x * scale.x);
-			dstLocator.size.y = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize.y * scale.y) : SourceSizeScaled.y;
+			dstLocator.offset[x] = m_scrollDirect == SCROLL_HORIZON ? (pos[x] + drawDistance) : pos[x];
+			dstLocator.offset[y] = m_scrollDirect == SCROLL_HORIZON ? pos[y] : (pos[y] + drawDistance);
+			dstLocator.size[x] = m_scrollDirect == SCROLL_HORIZON ? SourceSizeScaled[x] : (m_renderSize[x] * scale[x]);
+			dstLocator.size[y] = m_scrollDirect == SCROLL_HORIZON ? (m_renderSize[y] * scale[y]) : SourceSizeScaled[y];
 			break;
 		}
 		}
 
-		drawDistance += m_scrollDirect == SCROLL_HORIZON ? dstLocator.size.x : dstLocator.size.y;
+		drawDistance += m_scrollDirect == SCROLL_HORIZON ? dstLocator.size[x] : dstLocator.size[y];
 
 		MultiExtend::RenderTexture(m_Renderer, m_Textures[drawIdx], &srcLocator, &dstLocator);
 
@@ -312,26 +312,26 @@ void MultiExtend::ScrollSpriteComponent::RefreshLimitedSizeScale()
 		Vector2 SourceSize;
 		QueryTexture(*iter, &SourceSize);
 
-		if(m_scrollDirect == SCROLL_HORIZON && (m_renderSize.y * scaleGlobal.y) > (SourceSize.y * m_sourceSizeScale.y))
+		if(m_scrollDirect == SCROLL_HORIZON && (m_renderSize[y] * scaleGlobal[y]) > (SourceSize[y] * m_sourceSizeScale[y]))
 		{
 			
-			float scaleY = m_renderSize.y * scaleGlobal.y / SourceSize.y;
+			float scaleY = m_renderSize[y] * scaleGlobal[y] / SourceSize[y];
 
-			if (scaleY > m_limitedSourceSizeScale.y)
+			if (scaleY > m_limitedSourceSizeScale[y])
 			{
-				m_limitedSourceSizeScale.y = scaleY;
+				m_limitedSourceSizeScale[y] = scaleY;
 			}
 			
 		}
 
-		if (m_scrollDirect == SCROLL_VERTICAL && (m_renderSize.x * scaleGlobal.x) > (SourceSize.x * m_sourceSizeScale.x))
+		if (m_scrollDirect == SCROLL_VERTICAL && (m_renderSize[x] * scaleGlobal[x]) > (SourceSize[x] * m_sourceSizeScale[x]))
 		{
 
-			float scaleX = m_renderSize.x * scaleGlobal.x / SourceSize.x;
+			float scaleX = m_renderSize[x] * scaleGlobal[x] / SourceSize[x];
 
-			if (scaleX > m_limitedSourceSizeScale.x)
+			if (scaleX > m_limitedSourceSizeScale[x])
 			{
-				m_limitedSourceSizeScale.x = scaleX;
+				m_limitedSourceSizeScale[x] = scaleX;
 			}
 
 		}
@@ -350,25 +350,25 @@ void MultiExtend::ScrollSpriteComponent::RefreshLimitedOffset()
 
 	Vector2 SourceSize, SourceSizeScaled, scaleRenderSize, scaledLimit;
 
-	scaleRenderSize.x =scaleGlobal.x * m_renderSize.x;
-	scaleRenderSize.y = scaleGlobal.y * m_renderSize.y;
+	scaleRenderSize[x] =scaleGlobal[x] * m_renderSize[x];
+	scaleRenderSize[y] = scaleGlobal[y] * m_renderSize[y];
 	
 	for (; iter != m_Textures.end(); ++iter)
 	{
 		QueryTexture(*iter, &SourceSize);
-		SourceSizeScaled = SourceSize * m_limitedSourceSizeScale;
+		SourceSizeScaled = SourceSize * Vector2{ m_limitedSourceSizeScale[x],m_limitedSourceSizeScale[y] };
 
-		scaledLimit.x = m_sourceSizeScale.x * m_limitOffset;
-		scaledLimit.y = m_sourceSizeScale.y * m_limitOffset;
+		scaledLimit[x] = m_sourceSizeScale[x] * m_limitOffset;
+		scaledLimit[y] = m_sourceSizeScale[y] * m_limitOffset;
 
-		if (m_scrollDirect == SCROLL_HORIZON && SourceSizeScaled.y - scaledLimit.y < scaleRenderSize.y)
+		if (m_scrollDirect == SCROLL_HORIZON && SourceSizeScaled[y] - scaledLimit[y] < scaleRenderSize[y])
 		{
-			m_limitOffset =  SourceSize.y * (1-(scaleRenderSize.y / SourceSizeScaled.y));
+			m_limitOffset =  SourceSize[y] * (1-(scaleRenderSize[y] / SourceSizeScaled[y]));
 		}
 		
-		if (m_scrollDirect == SCROLL_VERTICAL && SourceSizeScaled.x - scaledLimit.x < scaleRenderSize.x)
+		if (m_scrollDirect == SCROLL_VERTICAL && SourceSizeScaled[x] - scaledLimit[x] < scaleRenderSize[x])
 		{
-			m_limitOffset = SourceSize.x * (1 - (scaleRenderSize.x / SourceSizeScaled.x));
+			m_limitOffset = SourceSize[x] * (1 - (scaleRenderSize[x] / SourceSizeScaled[x]));
 		}
 	}
 }

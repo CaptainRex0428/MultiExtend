@@ -20,9 +20,9 @@ int main(int argc, char* argv[])
 
 	file.Clear();
 
-	file.Write("Template01.");
-	file.Write("Test file.");
-	file.Write("A new line.");
+	file[w]rite("Template01.");
+	file[w]rite("Test file.");
+	file[w]rite("A new line.");
 
 	file.Print();
 	file.Close();
@@ -32,9 +32,9 @@ int main(int argc, char* argv[])
 
 	file.Clear();
 
-	file.Write("Template01.");
-	file.Write("Test file text file.");
-	file.Write("A new line.");
+	file[w]rite("Template01.");
+	file[w]rite("Test file text file.");
+	file[w]rite("A new line.");
 
 	file.Print();
 	file.Close();
@@ -44,8 +44,8 @@ int main(int argc, char* argv[])
 	MultiExtend::Log Logfile1("Terminal", "./Log/Default.log");
 	MultiExtend::Log Logfile2("Client", "./Log/Default.log");
 
-	Logfile1.Write("Test Log01",MultiExtend::LogLevel::Trace);
-	Logfile2.Write("Test Log01",MultiExtend::LogLevel::Trace);
-	Logfile1.Write("Test Log02",MultiExtend::LogLevel::Trace);
-	Logfile2.Write("Test Log02",MultiExtend::LogLevel::Trace);
+	Logfile1[w]rite("Test Log01",MultiExtend::LogLevel::Trace);
+	Logfile2[w]rite("Test Log01",MultiExtend::LogLevel::Trace);
+	Logfile1[w]rite("Test Log02",MultiExtend::LogLevel::Trace);
+	Logfile2[w]rite("Test Log02",MultiExtend::LogLevel::Trace);
 }

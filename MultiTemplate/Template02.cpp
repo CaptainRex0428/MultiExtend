@@ -1,6 +1,6 @@
 #include "MultiExtend.h"
 
-#include "Math/Matrix.h"
+#include "Math/Vector.h"
 
 class Entity
 {
@@ -65,13 +65,9 @@ int main(int argc, char** argv)
 	Entity::write("Template02 test line.");
 	Entity::print();
 
-	Vector3 v{1,1,1};
-	Matrix4x4 m{1,0,0,1,
-				0,1,0,0,
-				0,0,1,0,
-				0,0,0,1};
+	Vector<float,3> a(100.f);
 
-	auto a = m * v;
+	float c = a.Length();
 
 	std::cin.get();
 

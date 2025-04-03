@@ -16,8 +16,8 @@ MultiExtend::SpriteComponent::SpriteComponent(
 	int updateorder)
 	:MultiExtend::ActorComponent(tag, postion, scale, rotation, updateorder),
 	m_Texture(nullptr),
-	m_TextureRender_h((int)size.y),
-	m_TextureRender_w((int)size.x),
+	m_TextureRender_h((int)size[y]),
+	m_TextureRender_w((int)size[x]),
 	m_Renderer(renderer)
 {
 	if(texturefilepath)
@@ -37,8 +37,8 @@ MultiExtend::SpriteComponent::SpriteComponent(
 	int updateorder)
 	:MultiExtend::ActorComponent(tag, postion, scale, rotation, updateorder),
 	m_Texture(texture),
-	m_TextureRender_h((int)size.y),
-	m_TextureRender_w((int)size.x),
+	m_TextureRender_h((int)size[y]),
+	m_TextureRender_w((int)size[x]),
 	m_Renderer(renderer)
 {
 }
@@ -68,8 +68,8 @@ void MultiExtend::SpriteComponent::SetTexture(Texture* texture)
 
 MULTIEXTEND_API void MultiExtend::SpriteComponent::SetSize(Vector2 size)
 {
-	m_TextureRender_w = (int)size.x;
-	m_TextureRender_h = (int)size.y;
+	m_TextureRender_w = (int)size[x];
+	m_TextureRender_h = (int)size[y];
 }
 
 MULTIEXTEND_API Vector2 MultiExtend::SpriteComponent::GetSize()
@@ -89,14 +89,14 @@ void MultiExtend::SpriteComponent::Draw()
 		TextureRelocator renderSize;
 
 		// offset pivot to image center
-		renderSize.size.x = m_TextureRender_w * scaleResult.x;
-		renderSize.size.y = m_TextureRender_h * scaleResult.y;
-		renderSize.offset.x = posResult.x - renderSize.size.x / 2;
-		renderSize.offset.y = posResult.y - renderSize.size.y / 2;
+		renderSize.size[x] = m_TextureRender_w * scaleResult[x];
+		renderSize.size[y] = m_TextureRender_h * scaleResult[y];
+		renderSize.offset[x] = posResult[x] - renderSize.size[x] / 2;
+		renderSize.offset[y] = posResult[y] - renderSize.size[y] / 2;
 
 		MultiExtend::RenderTexture(m_Renderer, m_Texture,
 			nullptr, &renderSize,
-			GetRotationAbsolute().z);
+			GetRotationAbsolute()[z]);
 	}
 
 	ActorComponent::Draw();

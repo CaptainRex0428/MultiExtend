@@ -49,8 +49,8 @@ void MultiExtend::QueryTexture(Texture* texture, Vector2 * sourceSize, Uint32* f
 		int w,h;
 		SDL_QueryTexture(texture->GetTextureAs<SDL_Texture>(), format, access, &w, &h);
 
-		sourceSize->x = (float)w;
-		sourceSize->y = (float)h;
+		(*sourceSize)[x] = (float)w;
+		(*sourceSize)[y] = (float)h;
 	}
 }
 
@@ -68,23 +68,23 @@ void MultiExtend::RenderTexture(
 
 		if(srcLocator)
 		{
-			srcRect.w = (int)srcLocator->size.x;
-			srcRect.h = (int)srcLocator->size.y;
-			srcRect.x = (int)srcLocator->offset.x;
-			srcRect.y = (int)srcLocator->offset.y;
+			srcRect.w = (int)srcLocator->size[x];
+			srcRect.h = (int)srcLocator->size[y];
+			srcRect.x = (int)srcLocator->offset[x];
+			srcRect.y = (int)srcLocator->offset[y];
 		}
 
 		
-		dstRect.w = (int)dstLocator->size.x;
-		dstRect.h = (int)dstLocator->size.y;
-		dstRect.x = (int)dstLocator->offset.x;
-		dstRect.y = (int)dstLocator->offset.y;
+		dstRect.w = (int)dstLocator->size[x];
+		dstRect.h = (int)dstLocator->size[y];
+		dstRect.x = (int)dstLocator->offset[x];
+		dstRect.y = (int)dstLocator->offset[y];
 
 		SDL_Point center;
 		if(point)
 		{
-			center.x = (int)point->x;
-			center.y = (int)point->y;
+			center.x = (int)((*point)[x]);
+			center.y = (int)((*point)[y]);
 		}
 
 		SDL_RendererFlip textureFlip;

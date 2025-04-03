@@ -1,133 +1,544 @@
 #pragma once
 
-#include <iostream>
-
 #include "MultiExtendAPI.h"
+
+#include <cstdint>
+#include <cmath>
+#include <iostream>
+#include <array>
+#include <cassert>
+
+#include "Math/Math.h"
 
 namespace MultiExtend
 {
-	class Vector2;
-	class Vector3;
-	class Vector4;
-
-	class Vector2
+	enum VectorFilterDimension1D : uint8_t
 	{
-	public:
-		MULTIEXTEND_API Vector2();
-		MULTIEXTEND_API Vector2(float& num);
-
-		MULTIEXTEND_API Vector2(Vector2&& other) noexcept;
-		MULTIEXTEND_API Vector2(const Vector2& other);
-
-		MULTIEXTEND_API Vector2(std::initializer_list<float> InitializeList);
-
-		MULTIEXTEND_API ~Vector2();
-
-		MULTIEXTEND_API float length();
-		MULTIEXTEND_API Vector2 normalize();
-
-		MULTIEXTEND_API Vector2& operator=(Vector2&& other) noexcept;
-		MULTIEXTEND_API Vector2& operator=(const Vector2& other);
-
-		MULTIEXTEND_API Vector2 operator+(float& num);
-		MULTIEXTEND_API Vector2 operator+(Vector2& other);
-
-		MULTIEXTEND_API Vector2 operator-(float& num);
-		MULTIEXTEND_API Vector2 operator-(Vector2& other);
-
-		MULTIEXTEND_API Vector2 operator*(float& num);
-		MULTIEXTEND_API Vector2 operator*(Vector2&& other);
-		MULTIEXTEND_API Vector2 operator*(Vector2& other);
-		MULTIEXTEND_API Vector2 operator*(Vector3&& other);
-		MULTIEXTEND_API Vector2 operator*(Vector3& other);
-
-
-		MULTIEXTEND_API Vector2& operator+=(float& num);
-		MULTIEXTEND_API Vector2& operator+=(Vector2&& other);
-		MULTIEXTEND_API Vector2& operator+=(Vector2& other);
-
-		MULTIEXTEND_API Vector2& operator*=(float& other);
-		MULTIEXTEND_API Vector2& operator*=(Vector2&& other);
-		MULTIEXTEND_API Vector2& operator*=(Vector2& other);
-		MULTIEXTEND_API Vector2& operator*=(Vector3&& other);
-		MULTIEXTEND_API Vector2& operator*=(Vector3& other);
-
-	public:
-		float x, y;
-
+		x = 0, y, z, w,
+		r, g, b, a,
+		X, Y, Z, W,
+		R, G, B, A
 	};
 
-	class Vector3
+	enum VectorFilterDimension2D : uint8_t
 	{
-	public:
-		MULTIEXTEND_API Vector3();
-		MULTIEXTEND_API Vector3(float& num);
-
-		MULTIEXTEND_API Vector3(Vector3&& other) noexcept;
-		MULTIEXTEND_API Vector3(const Vector3& other);
-
-		MULTIEXTEND_API Vector3(Vector2&& other) noexcept;
-		MULTIEXTEND_API Vector3(const Vector2& other);
-
-		MULTIEXTEND_API Vector3(std::initializer_list<float> InitializeList);
-
-		MULTIEXTEND_API ~Vector3();
-
-		MULTIEXTEND_API float length();
-		MULTIEXTEND_API Vector3 normalize();
-
-		MULTIEXTEND_API Vector3& operator=(Vector3&& other) noexcept;
-		MULTIEXTEND_API Vector3& operator=(const Vector3& other);
-
-		MULTIEXTEND_API Vector3 operator*(Vector3& other);
-		MULTIEXTEND_API Vector3 operator*(float& num);
-
-		MULTIEXTEND_API Vector3& operator+=(float& num);
-		MULTIEXTEND_API Vector3& operator+=(Vector3&& other);
-		MULTIEXTEND_API Vector3& operator+=(Vector3& other);
-
-	public:
-		float x, y, z;
-
+		xy = 0, xz, yz, xw, yw, zw,
+		rg, rb, gb, ra, ga, ba,
+		XY, XZ, YZ, XW, YW, ZW,
+		RG, RB, GB, RA, GA, BA
 	};
 
-	class Vector4
+	enum VectorFilterDimension3D : uint8_t
+	{
+		xyz = 0, xyw, yzw,
+		rgb, rga, gba,
+		XYZ, XYW, YZW,
+		RGB, RGA, GBA
+	};
+
+	template<typename T, size_t dimension>
+	class Vector
 	{
 	public:
-		MULTIEXTEND_API Vector4();
-		MULTIEXTEND_API Vector4(float& num);
+		static_assert(dimension > 0, "vector dimension must be positive.");
 
-		MULTIEXTEND_API Vector4(Vector4&& other) noexcept;
-		MULTIEXTEND_API Vector4(const Vector4& other);
+		Vector()
+			:data({})
+		{
+		};
 
-		MULTIEXTEND_API Vector4(Vector2&& other) noexcept;
-		MULTIEXTEND_API Vector4(const Vector2& other);
-		MULTIEXTEND_API Vector4(const Vector2& otherA, const Vector2& otherB);
+		Vector(const T& num)
+		{
+			for (auto it = data.begin(); it != data.end(); ++it)
+			{
+				*it = num;
+			}
+		};
 
-		MULTIEXTEND_API Vector4(Vector3&& other, float w = 0) noexcept;
-		MULTIEXTEND_API Vector4(const Vector3& other, float w = 0);
+		Vector(std::initializer_list<T> InitializeList)
+		{
+			assert(InitializeList.size() == dimension && "[Vector] Invalid initializer list size");
 
-		MULTIEXTEND_API Vector4(std::initializer_list<float> InitializeList);
+			std::copy(InitializeList.begin(), InitializeList.end(), data.begin());
+		}
 
-		MULTIEXTEND_API ~Vector4();
+		T& operator[](size_t idx)
+		{
+			Math::limit_max(idx, dimension - 1);
+			return data[idx];
+		}
 
-		MULTIEXTEND_API float length(bool dimensionalityReduction = true);
-		MULTIEXTEND_API Vector4 normalize(bool dimensionalityReduction = true);
+		const T& operator[](size_t idx) const
+		{
+			Math::limit_max(idx, dimension - 1);
+			return data[idx];
+		}
 
-	public:
-		float x, y, z, w;
+		T& operator[](VectorFilterDimension1D d)
+		{
+			uint8_t idx = (uint8_t)d % 4;
+
+			assert(idx < dimension && "dimension index attached the vector border.");
+
+			return data[(size_t)idx];
+		}
+
+		const T& operator[](VectorFilterDimension1D d) const
+		{
+			uint8_t idx = (uint8_t)d % 4;
+
+			assert(idx < dimension && "dimension index attached the vector border.");
+
+			return data[(size_t)idx];
+		}
+
+		Vector<T, 2>& operator[](VectorFilterDimension2D d)
+		{
+			assert(dimension > 1 && "vector dimension doesn't support double swizzle.");
+
+			uint8_t idx = (uint8_t)d % 6;
+
+			if (idx < 1)
+			{
+				return Vector<T, 2>{data[0], data[1]};
+			}
+
+			if (idx < 3)
+			{
+				assert(dimension > 2 && "dimension index attached the vector border.");
+
+				if (idx == 1)
+				{
+					return Vector<T, 2>{data[0], data[2]};
+				}
+
+				if (idx == 2)
+				{
+					return Vector<T, 2>{data[1], data[2]};
+				}
+			}
+
+
+			assert(dimension > 3 && "dimension index attached the vector border.");
+
+			if (idx == 3)
+			{
+				return Vector<T, 2>{data[0], data[3]};
+			}
+
+			if (idx == 4)
+			{
+				return Vector<T, 2>{data[1], data[3]};
+			}
+
+			return Vector<T, 2>{data[2], data[3]};
+
+		}
+
+		const Vector<T, 2>& operator[](VectorFilterDimension2D d) const
+		{
+			assert(dimension > 1 && "vector dimension doesn't support double swizzle.");
+
+			uint8_t idx = (uint8_t)d % 6;
+
+			if (idx < 1)
+			{
+				return Vector<T, 2>{data[0], data[1]};
+			}
+
+			if (idx < 3)
+			{
+				assert(dimension > 2 && "dimension index attached the vector border.");
+
+				if (idx == 1)
+				{
+					return Vector<T, 2>{data[0], data[2]};
+				}
+
+				if (idx == 2)
+				{
+					return Vector<T, 2>{data[1], data[2]};
+				}
+			}
+
+			assert(dimension > 3 && "dimension index attached the vector border.");
+
+			if (idx == 3)
+			{
+				return Vector<T, 2>{data[0], data[3]};
+			}
+
+			if (idx == 4)
+			{
+				return Vector<T, 2>{data[1], data[3]};
+			}
+
+			return Vector<T, 2>{data[2], data[3]};
+
+		}
+
+		Vector<T, 3>& operator[](VectorFilterDimension3D d)
+		{
+			assert(dimension > 2 && "vector dimension doesn't support triple swizzle.");
+
+			uint8_t idx = (uint8_t)d % 3;
+
+			if (idx < 1)
+			{
+				return Vector<T, 3>{data[0], data[1], data[2]};
+			}
+
+			assert(dimension > 3 && "dimension index attached the vector border.");
+
+			if (idx == 1)
+			{
+				return Vector<T, 3>{data[0], data[1], data[3]};
+			}
+
+			return Vector<T, 3>{data[1], data[2], data[3]};
+		}
+
+		const Vector<T, 3>& operator[](VectorFilterDimension3D d) const
+		{
+			assert(dimension > 2 && "vector dimension doesn't support triple swizzle.");
+
+			uint8_t idx = (uint8_t)d % 3;
+
+			if (idx < 1)
+			{
+				return Vector<T, 3>{data[0], data[1], data[2]};
+			}
+
+			assert(dimension > 3 && "dimension index attached the vector border.");
+
+			if (idx == 1)
+			{
+				return Vector<T, 3>{data[0], data[1], data[3]};
+			}
+
+			return Vector<T, 3>{data[1], data[2], data[3]};
+		}
+
+		T Length(bool dimensionalityReduction = true) const
+		{
+			T sum = T(0);
+
+			for (size_t idx = 0; idx < dimension; ++idx)
+			{
+				if (dimensionalityReduction && idx > 2)
+				{
+					break;
+				}
+
+				sum += data[idx] * data[idx];
+			}
+
+			return std::sqrt(sum);
+		}
+
+		Vector<T, dimension> Normalize(bool dimensionalityReduction = true) const
+		{
+			T len = Length(dimensionalityReduction);
+
+			Vector<T, dimension> result;
+
+			for (size_t idx = 0; idx < dimension; ++idx)
+			{
+				if (dimensionalityReduction && idx > 2)
+				{
+					result[idx] = data[idx];
+					continue;
+				}
+
+				if (len == 0)
+				{
+					result[idx] == 0;
+					continue;
+				}
+
+				result[idx] = data[idx] / len;
+			}
+
+			return result;
+		}
+
+		static constexpr size_t Dimension() { return dimension; }
+
+		Vector<T, dimension>& operator=(const Vector<T, dimension>& other)
+		{
+			for (size_t idx = 0; idx < dimension; ++idx)
+			{
+				this->data[idx] = other[idx];
+			}
+
+			return *this;
+		}
+
+	private:
+		std::array<T, dimension> data;
 	};
 
 
-	MULTIEXTEND_API Vector3 Cross(const Vector2& vectorA, const Vector2& vectorB);
-	MULTIEXTEND_API Vector3 Cross(const Vector3& vectorA, const Vector3& vectorB);
 
-	MULTIEXTEND_API float Dot(const Vector2& vectorA, const Vector2& vectorB);
-	MULTIEXTEND_API float Dot(const Vector3& vectorA, const Vector3& vectorB);
-	MULTIEXTEND_API float Dot(const Vector4& vectorA, const Vector4& vectorB, bool dimensionalityReduction = true);
+	template<typename T, size_t dimension_var>
+	Vector<T, 3> Cross(const Vector<T, dimension_var>& vectorA, const Vector<T, dimension_var>& vectorB)
+	{
+		static_assert(dimension_var == 2 || dimension_var == 3, "Cross vector must be Vector2 or Vector3.");
+
+		if (dimension_var == 2)
+		{
+			return Vector<T, 3>{ 0, 0, vectorA[x] * vectorB[y] - vectorA[y] * vectorB[x] };
+		}
+
+		return Vector<T, 3>{ vectorA[y] * vectorB[z] - vectorA[z] * vectorB[y],
+							 vectorA[z] * vectorB[x] - vectorA[x] * vectorB[z],
+							 vectorA[x] * vectorB[y] - vectorA[y] * vectorB[x] };
+	}
+
+	template<typename T, size_t dimension_var>
+	T Dot(const Vector<T, dimension_var>& vectorA, const Vector<T, dimension_var>& vectorB, bool dimensionalityReduction = true)
+	{
+		T result = 0;
+
+		for (size_t idx = 0; idx < dimension_var; ++idx)
+		{
+			if (dimensionalityReduction && idx > 2)
+			{
+				break;
+			}
+
+			result += vectorA[idx] * vectorB[idx];
+		}
+
+		return result;
+	}
+
+	template<typename T, size_t D>
+	std::ostream& operator<<(std::ostream& out, const Vector<T, D>& vector)
+	{
+		out << "(";
+
+		for (size_t idx = 0; idx < D; ++idx)
+		{
+			out << vector[idx];
+
+			if (idx != D - 1)
+			{
+				out << ",";
+			}
+		}
+
+		out << ")";
+
+		return out;
+	}
+
+	template<typename T, size_t D>
+	Vector<T, D>& operator+=(Vector<T, D>& vector, T scalar)
+	{
+		for (size_t idx = 0; idx < D; ++idx)
+		{
+			vector[idx] += scalar;
+		}
+
+		return vector;
+	}
+
+	template<typename T, size_t D>
+	Vector<T, D>& operator+=(Vector<T, D>& vector, const Vector<T, D>& other)
+	{
+		for (size_t idx = 0; idx < D; ++idx)
+		{
+			vector[idx] += other[idx];
+		}
+
+		return vector;
+	}
+
+	template<typename T, size_t D>
+	Vector<T, D>& operator*=(Vector<T, D>& vector, T scalar)
+	{
+		for (size_t idx = 0; idx < D; ++idx)
+		{
+			vector[idx] *= scalar;
+		}
+
+		return vector;
+	}
+
+	template<typename T, size_t D>
+	Vector<T, D>& operator*=(Vector<T, D>& vector, const Vector<T, D>& other)
+	{
+		for (size_t idx = 0; idx < D; ++idx)
+		{
+			vector[idx] *= other[idx];
+		}
+
+		return vector;
+	}
+
+	template<typename T, size_t D>
+	Vector<T, D>& operator-=(Vector<T, D>& vector, T scalar)
+	{
+		for (size_t idx = 0; idx < D; ++idx)
+		{
+			vector[idx] -= scalar;
+		}
+
+		return vector;
+	}
+
+	template<typename T, size_t D>
+	Vector<T, D>& operator-=(Vector<T, D>& vector, const Vector<T, D>& other)
+	{
+		for (size_t idx = 0; idx < D; ++idx)
+		{
+			vector[idx] -= other[idx];
+		}
+
+		return vector;
+	}
+
+	template<typename T, size_t D>
+	Vector<T, D>& operator/=(Vector<T, D>& vector, T scalar)
+	{
+		for (size_t idx = 0; idx < D; ++idx)
+		{
+			vector[idx] /= scalar;
+		}
+
+		return vector;
+	}
+
+	template<typename T, size_t D>
+	Vector<T, D>& operator/=(Vector<T, D>& vector, const Vector<T, D>& other)
+	{
+		for (size_t idx = 0; idx < D; ++idx)
+		{
+			vector[idx] /= other[idx];
+		}
+
+		return vector;
+	}
+
+	template<typename T, size_t D>
+	Vector<T, D> operator*(const Vector<T, D>& vectorA, const Vector<T, D>& vectorB)
+	{
+		Vector<T, D> result;
+
+		for (size_t idx = 0; idx < D; ++idx)
+		{
+			result[idx] = vectorA[idx] * vectorB[idx];
+		}
+
+		return result;
+	}
+
+	template<typename T, size_t D>
+	Vector<T, D> operator*(const Vector<T, D>& vector, T scalar)
+	{
+		Vector<T, D> result;
+
+		for (size_t idx = 0; idx < D; ++idx)
+		{
+			result[idx] = scalar * vector[idx];
+		}
+
+		return result;
+	}
+
+	template<typename T, size_t D>
+	Vector<T, D> operator+(const Vector<T, D>& vectorA, const Vector<T, D>& vectorB)
+	{
+		Vector<T, D> result;
+
+		for (size_t idx = 0; idx < D; ++idx)
+		{
+			result[idx] = vectorA[idx] + vectorB[idx];
+		}
+
+		return result;
+	}
+
+	template<typename T, size_t D>
+	Vector<T, D> operator+(const Vector<T, D>& vector, T scalar)
+	{
+		Vector<T, D> result;
+
+		for (size_t idx = 0; idx < D; ++idx)
+		{
+			result[idx] = scalar + vector[idx];
+		}
+
+		return result;
+	}
+
+	template<typename T, size_t D>
+	Vector<T, D> operator-(const Vector<T, D>& vectorA, const Vector<T, D>& vectorB)
+	{
+		Vector<T, D> result;
+
+		for (size_t idx = 0; idx < D; ++idx)
+		{
+			result[idx] = vectorA[idx] - vectorB[idx];
+		}
+
+		return result;
+	}
+
+	template<typename T, size_t D>
+	Vector<T, D> operator-(const Vector<T, D>& vector, T scalar)
+	{
+		Vector<T, D> result;
+
+		for (size_t idx = 0; idx < D; ++idx)
+		{
+			result[idx] = vector[idx] - scalar;
+		}
+
+		return result;
+	}
+
+	template<typename T, size_t D>
+	Vector<T, D> operator/(const Vector<T, D>& vectorA, const Vector<T, D>& vectorB)
+	{
+		Vector<T, D> result;
+
+		for (size_t idx = 0; idx < D; ++idx)
+		{
+			result[idx] = vectorA[idx] / vectorB[idx];
+		}
+
+		return result;
+	}
+
+	template<typename T, size_t D>
+	Vector<T, D> operator/(const Vector<T, D>& vector, T scalar)
+	{
+		Vector<T, D> result;
+
+		for (size_t idx = 0; idx < D; ++idx)
+		{
+			result[idx] = vector[idx] / scalar;
+		}
+
+		return result;
+	}
+
+	typedef Vector<float, 2> Vector2;
+	typedef Vector<float, 3> Vector3;
+	typedef Vector<float, 4> Vector4;
+
+	namespace Math
+	{
+		MULTIEXTEND_API bool NearZero(const Vector2& src);
+		MULTIEXTEND_API bool NearZero(const Vector3& src);
+
+		MULTIEXTEND_API Vector2 DegreeToRadians(const Vector2& degree);
+		MULTIEXTEND_API Vector3 DegreeToRadians(const Vector3& degree);
+
+		MULTIEXTEND_API Vector2 RadiansToDegree(Vector2& radians);
+		MULTIEXTEND_API Vector3 RadiansToDegree(Vector3& radians);
+	}
 
 }
-
-MULTIEXTEND_API std::ostream& operator<<(std::ostream& out, const MultiExtend::Vector2& vector);
-MULTIEXTEND_API std::ostream& operator<<(std::ostream& out, const MultiExtend::Vector3& vector);
-MULTIEXTEND_API std::ostream& operator<<(std::ostream& out, const MultiExtend::Vector4& vector);

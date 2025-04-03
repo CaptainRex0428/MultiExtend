@@ -224,17 +224,17 @@ const MultiExtend::Vector3 MultiExtend::ActorComponent::GetPositionAbsolute()
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(GetActorComponentWorldPosition);
 
-	float p_x = m_position.x;
-	float p_y = m_position.y;
-	float p_z = m_position.z;
+	float p_x = m_position[x];
+	float p_y = m_position[y];
+	float p_z = m_position[z];
 
 	MultiExtend::ActorComponent* parent = GetParentActorComponent();
 
 	while (parent)
 	{
-		p_x += parent->GetPositionRelative().x;
-		p_y += parent->GetPositionRelative().y;
-		p_z += parent->GetPositionRelative().z;
+		p_x += parent->GetPositionRelative()[x];
+		p_y += parent->GetPositionRelative()[y];
+		p_z += parent->GetPositionRelative()[z];
 
 		parent = parent->GetParentActorComponent();
 	}
@@ -247,16 +247,16 @@ const MultiExtend::Vector3 MultiExtend::ActorComponent::GetScaleAbsolute()
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(GetActorComponentWorldScale);
 
-	float scalesize_x = m_scale.x;
-	float scalesize_y = m_scale.y;
-	float scalesize_z = m_scale.z;
+	float scalesize_x = m_scale[x];
+	float scalesize_y = m_scale[y];
+	float scalesize_z = m_scale[z];
 	ActorComponent* parent = GetParentActorComponent();
 
 	while (parent)
 	{
-		scalesize_x *= parent->GetScaleRelative().x;
-		scalesize_y *= parent->GetScaleRelative().y;
-		scalesize_z *= parent->GetScaleRelative().z;
+		scalesize_x *= parent->GetScaleRelative()[x];
+		scalesize_y *= parent->GetScaleRelative()[y];
+		scalesize_z *= parent->GetScaleRelative()[z];
 
 		parent = parent->GetParentActorComponent();
 	}
@@ -269,16 +269,16 @@ const MultiExtend::Vector3 MultiExtend::ActorComponent::GetRotationAbsolute()
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(GetActorComponentWorldRotation);
 
-	float r_x = m_rotation.x;
-	float r_y = m_rotation.y;
-	float r_z = m_rotation.z;
+	float r_x = m_rotation[x];
+	float r_y = m_rotation[y];
+	float r_z = m_rotation[z];
 	ActorComponent* parent = GetParentActorComponent();
 
 	while (parent)
 	{
-		r_x *= parent->GetRotationRelative().x;
-		r_y *= parent->GetRotationRelative().y;
-		r_z *= parent->GetRotationRelative().z;
+		r_x *= parent->GetRotationRelative()[x];
+		r_y *= parent->GetRotationRelative()[y];
+		r_z *= parent->GetRotationRelative()[z];
 
 		parent = parent->GetParentActorComponent();
 	}

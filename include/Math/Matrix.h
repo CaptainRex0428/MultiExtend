@@ -2,63 +2,63 @@
 
 #include "MultiExtendAPI.h"
 #include "Math/Math.h"
+#include "Math/Vector.h"
 
 namespace MultiExtend
 {
-	template <typename T, size_t Rows, size_t Cols>
+	template <typename T, size_t rows, size_t cols>
 	class Matrix
 	{
 		
 	public:
-		static_assert(Rows > 0 && Cols > 0, "Matrix row & column must be positive.");
+		static_assert(rows > 0 && cols > 0, "Matrix row & column must be positive.");
 
 		Matrix()
 			:data({}) 
 		{
 		}
 
-		
 		Matrix(std::initializer_list<T> InitializeList) 
 		{
-			assert(InitializeList.size() == Rows * Cols && "Invalid initializer list size");
+			assert(InitializeList.size() == rows * cols && "Invalid initializer list size");
 			std::copy(InitializeList.begin(), InitializeList.end(), data.begin());
 		}
 
 		// 访问元素（行主序）
-		T& operator()(size_t row, size_t col) 
+		T& operator[](size_t row, size_t col)
 		{
-			Math::limit_max(row,Rows-1);
-			Math::limit_max(col,Cols-1);
+			Math::limit_max(row,rows-1);
+			Math::limit_max(col,cols-1);
 
-			return data[row * Cols + col];
+			return data[row * cols + col];
 		}
 
-		const T& operator()(size_t row, size_t col) const 
+		const T& operator[](size_t row, size_t col) const
 		{
-			Math::limit_max(row, Rows-1);
-			Math::limit_max(col, Cols-1);
+			Math::limit_max(row, rows-1);
+			Math::limit_max(col, cols-1);
 
-			return data[row * Cols + col];
+			return data[row * cols + col];
 		}
 
 		T& operator[](size_t idx)
 		{
-			Math::limit_max(idx, Rows * Cols-1);
+			Math::limit_max(idx, rows * cols-1);
 			return data[idx];
 		}
 
 		const T& operator[](size_t idx) const
 		{
-			Math::limit_max(idx, Rows * Cols - 1);
+			Math::limit_max(idx, rows * cols - 1);
 			return data[idx];
 		}
 
 		// 获取矩阵维度
-		static constexpr size_t rows() { return Rows; }
-		static constexpr size_t cols() { return Cols; }
+		static constexpr size_t Rows() { return rows; }
+		static constexpr size_t Rols() { return cols; }
 
 	private:
-		std::array<T, Rows* Cols> data;
+		std::array<T, rows* cols> data;
 	};
 
 	typedef Matrix<float, 3, 3> Matrix3x3;
@@ -101,7 +101,8 @@ namespace MultiExtend
 	template<typename T, size_t R, size_t C>
 	Matrix<T, R, C> operator*(T scalar, const Matrix<T, R, C>& mat) {
 		Matrix<T, R, C> result;
-		for (size_t i = 0; i < R * C; ++i) {
+		for (size_t i = 0; i < R * C; ++i) 
+		{
 			result.data[i] = scalar * mat.data[i];
 		}
 		return result;
@@ -109,18 +110,16 @@ namespace MultiExtend
 
 	Matrix4x1 operator*(Matrix4x4& matrix, Vector3& vector) 
 	{
-
-		MultiExtend::Matrix4x1 vectorM{ vector.x,vector.y,vector.z,1 };
+		MultiExtend::Matrix4x1 vectorM{ vector[x],vector[y],vector[z],1 };
 		MultiExtend::Matrix4x1 result = matrix * vectorM;
 
 		return result;
-
-	};;
+	};
 
 	Matrix4x1 operator*(Matrix4x4& matrix, Vector4& vector)
 	{
 
-		MultiExtend::Matrix4x1 vectorM{ vector.x,vector.y,vector.z,vector.w };
+		MultiExtend::Matrix4x1 vectorM{ vector[x],vector[y],vector[z],vector[w] };
 		MultiExtend::Matrix4x1 result = matrix * vectorM;
 
 		return result;

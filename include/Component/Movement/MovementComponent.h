@@ -3,6 +3,7 @@
 #include "MultiExtendAPI.h"
 #include "Component/BasicComponent.h"
 #include "Math/Math.h"
+#include "Math/Vector.h"
 
 namespace MultiExtend
 {

@@ -150,26 +150,6 @@ bool MultiExtend::Math::NearZero(float&& src)
 	return NearZero(double(src));
 }
 
-bool MultiExtend::Math::NearZero(Vector2& src)
-{
-	return NearZero(std::move(Vector3(src)));
-}
-
-bool MultiExtend::Math::NearZero(Vector2&& src)
-{
-	return  NearZero(std::move(Vector3(src)));
-}
-
-bool MultiExtend::Math::NearZero(Vector3& src)
-{
-	return NearZero(std::move(src));
-}
-
-bool MultiExtend::Math::NearZero(Vector3&& src)
-{
-	return std::abs(src.length()) < 0.0001;
-}
-
 double MultiExtend::Math::ByteSizeTo(int bytesize, SystemSizeUnit unit)
 {
 	// return bytesize / pow(1024, unit);
@@ -252,14 +232,9 @@ double MultiExtend::Math::DegreeToRadians(double degree)
 	return degree * 2 * PI / 360;
 }
 
-MultiExtend::Vector2 MultiExtend::Math::DegreeToRadians(Vector2& degree)
+float MultiExtend::Math::DegreeToRadians(float degree)
 {
-	return Vector2{(float)DegreeToRadians(degree.x), (float)DegreeToRadians(degree.y)};
-}
-
-MultiExtend::Vector3 MultiExtend::Math::DegreeToRadians(Vector3& degree)
-{
-	return Vector3{(float)DegreeToRadians(degree.x), (float)DegreeToRadians(degree.y), (float)DegreeToRadians(degree.z)};
+	return (float)DegreeToRadians((double)degree);
 }
 
 double MultiExtend::Math::RadiansToDegree(double radians)
@@ -267,12 +242,7 @@ double MultiExtend::Math::RadiansToDegree(double radians)
 	return (radians * 360) / (2 * PI);
 }
 
-MultiExtend::Vector2 MultiExtend::Math::RadiansToDegree(Vector2& radians)
+float MultiExtend::Math::RadiansToDegree(float radians)
 {
-	return Vector2{(float)RadiansToDegree(radians.x), (float)RadiansToDegree(radians.y)};
-}
-
-MultiExtend::Vector3 MultiExtend::Math::RadiansToDegree(Vector3& radians)
-{
-	return Vector3{(float)RadiansToDegree(radians.x), (float)RadiansToDegree(radians.y), (float)RadiansToDegree(radians.z)};
+	return (float)RadiansToDegree((double)radians);
 }

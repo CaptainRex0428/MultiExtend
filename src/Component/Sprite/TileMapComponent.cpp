@@ -74,19 +74,19 @@ void MultiExtend::TileMapComponent::Draw()
 		TextureRelocator dstRenderSize;
 		TextureRelocator srcRenderSize;
 
-		srcRenderSize.size.x = m_srcSize.x;
-		srcRenderSize.size.y = m_srcSize.y;
-		srcRenderSize.offset.x = m_srcPosition.x;
-		srcRenderSize.offset.y = m_srcPosition.y;
+		srcRenderSize.size[x] = m_srcSize[x];
+		srcRenderSize.size[y] = m_srcSize[y];
+		srcRenderSize.offset[x] = m_srcPosition[x];
+		srcRenderSize.offset[y] = m_srcPosition[y];
 		
-		dstRenderSize.size.x = m_dstSize.x * scaleResult.x;
-		dstRenderSize.size.y = m_dstSize.y * scaleResult.y;
-		dstRenderSize.offset.x = posResult.x;
-		dstRenderSize.offset.y = posResult.y;
+		dstRenderSize.size[x] = m_dstSize[x] * scaleResult[x];
+		dstRenderSize.size[y] = m_dstSize[y] * scaleResult[y];
+		dstRenderSize.offset[x] = posResult[x];
+		dstRenderSize.offset[y] = posResult[y];
 
 		MultiExtend::RenderTexture(m_Renderer, m_Texture,
 			&srcRenderSize, &dstRenderSize,
-			GetRotationAbsolute().z);
+			GetRotationAbsolute()[z]);
 	}
 
 	ActorComponent::Draw();
