@@ -37,7 +37,7 @@ namespace MultiExtend
 			return data[idx];
 		}
 
-		T& operator[](size_t row, size_t col)
+		T& operator()(size_t row, size_t col)
 		{
 			Math::limit_max(row,rows-1);
 			Math::limit_max(col,cols-1);
@@ -45,7 +45,7 @@ namespace MultiExtend
 			return data[row * cols + col];
 		}
 
-		const T& operator[](size_t row, size_t col) const
+		const T& operator()(size_t row, size_t col) const
 		{
 			Math::limit_max(row, rows-1);
 			Math::limit_max(col, cols-1);
@@ -55,7 +55,7 @@ namespace MultiExtend
 
 		// 获取矩阵维度
 		static constexpr size_t Rows() { return rows; }
-		static constexpr size_t Rols() { return cols; }
+		static constexpr size_t Cols() { return cols; }
 
 	private:
 		std::array<T, rows* cols> data;
@@ -65,8 +65,6 @@ namespace MultiExtend
 	typedef Matrix<float, 4, 4> Matrix4x4;
 	typedef Matrix<float, 1, 4> Matrix1x4;
 	typedef Matrix<float, 4, 1> Matrix4x1;
-
-	
 
 	template<typename T, size_t R, size_t C>
 	Matrix<T, R, C> operator+(

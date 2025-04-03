@@ -1,6 +1,7 @@
 #include "Component/Movement/MovementComponent.h"
 
 #include "Actor/Actor.h"
+#include "Math/Matrix.h"
 
 MultiExtend::MovementComponent::MovementComponent(
 	Actor* Owner,
@@ -51,8 +52,11 @@ MultiExtend::Vector3 MultiExtend::MovementComponent::GetForwardDirectRelative() 
 	Vector3 rot = GetOwner()->GetRotationRelative();
 	Vector3 basicDirect {1,0,0};
 
+	Matrix4x4 rotationMatrix = MTXRotationZ(rot[z]) * MTXRotationY(rot[y]) * MTXRotationX(rot[x]);
+	
+	Matrix4x1 rotationRelativeResult = rotationMatrix * basicDirect;
 
-	return Vector3{0,0,1};
+	return Vector3{ rotationRelativeResult[0],rotationRelativeResult[1],rotationRelativeResult[2] };
 }
 
 void MultiExtend::MovementComponent::SetAngularSpeed(Vector3 speed)
