@@ -25,6 +25,18 @@ namespace MultiExtend
 		}
 
 		// 访问元素（行主序）
+		T& operator[](size_t idx)
+		{
+			Math::limit_max(idx, rows * cols - 1);
+			return data[idx];
+		}
+
+		const T& operator[](size_t idx) const
+		{
+			Math::limit_max(idx, rows * cols - 1);
+			return data[idx];
+		}
+
 		T& operator[](size_t row, size_t col)
 		{
 			Math::limit_max(row,rows-1);
@@ -39,18 +51,6 @@ namespace MultiExtend
 			Math::limit_max(col, cols-1);
 
 			return data[row * cols + col];
-		}
-
-		T& operator[](size_t idx)
-		{
-			Math::limit_max(idx, rows * cols-1);
-			return data[idx];
-		}
-
-		const T& operator[](size_t idx) const
-		{
-			Math::limit_max(idx, rows * cols - 1);
-			return data[idx];
 		}
 
 		// 获取矩阵维度
@@ -124,7 +124,7 @@ namespace MultiExtend
 
 		return result;
 
-	};;
+	};
 
 	// 单位矩阵
 	template<typename T, size_t N>

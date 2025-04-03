@@ -92,7 +92,7 @@ namespace MultiExtend
 			return data[(size_t)idx];
 		}
 
-		Vector<T, 2>& operator[](VectorFilterDimension2D d)
+		Vector<T, 2> operator[](VectorFilterDimension2D d)
 		{
 			assert(dimension > 1 && "vector dimension doesn't support double swizzle.");
 
@@ -135,7 +135,7 @@ namespace MultiExtend
 
 		}
 
-		const Vector<T, 2>& operator[](VectorFilterDimension2D d) const
+		const Vector<T, 2> operator[](VectorFilterDimension2D d) const
 		{
 			assert(dimension > 1 && "vector dimension doesn't support double swizzle.");
 
@@ -177,7 +177,7 @@ namespace MultiExtend
 
 		}
 
-		Vector<T, 3>& operator[](VectorFilterDimension3D d)
+		Vector<T, 3> operator[](VectorFilterDimension3D d)
 		{
 			assert(dimension > 2 && "vector dimension doesn't support triple swizzle.");
 
@@ -198,7 +198,7 @@ namespace MultiExtend
 			return Vector<T, 3>{data[1], data[2], data[3]};
 		}
 
-		const Vector<T, 3>& operator[](VectorFilterDimension3D d) const
+		const Vector<T, 3> operator[](VectorFilterDimension3D d) const
 		{
 			assert(dimension > 2 && "vector dimension doesn't support triple swizzle.");
 
@@ -252,7 +252,7 @@ namespace MultiExtend
 
 				if (len == 0)
 				{
-					result[idx] == 0;
+					result[idx] = 0;
 					continue;
 				}
 

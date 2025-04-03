@@ -1,13 +1,14 @@
 #include "MultiExtend.h"
 
 #include "Math/Vector.h"
+#include "Math/Matrix.h"
 
 class Entity
 {
 public:
 	Entity(Entity&) = delete;
 
-	static void Init(std::string _Path) 
+	static void Init(std::string _Path)
 	{
 		Get().m_fileA = new MULTIEXTEND_FILE(_Path);
 		Get().m_fileA->Open(true);
@@ -21,7 +22,7 @@ public:
 		}
 	};
 
-	static void print() 
+	static void print()
 	{
 		if (Get().m_fileA != nullptr)
 		{
@@ -30,9 +31,9 @@ public:
 	};
 
 private:
-	Entity():m_fileA(nullptr) {};
+	Entity() :m_fileA(nullptr) {};
 
-	virtual ~Entity() 
+	virtual ~Entity()
 	{
 		if (m_fileA != nullptr)
 		{
@@ -43,7 +44,7 @@ private:
 		}
 	};
 
-	static Entity& Get() 
+	static Entity& Get()
 	{
 		static Entity instance;
 		return instance;
@@ -57,17 +58,30 @@ int main(int argc, char** argv)
 {
 	MultiExtend::Message::Init();
 
-	MultiExtend::MsgLog("MsgLogTestCritical",MultiExtend::Critical);
-	MultiExtend::MsgLog("MsgLogTestWarning",MultiExtend::Warning);
-	
+	MultiExtend::MsgLog("MsgLogTestCritical", MultiExtend::Critical);
+	MultiExtend::MsgLog("MsgLogTestWarning", MultiExtend::Warning);
+
 	Entity::Init("./Template02/Template02");
 
 	Entity::write("Template02 test line.");
 	Entity::print();
 
-	Vector<float,3> a(100.f);
+	Vector3 vector(2);
 
-	float c = a.Length();
+	float len = vector.Length();
+	Vector3 NVector = vector.Normalize();
+
+	Vector3 scaleNVector = NVector * 5.f;
+
+	auto tMTX = MultiExtend::MTXTranslation(5.f,1.f,2.f);
+	auto tNVector = tMTX * scaleNVector;
+
+	std::cout << vector << std::endl;
+	std::cout << len << std::endl;
+	std::cout << NVector << std::endl;
+	std::cout << scaleNVector << std::endl;
+
+	std::cout << tNVector[0] << "," << tNVector[1] << "," << tNVector[2] << std::endl;
 
 	std::cin.get();
 
