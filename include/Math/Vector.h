@@ -40,6 +40,8 @@ namespace MultiExtend
 	class Vector
 	{
 	public:
+		static_assert(std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, long double>, "Member of vector must be float, double or long double.");
+
 		static_assert(dimension > 0, "vector dimension must be positive.");
 
 		Vector()
@@ -274,7 +276,7 @@ namespace MultiExtend
 			return *this;
 		}
 
-	private:
+	protected:
 		std::array<T, dimension> data;
 	};
 

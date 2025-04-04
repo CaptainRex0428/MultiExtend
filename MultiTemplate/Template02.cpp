@@ -2,6 +2,7 @@
 
 #include "Math/Vector.h"
 #include "Math/Matrix.h"
+#include "Math/Color.h"
 
 class Entity
 {
@@ -80,8 +81,11 @@ int main(int argc, char** argv)
 	std::cout << len << std::endl;
 	std::cout << NVector << std::endl;
 	std::cout << scaleNVector << std::endl;
-
+	
 	std::cout << tNVector[0] << "," << tNVector[1] << "," << tNVector[2] << std::endl;
+
+	Color<float> color((int)0, 0, 0);
+	std::cout << color.GetSaturation() << std::endl;
 
 	std::cin.get();
 
