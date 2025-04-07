@@ -235,7 +235,7 @@ public:
 
 			// 统计帧率
 			Uint32 frameCost = SDL_GetTicks() - frame_start;
-			MULTIEXTEND_MESSAGE_CLIENT_DEBUG("FPS:{0:.2f}", 1000.0f / frameCost);
+			// MULTIEXTEND_MESSAGE_CLIENT_DEBUG("FPS:{0:.2f}", 1000.0f / frameCost);
 		}
 	};
 

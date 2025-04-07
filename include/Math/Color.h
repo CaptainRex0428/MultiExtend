@@ -9,7 +9,7 @@
 
 namespace MultiExtend
 {
-	template<typename T>
+	template<typename T, size_t depth>
 	class Color : public Vector<T, 4>
 	{
 	public:
@@ -44,7 +44,7 @@ namespace MultiExtend
 
 		template<typename V>
 		Color(const V& r, const V& g, const V& b, const V& a = 255)
-			:Vector<T, 4>{ (T)r / 255, (T)g / 255, (T)b / 255, (T)a / 255 }
+			:Vector<T, 4>{ (T)r / ((1 << depth) -1), (T)g / ((1 << depth) - 1), (T)b / ((1 << depth) - 1), (T)a / ((1 << depth) - 1) }
 		{
 		};
 
@@ -55,12 +55,42 @@ namespace MultiExtend
 
 		T GetSaturation()
 		{
-			T max = Math::Max(this->data[0], this->data[1], this->data[2]);
+			T max = GetValue();
 			T min = Math::Min(this->data[0], this->data[1], this->data[2]);
 
-			if (max == 0) return 0;
+			if (max == 0) return 0;     
 
 			return ((max - min)/max);
+		}
+
+		T GetValue()
+		{
+			return Math::Max(this->data[0], this->data[1], this->data[2]);
+		}
+
+		T GetHue()
+		{
+			T max = GetValue();
+			T min = Math::Min(this->data[0], this->data[1], this->data[2]);
+
+			T hueResult;
+
+			if(max == this->data[0])
+			{
+				hueResult = 60 * (this->data[1] - this->data[2]) / (max - min);
+			}
+
+			if (max == this->data[1])
+			{
+				hueResult = 120 + 60 * (this->data[2] - this->data[0]) / (max - min);
+			}
+
+			if (max == this->data[2])
+			{
+				hueResult = 240 + 60 * (this->data[0] - this->data[1]) / (max - min);
+			}
+
+			return hueResult < 0 ? (hueResult + 360) : hueResult;
 		}
 	};
 

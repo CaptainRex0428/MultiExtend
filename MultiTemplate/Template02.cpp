@@ -84,7 +84,8 @@ int main(int argc, char** argv)
 	
 	std::cout << tNVector[0] << "," << tNVector[1] << "," << tNVector[2] << std::endl;
 
-	Color<float> color((int)0, 0, 0);
+	Color<float,8> color((int)0, 0, 0);
+
 	std::cout << color.GetSaturation() << std::endl;
 
 	std::cin.get();
