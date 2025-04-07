@@ -6,6 +6,7 @@
 #include "Math/Math.h"
 #include "Math/Color.h"
 #include "Config/Game.h"
+#include "Actor/Actor.h"
 #include "Component/Sprite/SpriteComponent.h"
 #include "Component/Sprite/AnimateSpriteComponent.h"
 #include "Component/Sprite/ScrollComponent.h"
@@ -71,7 +72,7 @@ public:
 		MultiExtend::SpriteComponent * spriteStatic = new MultiExtend::SpriteComponent(Get().m_GameStat, Get().m_renderer, "../assets/Ship01.png");
 		spriteStatic->SetSize(Vector2{64, 29});
 		spriteStatic->SetPositionRelative(Vector3{spriteStatic->GetSize()[x]/2, spriteStatic->GetSize()[y]/2,0});
-		spriteStaticActor->AddActorComponent(spriteStatic);
+		spriteStaticActor->AddChildActorComponent(spriteStatic);
 		
 		Actor* spriteAnimateActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
 		std::vector<const char *> textures = 
@@ -84,7 +85,7 @@ public:
 		MultiExtend::AnimateSpriteComponent* spriteAnimate = new MultiExtend::AnimateSpriteComponent(10,Get().m_GameStat, Get().m_renderer,textures);
 		spriteAnimate->SetSize(Vector2{64, 29});
 		spriteAnimate->SetPositionRelative(Vector3{spriteAnimate->GetSize()[x] / 2, spriteAnimate->GetSize()[y] / 2, 0});
-		spriteAnimateActor->AddActorComponent(spriteAnimate);
+		spriteAnimateActor->AddChildActorComponent(spriteAnimate);
 		spriteAnimateActor->SetPositionRelative(Vector3{spriteStatic->GetSize()[x],0,0});
 
 		Actor* spriteScrollActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
@@ -98,7 +99,7 @@ public:
 		scrollSprite->SetSourceSizeScale(Vector3{.2f, .2f, 1});
 		scrollSprite->SetScrollSpeed(80);
 		scrollSprite->SetOffset(300);
-		spriteScrollActor->AddActorComponent(scrollSprite);
+		spriteScrollActor->AddChildActorComponent(scrollSprite);
 		spriteScrollActor->SetPositionRelative(Vector3{spriteAnimateActor->GetPositionAbsolute()[x] + spriteAnimate->GetSize()[x], 0, 0});
 
 		Get().m_GameActor->AddChildActor(spriteStaticActor);
@@ -115,7 +116,7 @@ public:
 		starScrollSprite->SetSourceSizeScale(Vector3{.3f, .3f, 1});
 		starScrollSprite->SetScrollSpeed(40);
 		starScrollSprite->SetOffset(0);
-		starScrollActor->AddActorComponent(starScrollSprite);
+		starScrollActor->AddChildActorComponent(starScrollSprite);
 		starScrollActor->SetPositionRelative(Vector3{spriteAnimateActor->GetPositionAbsolute()[x] + spriteAnimate->GetSize()[x],0, 0});
 
 		Actor* tileMapActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
@@ -134,8 +135,8 @@ public:
 		tileMapB->SetDstSize(Vector2{32, 32});
 		tileMapB->SetPositionRelative(Vector3{33,0,0});
 
-		tileMapActor->AddActorComponent(tileMapA);
-		tileMapActor->AddActorComponent(tileMapB);
+		tileMapActor->AddChildActorComponent(tileMapA);
+		tileMapActor->AddChildActorComponent(tileMapB);
 		tileMapActor->SetPositionRelative(Vector3{starScrollActor->GetPositionAbsolute()[x] + starScrollSprite->GetRenderSize()[x], 0, 0});
 
 		std::vector<const char*> ActorStepTextures =
@@ -186,7 +187,7 @@ public:
 		PlayerBaseComp->SetTag("PlayerBaseComp");
 
 		Actor* PlayerBaseActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat, "PlayerBase");
-		PlayerBaseActor->AddActorComponent(PlayerBaseComp);
+		PlayerBaseActor->AddChildActorComponent(PlayerBaseComp);
 		PlayerBaseActor->SetPositionRelative(Vector3{PlayerBaseComp->GetSize()[x]/2, spriteStatic->GetSize()[y] + PlayerBaseComp->GetSize()[y] / 2,0});
 		
 
@@ -308,6 +309,8 @@ private:
 			m_isRunning = false;
 		}
 
+		m_GameActor->ProcessInput(state);
+
 		if (state[SDL_SCANCODE_SPACE])
 		{
 			// player base
@@ -315,7 +318,7 @@ private:
 
 			if(PlayerBase)
 			{	
-				MultiExtend::Component* BaseComp = PlayerBase->GetActorComponent("PlayerBaseComp");
+				MultiExtend::Component* BaseComp = PlayerBase->GetChildActorComponent("PlayerBaseComp");
 				MultiExtend::DynamicAnimateSpriteComponent* PlayerBaseComp = static_cast<MultiExtend::DynamicAnimateSpriteComponent*>(BaseComp);
 
 				if(PlayerBaseComp && PlayerBaseComp->bCanChangeCurrentUnit())
@@ -332,7 +335,7 @@ private:
 
 			if (PlayerBase)
 			{
-				MultiExtend::Component* BaseComp = PlayerBase->GetActorComponent("PlayerBaseComp");
+				MultiExtend::Component* BaseComp = PlayerBase->GetChildActorComponent("PlayerBaseComp");
 				MultiExtend::DynamicAnimateSpriteComponent* PlayerBaseComp = static_cast<MultiExtend::DynamicAnimateSpriteComponent*>(BaseComp);
 
 				if (PlayerBaseComp && PlayerBaseComp->bCanChangeCurrentUnit())

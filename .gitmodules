@@ -48,3 +48,7 @@
 [submodule "Dependencies/cryptopp"]
 	path = Dependencies/cryptopp
 	url = https://github.com/weidai11/cryptopp.git
+[submodule "Dependencies/FFmpeg"]
+	path = Dependencies/FFmpeg
+	url = https://github.com/FFmpeg/FFmpeg.git
+	branch = release/7.1

@@ -4,37 +4,28 @@
 
 MultiExtend::Component::Component(const char* name, int updateorder)
 	:Object(),
-	m_updateorder(updateorder),m_component_state(COMPONENT_Valid | COMPONENT_Display)
+	m_updateorder(updateorder),
+	m_State(State_VALID | State_UPDATE | State_DISPLAY | State_VALID)
 {
 	SetTag(name);
 }
 
 MultiExtend::Component::~Component()
 {
-	delete m_component_tag;
+	delete m_Tag;
 }
 
-int MultiExtend::Component::GetUpdateOrder() const
+const int& MultiExtend::Component::GetUpdateOrder() const
 {
 	return m_updateorder;
 }
 
-const char* MultiExtend::Component::GetTag()
+const char* MultiExtend::Component::GetTag() const
 {
-	return m_component_tag;
+	return m_Tag;
 }
 
-void MultiExtend::Component::SetComponentState(int state)
-{
-	m_component_state = state;
-}
-
-const int& MultiExtend::Component::GetComponentState()
-{
-	return m_component_state;
-}
-
-MULTIEXTEND_API void MultiExtend::Component::SetUpdateOrder(int order)
+void MultiExtend::Component::SetUpdateOrder(int order)
 {
 	m_updateorder = order;
 
@@ -44,6 +35,82 @@ MULTIEXTEND_API void MultiExtend::Component::SetUpdateOrder(int order)
 void MultiExtend::Component::SetTag(const char * tag)
 {
 	size_t len = std::strlen(tag);
-	m_component_tag = new char[len];
-	memcpy(m_component_tag, tag, len);
+	m_Tag = new char[len];
+	memcpy(m_Tag, tag, len);
+}
+
+int MultiExtend::Component::GetState() const
+{
+	return this->m_State;
+}
+
+bool MultiExtend::Component::GetState(StateTag tag) const
+{
+	switch (tag)
+	{
+
+	case MultiExtend::Tag_VALID:
+	{
+		return m_State & State_VALID;
+		break;
+	}
+
+	case MultiExtend::Tag_INPUT:
+	{
+		return m_State & State_INPUT;
+		break;
+	}
+
+	case MultiExtend::Tag_UPDATE:
+	{
+		return m_State & State_UPDATE;
+		break;
+	}
+
+	case MultiExtend::Tag_DISPLAY:
+	default:
+	{
+		return m_State & State_DISPLAY;
+		break;
+	}
+
+	}
+}
+
+void MultiExtend::Component::SetState(int state)
+{
+	this->m_State = state;
+}
+
+void MultiExtend::Component::ToggleState(StateTag tag)
+{
+	switch (tag)
+	{
+
+	case MultiExtend::Tag_VALID:
+	{
+		m_State ^= State_VALID;
+		break;
+	}
+
+	case MultiExtend::Tag_INPUT:
+	{
+		m_State ^= State_INPUT;
+		break;
+	}
+
+	case MultiExtend::Tag_UPDATE:
+	{
+		m_State ^= State_UPDATE;
+		break;
+	}
+
+	case MultiExtend::Tag_DISPLAY:
+	default:
+	{
+		m_State ^= State_DISPLAY;
+		break;
+	}
+
+	}
 }

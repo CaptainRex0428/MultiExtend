@@ -1,6 +1,11 @@
 #include "MultiExtend.h"
 
 #include "SDL.h"
+#include "SDL_image.h"
+#include "Renderer/Renderer.h"
+#include "Texture/Texture.h"
+
+
 
 namespace MultiExtend
 {
@@ -15,8 +20,6 @@ namespace MultiExtend
 
 		MultiExtend::Operator::Get().Init();
 		
-
-
 		if (inittag & InitFrameworkTag::SDL)
 		{
 			MULTIEXTEND_TIMER_TRACE_TAG(InitSDL);
@@ -51,11 +54,11 @@ namespace MultiExtend
 		return nullptr;
 	}
 	
-	TextureSDL* LoadTexture(GameStat* GameStat, SDL_Renderer* renderer, const char* filepath)
+	TextureSDL* LoadTexture(GameStat* gameStat, SDL_Renderer* renderer, const char* filepath)
 	{
 		MULTIEXTEND_TIMER_TRACE_TAG(LoadSDLTexture);
 
-		if (!GameStat) return nullptr;
+		if (!gameStat) return nullptr;
 
 		std::ifstream f(filepath);
 
@@ -85,7 +88,7 @@ namespace MultiExtend
 
 		TextureSDL* textureSDL = new TextureSDL(texture, filepath);
 
-		GameStat->AddTexture(textureSDL);
+		gameStat->AddTexture(textureSDL);
 
 		MULTIEXTEND_MESSAGE_CLIENT_TRACE("Loaded Texture:{0}",filepath);
 

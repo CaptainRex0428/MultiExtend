@@ -2,21 +2,15 @@
 
 #include <vector>
 
-#include "SDL.h"
-
-#include "Component/Component.h"
-#include "Actor/Actor.h"
-#include "Texture/Texture.h"
-#include "Renderer/Renderer.h"
-#include "Debug/Message/Message.h"
-#include "Debug/Message/MessageMicro.h"
-
 #include "GameStatConfig.h"
+#include "API/IUpdate.h"
 
 namespace MultiExtend
 {
+	class Actor;
+	class Texture;
 
-	class GameStat : public Object
+	class GameStat : public Object, public IUpdate
 	{
 	public:
 		MULTIEXTEND_API GameStat();
@@ -29,7 +23,8 @@ namespace MultiExtend
 		MULTIEXTEND_API void RemoveTexture(Texture* texture);
 
 
-		MULTIEXTEND_API void Update(float delta);
+		MULTIEXTEND_API void Update(float delta) override;
+		MULTIEXTEND_API virtual void CustomUpdate(float delta) override;
 		
 		// MULTIEXTEND_API void Draw();
 

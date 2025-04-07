@@ -1,22 +1,19 @@
 #pragma once
 
-#include <vector>
-
 #include "MultiExtendAPI.h"
 
+#include "ComponentConfig.h"
 #include "Object/Object.h"
 
-#include "ComponentConfig.h"
+#include <vector>
+#include "API/IBasic.h"
+#include "API/IInput.h"
+#include "API/IUpdate.h"
+#include "API/IDraw.h"
 
 namespace MultiExtend
 {
-	enum ComponentState 
-	{
-		COMPONENT_Valid = 0b00000001,
-		COMPONENT_Display = 0b00000010
-	};
-
-	class Component : public Object
+	class Component : public Object, public IBasic, public IInput, public IUpdate, public IDraw
 	{
 	public:
 		MULTIEXTEND_API Component(
@@ -25,25 +22,31 @@ namespace MultiExtend
 
 		MULTIEXTEND_API virtual ~Component();
 
-		MULTIEXTEND_API virtual void Update(float delta) = 0;
-		MULTIEXTEND_API virtual void Draw() = 0;
+		MULTIEXTEND_API virtual void ProcessInput(const uint8_t* keyState) override = 0;
+		MULTIEXTEND_API virtual void CustomInput(const uint8_t* keyState) override = 0;
 
-		MULTIEXTEND_API int GetUpdateOrder() const;
-		MULTIEXTEND_API const char* GetTag();
-		MULTIEXTEND_API const int& GetComponentState();
+		MULTIEXTEND_API void Update(float delta) = 0;
+		MULTIEXTEND_API virtual void CustomUpdate(float delta) = 0;
 
-		MULTIEXTEND_API virtual void SetUpdateOrder(int order);
+		MULTIEXTEND_API void Draw() = 0;
+		MULTIEXTEND_API virtual void CustomDraw() = 0;
 
-		MULTIEXTEND_API void SetComponentState(int state);
+		MULTIEXTEND_API const char* GetTag() const override;
+		MULTIEXTEND_API virtual void SetTag(const char* type) override;
+		MULTIEXTEND_API const int& GetUpdateOrder() const override;
+		MULTIEXTEND_API virtual void SetUpdateOrder(int order) override;
 
-	// protected:
-		MULTIEXTEND_API virtual void SetTag(const char * type);
+		MULTIEXTEND_API virtual int  GetState() const override;
+		MULTIEXTEND_API virtual bool GetState(StateTag tag) const override;
+		MULTIEXTEND_API virtual void SetState(int state) override;
+		MULTIEXTEND_API virtual void ToggleState(StateTag tag) override;
 
+		
 	protected:
 		int m_updateorder;
 
 	private:
-		char* m_component_tag;
-		int m_component_state;
+		char* m_Tag;
+		int m_State;
 	};
 }

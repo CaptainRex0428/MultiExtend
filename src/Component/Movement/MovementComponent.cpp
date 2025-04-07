@@ -4,7 +4,7 @@
 #include "Math/Matrix.h"
 
 MultiExtend::MovementComponent::MovementComponent(
-	Actor* Owner,
+	IComponentOwner* Owner,
 	const char* tag,
 	int updateorder)
 	:BasicComponent(Owner, tag, updateorder), 
@@ -16,9 +16,10 @@ MultiExtend::MovementComponent::~MovementComponent()
 {
 }
 
-void MultiExtend::MovementComponent::Update(float deltaTime)
-{
-	if(!Math::NearZero(m_AngularSpeed))
+void MultiExtend::MovementComponent::CustomUpdate(float deltaTime)
+{	
+	
+	if (!Math::NearZero(m_AngularSpeed))
 	{
 		Vector3 rot = GetOwner()->GetRotationRelative();
 
@@ -30,11 +31,13 @@ void MultiExtend::MovementComponent::Update(float deltaTime)
 	if (!Math::NearZero(m_ForwardSpeed))
 	{
 		Vector3 pos = GetOwner()->GetPositionRelative();
-		
+
 		pos += GetForwardDirectRelative() * m_ForwardSpeed * deltaTime;
 
 		GetOwner()->SetPositionRelative(pos);
 	}
+	
+	
 }
 
 MultiExtend::Vector3 MultiExtend::MovementComponent::GetAngularSpeed() const

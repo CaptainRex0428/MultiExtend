@@ -1,6 +1,8 @@
 #pragma once
 
 #include "MultiExtendAPI.h"
+#include "MovementComponentConfig.h"
+
 #include "Component/BasicComponent.h"
 #include "Math/Math.h"
 #include "Math/Vector.h"
@@ -11,13 +13,15 @@ namespace MultiExtend
 	{
 	public:
 		MULTIEXTEND_API MovementComponent(
-			Actor* Owner = nullptr,
-			const char* tag = DEFAULT_BASICCOMPONENTNAME,
-			int updateorder = DEFAULT_UPDATEORDER);
+			IComponentOwner* Owner = nullptr,
+			const char* tag = DEFAULT_MOVEMENTCOMPONENTNAME,
+			int updateorder = DEFAULT_MOVEMENTCOMPONENTUPDATEORDER);
 
 		MULTIEXTEND_API virtual ~MovementComponent();
 
-		MULTIEXTEND_API void Update(float deltaTime) override; 
+		MULTIEXTEND_API virtual void CustomInput(const uint8_t* keyState) override {};
+		MULTIEXTEND_API virtual void CustomUpdate(float delta) override;
+		MULTIEXTEND_API virtual void CustomDraw() override {};
 
 		Vector3 GetAngularSpeed() const;
 		float GetForwardSpeed() const;

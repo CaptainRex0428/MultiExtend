@@ -3,6 +3,17 @@
 #include "MultiExtend.h"
 #include "Object/GameStat.h"
 
+
+#include "SDL.h"
+
+#include "Actor/Actor.h"
+#include "Texture/Texture.h"
+#include "Component/Component.h"
+#include "Renderer/Renderer.h"
+#include "Debug/Message/Message.h"
+#include "Debug/Message/MessageMicro.h"
+
+
 MultiExtend::GameStat::GameStat()
 	:Object()
 {
@@ -50,8 +61,10 @@ void MultiExtend::GameStat::Update(float delta)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(UpdateGameStat);
 
-	/*for (auto actor : Get()->m_actors)
-	{
-		actor->Update(delta);
-	}*/
+	CustomUpdate(delta);
+}
+
+void MultiExtend::GameStat::CustomUpdate(float delta)
+{
+	
 }

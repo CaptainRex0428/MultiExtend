@@ -1,9 +1,5 @@
 #pragma once
 
-//------------------ Dependencies -----------------
-#include "SDL.h"
-#include "SDL_image.h"
-
 //------------------ Base tool ---------------
 #include "System/File/File.h"
 #include "System/Directory/Directory.h"
@@ -17,10 +13,6 @@
 #include "Debug/Message/Message.h"
 #include "Debug/Trace/Trace.h"
 #include "Debug/Log/Log.h"
-
-#include "Object/GameStat.h"
-#include "Texture/Texture.h"
-#include "Renderer/Renderer.h"
 
 #include "MultiExtendDebug.h"
 
@@ -38,8 +30,18 @@
 #include "Debug/Trace/TraceMicro.h"
 //---------------------------------------------
 
+#include "Object/Object.h"
+#include "Object/GameStat.h"
+
+struct SDL_Renderer;
+
 namespace MultiExtend
 {
+	class TextureSDL;
+	class Renderer;
+	class GameStat;
+	class Component;
+
 	enum InitFrameworkTag: int
 	{
 		SDL = 0b00000001,
@@ -48,8 +50,6 @@ namespace MultiExtend
 	};
 
 	MULTIEXTEND_API int Init(int inttag = ALL);
-
-	
 
 	template <typename T, typename... Args>
 	inline T* CreateActor(GameStat * GameStat,Args&&... args)
@@ -104,6 +104,12 @@ namespace MultiExtend
 	MULTIEXTEND_API void ClearRenderer(Renderer * renderer);
 
 	MULTIEXTEND_API void RenderPresent(Renderer* renderer);
+
+	template <typename T, typename Interface>
+	bool HasInterfaceImpl(const T* obj) 
+	{
+		return dynamic_cast<const Interface*>(obj) != nullptr;
+	}
 }
 
 using namespace MultiExtend;

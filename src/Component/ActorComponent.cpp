@@ -1,6 +1,6 @@
 #include "Component/ActorComponent.h"
-
 #include "MultiExtend.h"
+#include "Math/Vector.h"
 
 MultiExtend::ActorComponent::ActorComponent(
 	const char* tag,
@@ -19,7 +19,7 @@ MultiExtend::ActorComponent::ActorComponent(
 
 MultiExtend::ActorComponent::~ActorComponent()
 {
-	for (auto actor_component : m_child_actor_components)
+	for (auto actor_component : m_ChildActorComponents)
 	{
 		actor_component->ClearParentActorComponent();
 	}
@@ -32,20 +32,20 @@ void MultiExtend::ActorComponent::UpdateComponents(float delta)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(UpdateComponents);
 
-	for (auto component : m_components)
+	for (auto component : m_Components)
 	{
 		component->Update(delta);
 	}
 }
 
-void MultiExtend::ActorComponent::AddComponent(MultiExtend::Component* component)
+void MultiExtend::ActorComponent::AddComponent(MultiExtend::BasicComponent* component)
 {
-	if (std::find(m_components.begin(), m_components.end(),
-		component) == m_components.end())
+	if (std::find(m_Components.begin(), m_Components.end(),
+		component) == m_Components.end())
 	{
 		int order = component->GetUpdateOrder();
-		auto iter = m_components.begin();
-		for (; iter != m_components.end(); ++iter)
+		auto iter = m_Components.begin();
+		for (; iter != m_Components.end(); ++iter)
 		{
 			if (order < (*iter)->GetUpdateOrder())
 			{
@@ -53,25 +53,28 @@ void MultiExtend::ActorComponent::AddComponent(MultiExtend::Component* component
 			}
 		}
 
-		m_components.insert(iter, component);
+		m_Components.insert(iter, component);
+
+		component->SetOwner(this);
 	}
 }
 
-void MultiExtend::ActorComponent::RemoveComponent(MultiExtend::Component* component)
+void MultiExtend::ActorComponent::RemoveComponent(MultiExtend::BasicComponent* component)
 {
-	auto it = std::remove_if(m_components.begin(), m_components.end(),
+	auto it = std::remove_if(m_Components.begin(), m_Components.end(),
 		[component](Component* comp) -> bool {return *component->GetTag() == *comp->GetTag(); });
-	m_components.erase(it);
+	m_Components.erase(it);
+	(*it)->SetOwner(nullptr);
 }
 
-const std::vector<MultiExtend::Component*>& MultiExtend::ActorComponent::GetComponents()
+const std::vector<MultiExtend::BasicComponent*>& MultiExtend::ActorComponent::GetComponents() const
 {
-	return m_components;
+	return m_Components;
 }
 
-MultiExtend::Component* MultiExtend::ActorComponent::GetComponent(const char* component_tag)
+MultiExtend::BasicComponent* MultiExtend::ActorComponent::GetComponent(const char* component_tag) const
 {
-	for (auto component : m_components)
+	for (auto component : m_Components)
 	{
 		if (*component->GetTag() == *component_tag)
 		{
@@ -86,7 +89,7 @@ void MultiExtend::ActorComponent::UpdateChildActorComponents(float delta)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(UpdateChildActorComponents);
 
-	for (auto child : m_child_actor_components)
+	for (auto child : m_ChildActorComponents)
 	{
 		child->Update(delta);
 	}
@@ -94,22 +97,22 @@ void MultiExtend::ActorComponent::UpdateChildActorComponents(float delta)
 
 void MultiExtend::ActorComponent::AddChildActorComponent(MultiExtend::ActorComponent* child)
 {
-	if (std::find(m_child_actor_components.begin(),
-		m_child_actor_components.end(),
-		child) == m_child_actor_components.end())
+	if (std::find(m_ChildActorComponents.begin(),
+		m_ChildActorComponents.end(),
+		child) == m_ChildActorComponents.end())
 	{
-		int order = child->GetUpdateOrder();
-		auto iter = m_child_actor_components.begin();
+		int order = child->Component::GetUpdateOrder();
+		auto iter = m_ChildActorComponents.begin();
 
-		for (; iter != m_child_actor_components.end(); ++iter)
+		for (; iter != m_ChildActorComponents.end(); ++iter)
 		{
-			if (order < (*iter)->GetUpdateOrder())
+			if (order < (*iter)->Component::GetUpdateOrder())
 			{
 				break;
 			}
 		}
 
-		m_child_actor_components.insert(iter, child);
+		m_ChildActorComponents.insert(iter, child);
 		child->SetParentActorComponent(this);
 
 		
@@ -123,24 +126,22 @@ void MultiExtend::ActorComponent::SetParentActorComponent(ActorComponent* parent
 
 void MultiExtend::ActorComponent::RemoveChildActorComponent(ActorComponent* child)
 {
-	auto it = std::remove_if(m_child_actor_components.begin(),
-		m_child_actor_components.end(),
-		[child](ActorComponent* ch) -> bool { return *child->GetTag() == *ch->GetTag(); });
-	m_child_actor_components.erase(it);
+	auto it = std::remove_if(m_ChildActorComponents.begin(),
+		m_ChildActorComponents.end(),
+		[child](ActorComponent* ch) -> bool { return *child->Component::GetTag() == *ch->Component::GetTag(); });
+	m_ChildActorComponents.erase(it);
 }
 
-const std::vector<MultiExtend::ActorComponent*>& MultiExtend::ActorComponent::GetChildActorComponents()
+const std::vector<MultiExtend::ActorComponent*>& MultiExtend::ActorComponent::GetChildActorComponents() const
 {
-	return m_child_actor_components;
+	return m_ChildActorComponents;
 }
 
-MultiExtend::ActorComponent* MultiExtend::ActorComponent::GetChildActorComponent(const char* component_tag)
+MultiExtend::ActorComponent* MultiExtend::ActorComponent::GetChildActorComponent(const char* component_tag) const
 {
-	MULTIEXTEND_TIMER_TRACE_TAG(GetChildActorComponent);
-
-	for (auto child : m_child_actor_components)
+	for (auto child : m_ChildActorComponents)
 	{
-		if (*child->GetTag() == *component_tag)
+		if (*child->Component::GetTag() == *component_tag)
 		{
 			return child;
 		}
@@ -149,13 +150,23 @@ MultiExtend::ActorComponent* MultiExtend::ActorComponent::GetChildActorComponent
 	return nullptr;
 }
 
+ActorComponent* MultiExtend::ActorComponent::GetChildActorComponent(int component_idx) const
+{
+	if (component_idx > m_ChildActorComponents.size()-1 || component_idx < 0)
+	{
+		return nullptr;
+	}
+
+	return m_ChildActorComponents[component_idx];
+}
+
 void MultiExtend::ActorComponent::AttachParentActorComponent(MultiExtend::ActorComponent* parent)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(AttachParentActorComponent);
 
-	if (std::find(m_child_actor_components.begin(),
-		m_child_actor_components.end(),
-		parent) == m_child_actor_components.end())
+	if (std::find(m_ChildActorComponents.begin(),
+		m_ChildActorComponents.end(),
+		parent) == m_ChildActorComponents.end())
 	{
 		if (m_parent_component != parent)
 		{
@@ -185,22 +196,22 @@ void MultiExtend::ActorComponent::DettachParentActorComponent()
 	}
 }
 
-MultiExtend::ActorComponent* MultiExtend::ActorComponent::GetParentActorComponent()
+MultiExtend::ActorComponent* MultiExtend::ActorComponent::GetParentActorComponent() const
 {
 	return m_parent_component;
 }
 
-const MultiExtend::Vector3& MultiExtend::ActorComponent::GetPositionRelative()
+const MultiExtend::Vector3& MultiExtend::ActorComponent::GetPositionRelative() const
 {
 	return m_position;
 }
 
-const MultiExtend::Vector3& MultiExtend::ActorComponent::GetScaleRelative()
+const MultiExtend::Vector3& MultiExtend::ActorComponent::GetScaleRelative() const
 {
 	return m_scale;
 }
 
-const MultiExtend::Vector3& MultiExtend::ActorComponent::GetRotationRelative()
+const MultiExtend::Vector3& MultiExtend::ActorComponent::GetRotationRelative() const
 {
 	return m_rotation;
 }
@@ -220,7 +231,7 @@ void MultiExtend::ActorComponent::SetRotationRelative(Vector3 rotation)
 	m_rotation = rotation;
 }
 
-const MultiExtend::Vector3 MultiExtend::ActorComponent::GetPositionAbsolute()
+const MultiExtend::Vector3 MultiExtend::ActorComponent::GetPositionAbsolute() const
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(GetActorComponentWorldPosition);
 
@@ -243,7 +254,7 @@ const MultiExtend::Vector3 MultiExtend::ActorComponent::GetPositionAbsolute()
 
 }
 
-const MultiExtend::Vector3 MultiExtend::ActorComponent::GetScaleAbsolute()
+const MultiExtend::Vector3 MultiExtend::ActorComponent::GetScaleAbsolute() const
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(GetActorComponentWorldScale);
 
@@ -265,7 +276,7 @@ const MultiExtend::Vector3 MultiExtend::ActorComponent::GetScaleAbsolute()
 
 }
 
-const MultiExtend::Vector3 MultiExtend::ActorComponent::GetRotationAbsolute()
+const MultiExtend::Vector3 MultiExtend::ActorComponent::GetRotationAbsolute() const
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(GetActorComponentWorldRotation);
 
@@ -296,7 +307,7 @@ MULTIEXTEND_API void MultiExtend::ActorComponent::SetUpdateOrder(int order)
 
 bool MultiExtend::ActorComponent::operator==(ActorComponent* other)
 {
-	return this->GetTag() == other->GetTag();;
+	return this->Component::GetTag() == other->Component::GetTag();
 }
 
 void MultiExtend::ActorComponent::ClearParentActorComponent()
@@ -314,34 +325,65 @@ void MultiExtend::ActorComponent::Update(float delta)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(UpdateActorComponent);
 
-	// update self
-
-	for (auto child : m_child_actor_components)
+	if(GetState(Tag_UPDATE))
 	{
-		child->Update(delta);
-	}
+		CustomUpdate(delta);
 
-	for (auto component : m_components)
-	{
-		component->Update(delta);
+		UpdateChildActorComponents(delta);
+		UpdateComponents(delta);		
 	}
 
 	return;
 }
 
+void MultiExtend::ActorComponent::CustomUpdate(float delta)
+{
+	
+}
+
 void MultiExtend::ActorComponent::Draw()
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(DrawActorComponent);
-
-	// draw self
-
-	for (auto component : m_components)
+	if (GetState(Tag_DISPLAY))
 	{
-		component->Draw();
-	}
+		CustomDraw();
 
-	for (auto child : m_child_actor_components)
-	{
-		child->Draw();
+		for (auto component : m_Components)
+		{
+			component->Draw();
+		}
+
+		for (auto child : m_ChildActorComponents)
+		{
+			child->Draw();
+		}
 	}
+	
+}
+
+void MultiExtend::ActorComponent::CustomDraw()
+{
+	
+}
+
+void MultiExtend::ActorComponent::ProcessInput(const uint8_t* keyState)
+{
+	if (GetState(Tag_DISPLAY))
+	{
+		for (auto ac : m_ChildActorComponents)
+		{
+			ac->ProcessInput(keyState);
+		}
+
+		for (auto comp : m_Components)
+		{
+			comp->ProcessInput(keyState);
+		}
+
+		CustomInput(keyState);
+	}
+}
+
+void MultiExtend::ActorComponent::CustomInput(const uint8_t* keyState)
+{
 }

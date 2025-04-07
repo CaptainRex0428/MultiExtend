@@ -1,14 +1,16 @@
 #pragma once
 
-#include "Component.h"
-
+#include "MultiExtendAPI.h"
 #include "ActorComponentConfig.h"
 
-#include "Math/Vector.h"
+#include "API/IActorComponentOwner.h"
+
+#include "Component.h"
+#include "BasicComponent.h"
 
 namespace MultiExtend
 {
-	class ActorComponent : public Component
+	class ActorComponent : public Component, public IActorComponentOwner
 	{
 	public:
 		MULTIEXTEND_API ActorComponent(
@@ -19,39 +21,45 @@ namespace MultiExtend
 			int updateorder = DEFAULT_UPDATEORDER);
 		MULTIEXTEND_API virtual ~ActorComponent();
 
-		MULTIEXTEND_API virtual void Update(float delta) override;
+		MULTIEXTEND_API void ProcessInput(const uint8_t* keyState) override;
+		MULTIEXTEND_API virtual void CustomInput(const uint8_t* keyState) override;
 
-		MULTIEXTEND_API virtual void Draw() override;
+		MULTIEXTEND_API void Update(float delta) override;
+		MULTIEXTEND_API virtual void CustomUpdate(float delta) override;
 
-		MULTIEXTEND_API void UpdateComponents(float delta);
-		MULTIEXTEND_API void AddComponent(Component* component);
-		MULTIEXTEND_API void RemoveComponent(Component* component);
-		MULTIEXTEND_API const std::vector<Component*>& GetComponents();
-		MULTIEXTEND_API Component* GetComponent(const char* component_tag);
+		MULTIEXTEND_API void Draw() override;
+		MULTIEXTEND_API virtual void CustomDraw() override;
 
-		MULTIEXTEND_API void UpdateChildActorComponents(float delta);
-		MULTIEXTEND_API void AddChildActorComponent(ActorComponent* child);
-		MULTIEXTEND_API void RemoveChildActorComponent(ActorComponent* child);
-		MULTIEXTEND_API const std::vector<ActorComponent*>& GetChildActorComponents();
-		MULTIEXTEND_API ActorComponent* GetChildActorComponent(const char* component_tag);
+		MULTIEXTEND_API void UpdateComponents(float delta) override;
+		MULTIEXTEND_API void AddComponent(BasicComponent* component) override;
+		MULTIEXTEND_API void RemoveComponent(BasicComponent* component) override;
+		MULTIEXTEND_API const std::vector<BasicComponent*>& GetComponents() const override;
+		MULTIEXTEND_API BasicComponent* GetComponent(const char* component_tag) const override;
+
+		MULTIEXTEND_API void UpdateChildActorComponents(float delta) override;
+		MULTIEXTEND_API void AddChildActorComponent(ActorComponent* child) override;
+		MULTIEXTEND_API void RemoveChildActorComponent(ActorComponent* child) override;
+		MULTIEXTEND_API const std::vector<ActorComponent*>& GetChildActorComponents() const override;
+		MULTIEXTEND_API ActorComponent* GetChildActorComponent(const char* component_tag) const override;
+		MULTIEXTEND_API virtual ActorComponent* GetChildActorComponent(int component_idx) const override;
+
+		MULTIEXTEND_API const Vector3& GetPositionRelative() const override;
+		MULTIEXTEND_API const Vector3& GetScaleRelative() const override;
+		MULTIEXTEND_API const Vector3& GetRotationRelative() const override;
+
+		MULTIEXTEND_API void SetPositionRelative(Vector3 pos) override;
+		MULTIEXTEND_API void SetScaleRelative(Vector3 scale) override;
+		MULTIEXTEND_API void SetRotationRelative(Vector3 rotation) override;
+
+		MULTIEXTEND_API const Vector3 GetPositionAbsolute() const override;
+		MULTIEXTEND_API const Vector3 GetScaleAbsolute() const override;
+		MULTIEXTEND_API const Vector3 GetRotationAbsolute() const override;
+
+		MULTIEXTEND_API virtual void SetUpdateOrder(int order) override;
 
 		MULTIEXTEND_API void AttachParentActorComponent(ActorComponent* parent);
 		MULTIEXTEND_API void DettachParentActorComponent();
-		MULTIEXTEND_API ActorComponent* GetParentActorComponent();
-
-		MULTIEXTEND_API const Vector3& GetPositionRelative();
-		MULTIEXTEND_API const Vector3& GetScaleRelative();
-		MULTIEXTEND_API const Vector3& GetRotationRelative();
-
-		MULTIEXTEND_API void SetPositionRelative(Vector3 pos);
-		MULTIEXTEND_API void SetScaleRelative(Vector3 scale);
-		MULTIEXTEND_API void SetRotationRelative(Vector3 rotation);
-
-		MULTIEXTEND_API const Vector3 GetPositionAbsolute();
-		MULTIEXTEND_API const Vector3 GetScaleAbsolute();
-		MULTIEXTEND_API const Vector3 GetRotationAbsolute();
-
-		MULTIEXTEND_API virtual void SetUpdateOrder(int order) override;
+		MULTIEXTEND_API ActorComponent* GetParentActorComponent() const;
 
 		MULTIEXTEND_API bool operator==(ActorComponent* other);
 
@@ -71,8 +79,8 @@ namespace MultiExtend
 		ActorComponent* m_parent_component;
 
 		// need update & draw
-		std::vector<Component*> m_components;
-		std::vector<ActorComponent*> m_child_actor_components;
+		std::vector<BasicComponent*> m_Components;
+		std::vector<ActorComponent*> m_ChildActorComponents;
 
 	};
 }
