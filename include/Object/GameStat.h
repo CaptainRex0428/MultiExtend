@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "GameStatConfig.h"
+#include "Object/Object.h"
 #include "API/IUpdate.h"
 
 namespace MultiExtend
@@ -22,11 +23,9 @@ namespace MultiExtend
 		MULTIEXTEND_API void AddTexture(Texture* texture);
 		MULTIEXTEND_API void RemoveTexture(Texture* texture);
 
-
 		MULTIEXTEND_API void Update(float delta) override;
 		MULTIEXTEND_API virtual void CustomUpdate(float delta) override;
-		
-		// MULTIEXTEND_API void Draw();
+
 
 		
 	private:
