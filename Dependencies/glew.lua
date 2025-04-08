@@ -1,7 +1,7 @@
 project "glew"
-	kind "StaticLib"
-	language "C"
-	targetname "glew"
+    kind "SharedLib"
+    language "C++"
+    cppdialect "C++20"
 
 	files
 	{
@@ -11,29 +11,54 @@ project "glew"
 
 	includedirs 
 	{
+		"%{DepIncludeDir.glfw}",
         "glew/include"
     }
 
-	defines
+	links
 	{
-		"WIN32","_LIB","WIN32_LEAN_AND_MEAN","GLEW_STATIC" -- GLEW_BUILD for DLL
+		"glfw",
+		"opengl32"
 	}
 
-	location (LocationDir)
-	targetdir (TargetDir)
-	objdir (ObjectDir)
+	defines
+	{
+		"GLEW_BUILD" 
+		-- GLEW_BUILD for DLL
+	}
 
-	filter "configurations:Debug"
-		runtime "Debug"
-		symbols "on"
-		defines{"DEBUG"}
+	flags
+    {
+        -- "NoRuntimeChecks", -- Only used on Visual Studio.
+		-- "NoBufferSecurityCheck"
+    }
 
-	filter "configurations:Release"
-		runtime "Release"
-		optimize "on"
-		defines{"NDEBUG"}
+	buildoptions { "/EHsc", "/Zc:preprocessor", "/Zc:__cplusplus"}
+
+    warnings "off"
+
+    location (LocationDir)
+    targetdir (TargetDir)
+    objdir (ObjectDir)
+
+	postbuildcommands
+	{
+		("{COPY} %{cfg.buildtarget.relpath} "..DynamicDir)
+	}
+
+    filter "configurations:Debug"
+        runtime "Debug"
+        symbols "On"
+        defines { "_DEBUG","DEBUG" }
+
+    filter "configurations:Release"
+        runtime "Release"
+        optimize "On"
+        symbols "On"
+        defines { "_RELEASE","NDEBUG" }
 
     filter "configurations:Dist"
-		runtime "Release"
-		optimize "on"
-		defines{"NDEBUG"}
+        runtime "Release"
+        optimize "On"
+        symbols "Off"
+        defines { "_DIST","NDEBUG" }

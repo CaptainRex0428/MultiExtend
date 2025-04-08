@@ -27,7 +27,17 @@ project "SDL_image"
 	defines
 	{
 		"LOAD_PNG",
-		"LOAD_TGA"
+		"LOAD_TGA",
+		-- "LOAD_GIF",
+		-- "LOAD_JPG",
+		-- "LOAD_BMP",
+		-- "LOAD_PNM",
+		-- "LOAD_WEBP",
+		-- "LOAD_PIC",
+		-- "LOAD_PSD",
+		-- "LOAD_PIC",
+		-- "LOAD_TIF",
+		-- "LOAD_SVG"
 	}
 
 	files {

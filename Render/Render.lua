@@ -12,11 +12,15 @@ project "Render"
     includedirs
     {
         "include",
-		"%{DepIncludeDir.SDL}",
-		"%{DepIncludeDir.libpng}",
+        "%{ProjIncludeDir.MultiExtend}",
+        "%{DepIncludeDir.SDL}",
+        "%{DepIncludeDir.SDL_image}",
         "%{DepIncludeDir.glad}",
         "%{DepIncludeDir.glfw}",
         "%{DepIncludeDir.glew}",
+        "%{DepIncludeDir.spdlog}",
+        "%{DepIncludeDir.cryptopp}",
+		"%{DepIncludeDir.libpng}",
         "%{DepIncludeDir.linmath}"
     }
 
@@ -37,16 +41,13 @@ project "Render"
 
     libdirs
     {
-        "%{LibDirectories.glfw}",
-        "%{LibDirectories.glad}",
-        "%{LibDirectories.glew}"
+
     }
 
 	defines
 	{
 		"LOAD_PNG",
 		"LOAD_TGA",
-        "GLEW_STATIC"
 	}
 
     flags

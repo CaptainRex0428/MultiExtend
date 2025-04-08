@@ -16,3 +16,13 @@ void* MultiExtend::RendererSDL::GetRenderer() const
 {
 	return m_Renderer;
 }
+
+MultiExtend::RendererOpenGL::RendererOpenGL(void* renderer):
+	m_Renderer(renderer)
+{
+}
+
+void* MultiExtend::RendererOpenGL::GetRenderer() const
+{
+	return m_Renderer;
+}

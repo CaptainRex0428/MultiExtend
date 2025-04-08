@@ -41,4 +41,16 @@ namespace MultiExtend
 		SDL_Renderer* m_Renderer;
 
 	};
+
+	class RendererOpenGL : public Renderer
+	{
+	public:
+		MULTIEXTEND_API RendererOpenGL(void * renderer);
+
+		MULTIEXTEND_API virtual void* GetRenderer() const override;
+
+	private:
+		void * m_Renderer;
+
+	};
 }

@@ -33,6 +33,8 @@
 #include "Object/Object.h"
 #include "Object/GameStat.h"
 
+#define COLORBUFFERSIZE 8
+
 struct SDL_Renderer;
 
 namespace MultiExtend
@@ -44,9 +46,10 @@ namespace MultiExtend
 
 	enum InitFrameworkTag: int
 	{
-		SDL = 0b00000001,
-		openGL = 0b00000010,
-		ALL = 0b11111111
+		SDL		=	MULTIEXTEND_BIT(0),
+		OpenGL	=	MULTIEXTEND_BIT(1),
+		DirectX	=	MULTIEXTEND_BIT(2),
+		ALL		=	0b11111111
 	};
 
 	MULTIEXTEND_API int Init(int inttag = ALL);

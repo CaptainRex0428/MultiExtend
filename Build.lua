@@ -17,7 +17,7 @@ workspace "MultiExtend"
 group ""
 	include "MultiExtend.lua"
 
-group "Render"
+group "Sandbox/Render"
 	include "Render/Render.lua"
 
 group "Sandbox"

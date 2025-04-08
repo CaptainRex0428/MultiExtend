@@ -1,3 +1,4 @@
+group "Sandbox/Console"
 project "MultiExtendTemplateFile"
     kind "ConsoleApp"
     language "C++"
@@ -64,7 +65,7 @@ project "MultiExtendTemplateFile"
         symbols "Off"
         defines { "_DIST","NDEBUG" }
 
-
+group "Sandbox/Console"
 project "MultiExtendTemplateEntity"
     kind "ConsoleApp"
     language "C++"
@@ -131,8 +132,8 @@ project "MultiExtendTemplateEntity"
         symbols "Off"
         defines { "_DIST","NDEBUG" }
 
-
-project "MultiExtendTemplateObject"
+group "Sandbox/Render"
+project "MultiExtendTemplateSDL"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++20"
@@ -193,7 +194,7 @@ project "MultiExtendTemplateObject"
        optimize "On"
        symbols "Off"
 
-
+group "Sandbox/Console"
 project "MultiExtendTemplateSSL"
     kind "ConsoleApp"
     language "C++"
@@ -284,3 +285,71 @@ project "MultiExtendTemplateSSL"
         optimize "On"
         symbols "Off"
         defines { "_DIST","NDEBUG" }
+
+group "Sandbox/Render"
+project "MultiExtendTemplateOPENGL"
+    kind "ConsoleApp"
+    language "C++"
+    cppdialect "C++20"
+
+    files
+    {
+        "Template04.cpp", "../assets/**"
+    }
+
+    includedirs
+    {
+        "%{ProjIncludeDir.MultiExtend}",
+        "%{DepIncludeDir.SDL}",
+        "%{DepIncludeDir.SDL_image}",
+        "%{DepIncludeDir.glad}",
+        "%{DepIncludeDir.glfw}",
+        "%{DepIncludeDir.glew}",
+        "%{DepIncludeDir.spdlog}",
+        "%{DepIncludeDir.cryptopp}"
+    }
+
+    links
+    {
+        "MultiExtend",
+        "spdlog",
+        "cryptopp",
+        "SDL",
+        "SDL_main",
+        "SDL_image",
+        "glfw",
+        "glad",
+        "glew",
+        "opengl32.lib"
+        
+    }
+
+    defines 
+    { 
+      
+    }
+   
+   location (LocationDir)
+   targetdir (EXEDir)
+   objdir (ObjectDir)
+
+   filter "system:windows"
+       systemversion "latest"
+       defines { "WINDOWS" }
+
+   filter "configurations:Debug"
+       defines { "DEBUG" }
+       runtime "Debug"
+       symbols "On"
+
+   filter "configurations:Release"
+       defines { "RELEASE" }
+       runtime "Release"
+       optimize "On"
+       symbols "On"
+
+   filter "configurations:Dist"
+       defines { "DIST" }
+       runtime "Release"
+       optimize "On"
+       symbols "Off"
