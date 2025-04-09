@@ -25,7 +25,7 @@ namespace MultiExtend
 		bool IsValid();
 
 		void UnLoad();
-
+	
 		static bool IsShaderCompiled(unsigned int shader);
 		static bool IsProgramValid(unsigned int shaderProgram);
 
