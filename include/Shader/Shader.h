@@ -2,7 +2,7 @@
 
 #include "MultiExtendAPI.h"
 
-#include "System/File/File.h"
+#include "System/File/ShaderFile.h"
 #include "Object/Object.h"
 
 namespace MultiExtend
@@ -11,8 +11,7 @@ namespace MultiExtend
 	{
 	public:
 		MULTIEXTEND_API ShaderGL(const char * VertexShader, const char * FragShader);
-		// MULTIEXTEND_API ShaderGL(const char * filePath);
-		// MULTIEXTEND_API ShaderGL(const File & file);
+		MULTIEXTEND_API ShaderGL(const char * filePath);
 		MULTIEXTEND_API virtual ~ShaderGL();
 
 		const char* GetVertexShaderContent();
@@ -35,8 +34,8 @@ namespace MultiExtend
 		static unsigned int Compile(unsigned int type, const char * source);
 
 	private:
-		const char * m_vertexShader;
-		const char* m_fragmentShader;
+		std::string m_vertexShader;
+		std::string m_fragmentShader;
 
 		unsigned int VertexShader;
 		unsigned int FragmentShader;

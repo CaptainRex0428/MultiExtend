@@ -17,7 +17,7 @@
 
 namespace MultiExtend 
 {
-	bool File::isFilePathValid(std::string filepath)
+	bool File::IsFilePathValid(std::string filepath)
 	{
 		MULTIEXTEND_FILESYSTEM::path _p(filepath);
 		return MULTIEXTEND_FILESYSTEM::status(_p).type() == MULTIEXTEND_TAG_FILESYSTEM_TYPE_FILE;
@@ -281,6 +281,32 @@ namespace MultiExtend
 		}
 
 		return *vector;
+	}
+
+	std::vector<std::string> File::GetSubContent(std::string startTag, std::string endTag)
+	{
+		std::vector<std::string> subResult;
+		bool CanPushBack = false;
+
+		for (auto str : GetContent())
+		{
+			if ((!endTag.empty()) && str == endTag)
+			{
+				CanPushBack = false;
+			}
+
+			if(CanPushBack)
+			{
+				subResult.push_back(str);
+			}
+
+			if(str == startTag)
+			{
+				CanPushBack = true;
+			}
+		}
+
+		return subResult;
 	}
 
 	uintmax_t File::GetFileByteSize()

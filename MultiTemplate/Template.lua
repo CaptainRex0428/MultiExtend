@@ -6,7 +6,7 @@ project "MultiExtendTemplateFile"
 
     files
     {
-        "Template01.cpp"
+        "Template01.cpp","../shader/**.glsl","../shader/**.hlsl"
     }
 
     includedirs
@@ -294,7 +294,7 @@ project "MultiExtendTemplateOPENGL"
 
     files
     {
-        "Template04.cpp", "../assets/**"
+        "Template04.cpp", "../assets/**","../shader/**.glsl","../shader/**.hlsl"
     }
 
     includedirs

@@ -37,10 +37,10 @@ namespace MultiExtend
 
 		MULTIEXTEND_API std::string GetFullPath();
 		MULTIEXTEND_API std::vector<std::string> GetContent();
+		MULTIEXTEND_API std::vector<std::string> GetSubContent(std::string startTag, std::string endTag = "");
 		MULTIEXTEND_API uintmax_t GetFileByteSize();
 
-	
-		MULTIEXTEND_API static bool isFilePathValid(std::string filepath);
+		MULTIEXTEND_API static bool IsFilePathValid(std::string filepath);
 
 	protected:
 		MULTIEXTEND_API virtual int OpenWriteStream();

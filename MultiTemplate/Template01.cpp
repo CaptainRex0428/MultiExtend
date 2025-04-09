@@ -1,5 +1,13 @@
 #include "MultiExtend.h"
 
+#include "System/File/ShaderFile.h"
+
+
+void printSize(int * a)
+{
+	MULTIEXTEND_MESSAGE_CLIENT_DEBUG("size of a is {}", sizeof(a));
+}
+
 int main(int argc, char* argv[])
 {
 	MultiExtend::Message::Init();
@@ -48,4 +56,16 @@ int main(int argc, char* argv[])
 	Logfile2.Write("Test Log01",MultiExtend::LogLevel::Trace);
 	Logfile1.Write("Test Log02",MultiExtend::LogLevel::Trace);
 	Logfile2.Write("Test Log02",MultiExtend::LogLevel::Trace);
+
+
+	MultiExtend::ShaderFile shaderFile("../shader/basic.glsl");
+	shaderFile.Open();
+
+	std::string v = shaderFile.GetVertexShader();
+	std::string f = shaderFile.GetFragmentShader();
+
+	shaderFile.Close();
+
+	MULTIEXTEND_MESSAGE_CLIENT_DEBUG(v);
+	MULTIEXTEND_MESSAGE_CLIENT_DEBUG(f);
 }

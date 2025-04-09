@@ -127,6 +127,26 @@ MultiExtend::ShaderGL::ShaderGL(const char* vertexShader, const char* fragShader
 	ShaderProgram = Create(VertexShader,FragmentShader);
 }
 
+MultiExtend::ShaderGL::ShaderGL(const char* filePath)
+	:m_vertexShader(""), m_fragmentShader(""), VertexShader(0), FragmentShader(0), ShaderProgram(0)
+{
+	if(ShaderFile::IsFilePathValid(filePath))
+	{
+		ShaderFile shaderFile(filePath);
+		
+		shaderFile.Open();
+
+		m_vertexShader = shaderFile.GetVertexShader();
+		m_fragmentShader = shaderFile.GetFragmentShader();
+
+		shaderFile.Close();
+
+		VertexShader = Compile(GL_VERTEX_SHADER, m_vertexShader.c_str());
+		FragmentShader = Compile(GL_FRAGMENT_SHADER, m_fragmentShader.c_str());
+		ShaderProgram = Create(VertexShader, FragmentShader);
+	};
+}
+
 MultiExtend::ShaderGL::~ShaderGL()
 {
 	if(this->IsValid())
@@ -140,7 +160,7 @@ MultiExtend::ShaderGL::~ShaderGL()
 
 const char* MultiExtend::ShaderGL::GetVertexShaderContent()
 {
-	return m_vertexShader;
+	return m_vertexShader.c_str();
 }
 
 unsigned int MultiExtend::ShaderGL::GetVertexShader()
@@ -150,7 +170,7 @@ unsigned int MultiExtend::ShaderGL::GetVertexShader()
 
 const char* MultiExtend::ShaderGL::GetFragmentShaderContent()
 {
-	return m_fragmentShader;
+	return m_fragmentShader.c_str();
 }
 
 unsigned int MultiExtend::ShaderGL::GetFragmentShader()
