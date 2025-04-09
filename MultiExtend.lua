@@ -18,7 +18,10 @@ project "MultiExtend"
         "%{DepIncludeDir.cryptopp}",
         
         "%{DepIncludeDir.SDL}",
-        "%{DepIncludeDir.SDL_image}"
+        "%{DepIncludeDir.SDL_image}",
+        "%{DepIncludeDir.glad}",
+        "%{DepIncludeDir.glfw}",
+        "%{DepIncludeDir.glew}",
     }
 
     libdirs
@@ -34,7 +37,11 @@ project "MultiExtend"
         "cryptopp",
         "SDL",
         "SDL_main",
-        "SDL_image"
+        "SDL_image",
+        "glfw",
+        "glad",
+        "glew",
+        "opengl32.lib"
     }
 
     defines

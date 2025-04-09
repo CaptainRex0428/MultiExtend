@@ -1,24 +1,15 @@
-﻿#include <iostream>
-#include <fstream>
-#include <Windows.h>
+﻿#include "MultiExtend.h"
 
-#include "MultiExtend.h"
-#include "Math/Math.h"
-#include "Math/Color.h"
-#include "Config/Game.h"
+#include "SDL.h"
+
+#include "Math/Vertex.h"
+#include "Renderer/Renderer.h"
+
 #include "Actor/Actor.h"
-#include "Component/Sprite/SpriteComponent.h"
-#include "Component/Sprite/AnimateSpriteComponent.h"
-#include "Component/Sprite/ScrollComponent.h"
-#include "Component/Sprite/TileMapComponent.h"
-#include "Component/Sprite/DynamicAnimateSpriteComponent.h"
 
-#include "glew.h"
+#include <glew.h>
+#include <GLFW/glfw3.h>
 
-
-GameFrameMode frameMode = CUSTOM;
-const int limitFPS = 60;
-const int limitFrameTime = 1000 / limitFPS;
 
 class GameObject
 {
@@ -52,8 +43,6 @@ public:
 
 		void * context = SDL_GL_CreateContext(Get().m_window);
 		
-		Get().m_renderer = new RendererOpenGL(context);
-
 		glewExperimental = GL_TRUE;
 		
 		if(glewInit() != GLEW_OK)
@@ -65,8 +54,16 @@ public:
 
 		glGetError();
 
-		// Get().m_renderer = new MultiExtend::RendererSDL(renderer);
+		const unsigned char * version = glGetString(GL_VERSION);
+		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("OpenGL Version :{}", reinterpret_cast<const char*>(version));
+
+		Get().m_renderer = new RendererOpenGL(context);
 		Get().m_isRunning = true;
+
+		MultiExtend::VertexGL<float,7> v;
+		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("VertexGL Class size :{}", sizeof(MultiExtend::VertexGL<float, 7>));
+		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("VertexGL size :{}", sizeof(v));
+		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("VertexGL size :{}", MultiExtend::VertexGL<float, 7>::stride());
 
 		return true;
 	};
@@ -124,14 +121,13 @@ private:
 		MULTIEXTEND_TIMER_TRACE_TAG(UpdateGame);
 
 		static auto last_time = MULTIEXTEND_CLOCK_HIGHRES::now();
-
 		auto current_time = MULTIEXTEND_CLOCK_HIGHRES::now();
-
 		m_delta = std::chrono::duration<float>(current_time - last_time).count();
-
 		last_time = current_time;
 
 		m_GameActor->Update(m_delta);
+
+
 	};
 
 	void GenerateOuput()

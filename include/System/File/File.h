@@ -16,9 +16,7 @@ namespace MultiExtend
 {
 	class File
 	{
-	// static
-	public:
-		MULTIEXTEND_API static bool isFilePathValid(std::string filepath);
+	
 
 	// class
 	public:
@@ -40,6 +38,9 @@ namespace MultiExtend
 		MULTIEXTEND_API std::string GetFullPath();
 		MULTIEXTEND_API std::vector<std::string> GetContent();
 		MULTIEXTEND_API uintmax_t GetFileByteSize();
+
+	
+		MULTIEXTEND_API static bool isFilePathValid(std::string filepath);
 
 	protected:
 		MULTIEXTEND_API virtual int OpenWriteStream();

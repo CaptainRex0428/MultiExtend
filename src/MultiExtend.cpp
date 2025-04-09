@@ -9,7 +9,6 @@
 
 namespace MultiExtend
 {
-
 	int Init(int inittag)
 	{
 		MULTIEXTEND_TIMER_TRACE_TAG(InitMultiExtend);
