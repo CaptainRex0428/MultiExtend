@@ -60,11 +60,6 @@ public:
 		Get().m_renderer = new RendererOpenGL(context);
 		Get().m_isRunning = true;
 
-		MultiExtend::VertexGL<float,7> v;
-		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("VertexGL Class size :{}", sizeof(MultiExtend::VertexGL<float, 7>));
-		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("VertexGL size :{}", sizeof(v));
-		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("VertexGL size :{}", MultiExtend::VertexGL<float, 7>::stride());
-
 		return true;
 	};
 
@@ -134,7 +129,8 @@ private:
 	{
 		MULTIEXTEND_TIMER_TRACE_TAG(GenerateOuput);
 
-		glClearColor(0.86f, 0.86f, 0.86f, 0.86f);
+		Color<float,8> c((int)30,30,30,30);
+		glClearColor(c[r], c[g], c[b], c[a]);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		SDL_GL_SwapWindow(Get().m_window);

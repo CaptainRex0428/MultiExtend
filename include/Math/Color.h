@@ -6,6 +6,7 @@
 #include "Vector.h"
 
 #include <iostream>
+#include <type_traits>
 
 namespace MultiExtend
 {
@@ -13,7 +14,7 @@ namespace MultiExtend
 	class Color : public Vector<T, 4>
 	{
 	public:
-		static_assert(std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, long double>, "Member of color must be float, double or long double.");
+		static_assert(std::is_floating_point<T>::value, "Member of color must be float, double or long double.");
 
 		Color()
 			:Vector<T, 4>{ (T)0, (T)0, (T)0, (T)1}
