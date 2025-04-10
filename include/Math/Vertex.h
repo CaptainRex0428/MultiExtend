@@ -255,9 +255,16 @@ namespace MultiExtend
 
 		mat4x4 m, p, mvp;
 		mat4x4_identity(m);
-		mat4x4_rotate_Z(m, m, (float)glfwGetTime());
+		
 
-		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("glfwGetTime : {0}", (float)glfwGetTime());
+		// MULTIEXTEND_MESSAGE_CLIENT_DEBUG("glfwGetTime : {0}", (float)glfwGetTime());
+		
+		float startTimeDuration = std::chrono::duration<float>(GlobalClock::GetProcessStartTime()->m_time_highres.time_since_epoch()).count();
+		float nowTimeDuration = std::chrono::duration<float>(MULTIEXTEND_CLOCK_HIGHRES::now().time_since_epoch()).count();
+
+		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("Clock: {0}", nowTimeDuration - startTimeDuration);
+
+		mat4x4_rotate_Z(m, m, nowTimeDuration - startTimeDuration);
 
 		mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 		mat4x4_mul(mvp, p, m);
