@@ -11,7 +11,7 @@ MultiExtend::Actor::Actor(const char* tag,
 	int updateorder)
 	:
 	m_State(State_VALID | State_INPUT | State_UPDATE | State_DISPLAY),
-	m_parent_actor(nullptr),
+	m_ParentActor(nullptr),
 	m_updateorder(updateorder),
 	m_position(position),
 	m_scale(scale),
@@ -37,8 +37,12 @@ MultiExtend::Actor::~Actor()
 
 	delete m_ActorComponentRoot;
 
-	m_parent_actor->RemoveChildActor(this);
-	m_parent_actor = nullptr;
+	if(m_ParentActor)
+	{
+		m_ParentActor->RemoveChildActor(this);
+		m_ParentActor = nullptr;
+	}
+	
 }
 
 void MultiExtend::Actor::SetTag(const char* tag)
@@ -129,7 +133,7 @@ void MultiExtend::Actor::AddChildActor(Actor* child)
 
 		m_ChildActors.insert(iter, child);
 
-		child->m_parent_actor = this;
+		child->m_ParentActor = this;
 	}
 }
 
@@ -158,16 +162,16 @@ void MultiExtend::Actor::AttachParentActor(Actor* parent)
 		parent)
 		== m_ChildActors.end())
 	{
-		if (m_parent_actor != parent)
+		if (m_ParentActor != parent)
 		{
-			if (m_parent_actor != nullptr)
+			if (m_ParentActor != nullptr)
 			{
-				m_parent_actor->RemoveChildActor(this);
+				m_ParentActor->RemoveChildActor(this);
 			}
 
 			parent->AddChildActor(this);
 
-			m_parent_actor = parent;
+			m_ParentActor = parent;
 		}
 
 		return;
@@ -179,27 +183,27 @@ void MultiExtend::Actor::AttachParentActor(Actor* parent)
 
 void MultiExtend::Actor::DettachParentActor()
 {
-	if (m_parent_actor != nullptr)
+	if (m_ParentActor != nullptr)
 	{
-		m_parent_actor->RemoveChildActor(this);
-		m_parent_actor = nullptr;
+		m_ParentActor->RemoveChildActor(this);
+		m_ParentActor = nullptr;
 	}
 }
 
 void MultiExtend::Actor::ClearParentActor()
 {
-	if (m_parent_actor->GetParentActor() != nullptr)
+	if (m_ParentActor->GetParentActor() != nullptr)
 	{
-		m_parent_actor = m_parent_actor->GetParentActor();
+		m_ParentActor = m_ParentActor->GetParentActor();
 		return;
 	}
 
-	m_parent_actor = nullptr;
+	m_ParentActor = nullptr;
 }
 
 MultiExtend::Actor* MultiExtend::Actor::GetParentActor() const
 {
-	return m_parent_actor;
+	return m_ParentActor;
 }
 
 const MultiExtend::Vector3& MultiExtend::Actor::GetPositionRelative() const

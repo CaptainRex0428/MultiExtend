@@ -16,7 +16,7 @@ void main()
 #version 330 core
 
 in vec4 color;
-out vec4 fragment
+out vec4 fragment;
 		
 void main()
 {

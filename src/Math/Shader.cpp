@@ -5,7 +5,7 @@
 #include <glew.h>
 #include <GLFW/glfw3.h>
 
-bool MultiExtend::ShaderGL::IsShaderCompiled(unsigned int shader)
+bool MultiExtend::ShaderGL::IsShaderCompiled(unsigned int shader, bool LogOut)
 {
 	GLint status;
 
@@ -17,7 +17,8 @@ bool MultiExtend::ShaderGL::IsShaderCompiled(unsigned int shader)
 		char buffer[512];
 		memset(buffer, 0, 512);
 		glGetShaderInfoLog(shader, 511, nullptr, buffer);
-		MULTIEXTEND_MESSAGE_CLIENT_WARN("GLSL Compile Faild:\n{0}", buffer);
+
+		if(LogOut) MULTIEXTEND_MESSAGE_CLIENT_ERROR("GLSL Compile Faild:\n{0}", buffer);
 
 		return false;
 	}
@@ -25,7 +26,7 @@ bool MultiExtend::ShaderGL::IsShaderCompiled(unsigned int shader)
 	return true;
 }
 
-bool MultiExtend::ShaderGL::IsProgramValid(unsigned int shaderProgram)
+bool MultiExtend::ShaderGL::IsProgramValid(unsigned int shaderProgram, bool LogOut)
 {
 	GLint status;
 
@@ -37,7 +38,8 @@ bool MultiExtend::ShaderGL::IsProgramValid(unsigned int shaderProgram)
 		char buffer[512];
 		memset(buffer, 0, 512);
 		glGetProgramInfoLog(shaderProgram, 511, nullptr, buffer);
-		MULTIEXTEND_MESSAGE_CLIENT_WARN("GLSL Program Link Faild:\n{0}", buffer);
+
+		if(LogOut) MULTIEXTEND_MESSAGE_CLIENT_ERROR("GLSL Program Link Faild:\n{0}", buffer);
 
 		return false;
 	}
@@ -59,14 +61,14 @@ unsigned int MultiExtend::ShaderGL::Create(const char* vertexShader, const char*
 
 	if(!IsProgramValid(program))
 	{
-		MULTIEXTEND_MESSAGE_CLIENT_WARN("[Failed] Link Program:\n Vertex Shader:\n{0}\nFragment Shader:\n{1}", vertexShader, fragmentShader);
+		MULTIEXTEND_MESSAGE_CLIENT_ERROR("[Failed] Link Program:\n Vertex Shader:\n{0}\nFragment Shader:\n{1}", vertexShader, fragmentShader);
 		return 0;
 	}
 
 	glDeleteShader(VS);
 	glDeleteShader(FS);
 
-	MULTIEXTEND_MESSAGE_CLIENT_DEBUG("[Shader Program Linked]:{0}", program);
+	MULTIEXTEND_MESSAGE_CLIENT_TRACE("[Shader Program Linked]:{0}", program);
 
 	return program;
 	
@@ -74,7 +76,7 @@ unsigned int MultiExtend::ShaderGL::Create(const char* vertexShader, const char*
 
 unsigned int MultiExtend::ShaderGL::Create(unsigned int vertexShader, unsigned int fragmentShader)
 {
-	if(!(IsShaderCompiled(vertexShader) && IsShaderCompiled(fragmentShader)))
+	if(!(IsShaderCompiled(vertexShader, false) && IsShaderCompiled(fragmentShader, false)))
 	{
 		return 0;
 	}
@@ -87,14 +89,14 @@ unsigned int MultiExtend::ShaderGL::Create(unsigned int vertexShader, unsigned i
 
 	if (!IsProgramValid(program))
 	{
-		MULTIEXTEND_MESSAGE_CLIENT_WARN("[Failed] Link Program:\n Vertex Shader:\n{0}\nFragment Shader:\n{1}", vertexShader, fragmentShader);
+		MULTIEXTEND_MESSAGE_CLIENT_ERROR("[Failed] Link Program:\n Vertex Shader:\n{0}\nFragment Shader:\n{1}", vertexShader, fragmentShader);
 		return 0;
 	}
 
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 
-	MULTIEXTEND_MESSAGE_CLIENT_DEBUG("[Shader Program Linked]:{0}", program);
+	MULTIEXTEND_MESSAGE_CLIENT_TRACE("[Shader Program Linked]:{0}", program);
 
 	return program;
 }
@@ -110,13 +112,33 @@ GLuint MultiExtend::ShaderGL::Compile(unsigned int type, const char* source)
 
 	if(!IsShaderCompiled(id))
 	{
-		MULTIEXTEND_MESSAGE_CLIENT_WARN("[Failed] [{0}] shader:{1}", TypeTag, source);
-		return 0;
+		MULTIEXTEND_MESSAGE_CLIENT_ERROR("[Failed] [{0}] shader:\n{1}", TypeTag, source);
+		return id;
 	}
 	
-	MULTIEXTEND_MESSAGE_CLIENT_DEBUG("[Shader Compiled]:{0}[{1}]", TypeTag, id);
+	MULTIEXTEND_MESSAGE_CLIENT_TRACE("[Shader Compiled]:{0}[{1}]", TypeTag, id);
 
 	return id;
+}
+
+void MultiExtend::ShaderGL::GenerateHash()
+{
+	MULTIEXTEND_TIMER_TRACE_TAG(GenerateShaderGLHash);
+
+	std::string mac = Operator::Get().GetMacAddress();
+	std::string time = Clock::GetCurrentTimeStamp_sys();
+	std::string content = m_fragmentShader + m_vertexShader;
+	m_hash = SHAGenerator::GenerateSHA256Hash(mac, time, content);
+}
+
+const std::string& MultiExtend::ShaderGL::GetHash() const
+{
+	return this->m_hash;
+}
+
+const std::string & MultiExtend::ShaderGL::GetFilePath() const
+{
+	return this->m_filePath;
 }
 
 MultiExtend::ShaderGL::ShaderGL(const char* vertexShader, const char* fragShader)
@@ -125,6 +147,8 @@ MultiExtend::ShaderGL::ShaderGL(const char* vertexShader, const char* fragShader
 	VertexShader = Compile(GL_VERTEX_SHADER, vertexShader);
 	FragmentShader = Compile(GL_FRAGMENT_SHADER, fragShader);
 	ShaderProgram = Create(VertexShader,FragmentShader);
+
+	GenerateHash();
 }
 
 MultiExtend::ShaderGL::ShaderGL(const char* filePath)
@@ -144,6 +168,8 @@ MultiExtend::ShaderGL::ShaderGL(const char* filePath)
 		VertexShader = Compile(GL_VERTEX_SHADER, m_vertexShader.c_str());
 		FragmentShader = Compile(GL_FRAGMENT_SHADER, m_fragmentShader.c_str());
 		ShaderProgram = Create(VertexShader, FragmentShader);
+
+		GenerateHash();
 	};
 }
 
@@ -151,11 +177,8 @@ MultiExtend::ShaderGL::~ShaderGL()
 {
 	if(this->IsValid())
 	{
-		this->UnLoad();
+		this->Unload();
 	}
-
-	m_vertexShader = nullptr;
-	m_fragmentShader = nullptr;
 }
 
 const char* MultiExtend::ShaderGL::GetVertexShaderContent()
@@ -185,12 +208,35 @@ unsigned int MultiExtend::ShaderGL::GetShaderProgram()
 
 bool MultiExtend::ShaderGL::IsValid()
 {
-	return IsShaderCompiled(VertexShader) && IsShaderCompiled(FragmentShader) && IsProgramValid(ShaderProgram);
+	return IsShaderCompiled(VertexShader,false) && IsShaderCompiled(FragmentShader,false) && IsProgramValid(ShaderProgram);
 }
 
-void MultiExtend::ShaderGL::UnLoad()
+void MultiExtend::ShaderGL::Unload()
 {
 	glDeleteProgram(ShaderProgram);
 	glDeleteShader(VertexShader);
 	glDeleteShader(FragmentShader);
+
+	MULTIEXTEND_MESSAGE_CLIENT_TRACE("Unload shader:{}", ShaderProgram);
+}
+
+
+ShaderGL* MultiExtend::CreateShaderGL(GameStat * gameStat, const char* filePath)
+{
+	if(!File::IsFilePathValid(filePath))
+	{
+		return nullptr;
+	}
+
+	ShaderGL* shader = new ShaderGL(filePath);
+
+	if(!shader->IsValid())
+	{
+		delete shader;
+		return nullptr;
+	}
+
+	gameStat->AddShaderGL(shader);
+
+	return shader;
 }

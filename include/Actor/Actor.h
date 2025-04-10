@@ -98,7 +98,7 @@ namespace MultiExtend
 
 		char* m_Tag;
 
-		Actor* m_parent_actor;
+		Actor* m_ParentActor;
 
 		// need update and draw
 

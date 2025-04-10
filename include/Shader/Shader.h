@@ -4,6 +4,7 @@
 
 #include "System/File/ShaderFile.h"
 #include "Object/Object.h"
+#include "Object/GameStat.h"
 
 namespace MultiExtend
 {
@@ -14,24 +15,30 @@ namespace MultiExtend
 		MULTIEXTEND_API ShaderGL(const char * filePath);
 		MULTIEXTEND_API virtual ~ShaderGL();
 
-		const char* GetVertexShaderContent();
-		unsigned int GetVertexShader();
+		MULTIEXTEND_API const char* GetVertexShaderContent();
+		MULTIEXTEND_API unsigned int GetVertexShader();
 
-		const char* GetFragmentShaderContent();
-		unsigned int GetFragmentShader();
+		MULTIEXTEND_API const char* GetFragmentShaderContent();
+		MULTIEXTEND_API unsigned int GetFragmentShader();
 
-		unsigned int GetShaderProgram();
+		MULTIEXTEND_API unsigned int GetShaderProgram();
 
-		bool IsValid();
+		MULTIEXTEND_API bool IsValid();
 
-		void UnLoad();
+		MULTIEXTEND_API void Unload();
+
+		MULTIEXTEND_API const std::string& GetHash() const;
+		MULTIEXTEND_API const std::string& GetFilePath() const;
 	
-		static bool IsShaderCompiled(unsigned int shader);
-		static bool IsProgramValid(unsigned int shaderProgram);
+		MULTIEXTEND_API static bool IsShaderCompiled(unsigned int shader , bool LogOut = true);
+		MULTIEXTEND_API static bool IsProgramValid(unsigned int shaderProgram, bool LogOut = true);
 
-		static unsigned int Create(const char * vertexShader, const char * fragmentShader);
-		static unsigned int Create(unsigned int vertexShader, unsigned int fragmentShader);
-		static unsigned int Compile(unsigned int type, const char * source);
+		MULTIEXTEND_API static unsigned int Create(const char * vertexShader, const char * fragmentShader);
+		MULTIEXTEND_API static unsigned int Create(unsigned int vertexShader, unsigned int fragmentShader);
+		MULTIEXTEND_API static unsigned int Compile(unsigned int type, const char * source);
+
+	private:
+		MULTIEXTEND_API void GenerateHash();
 
 	private:
 		std::string m_vertexShader;
@@ -40,5 +47,10 @@ namespace MultiExtend
 		unsigned int VertexShader;
 		unsigned int FragmentShader;
 		unsigned int ShaderProgram;
+
+		std::string m_hash;
+		std::string m_filePath;
 	};
+
+	MULTIEXTEND_API ShaderGL * CreateShaderGL(GameStat * gameStat ,const char * filePath);
 }

@@ -7,8 +7,8 @@
 
 #include "Actor/Actor.h"
 
-#include <glew.h>
-#include <GLFW/glfw3.h>
+#include "Math/Vertex.h"
+#include "Shader/Shader.h"
 
 
 class GameObject
@@ -60,6 +60,13 @@ public:
 		Get().m_renderer = new RendererOpenGL(context);
 		Get().m_isRunning = true;
 
+		MultiExtend::ShaderGL * shader = CreateShaderGL(Get().m_GameStat,"../shader/basic.glsl");
+
+		if(shader && shader->IsValid())
+		{
+			MULTIEXTEND_MESSAGE_CLIENT_DEBUG("ShaderValid");
+		}
+
 		return true;
 	};
 
@@ -87,7 +94,12 @@ public:
 
 		Get().m_isRunning = false;
 
-		SDL_GL_DeleteContext(Get().m_renderer->GetRenderer());
+		// SDL_GL_DeleteContext(Get().m_renderer->GetRenderer());
+
+		delete Get().m_GameStat;
+		delete Get().m_GameActor;
+
+		glfwTerminate();
 	};
 
 private:
@@ -102,13 +114,32 @@ private:
 	virtual ~GameObject()
 	{
 		
-
 	};
 
 	void ProcessInput()
 	{
 		MULTIEXTEND_TIMER_TRACE_TAG(ProcessInput);
 
+		SDL_Event event;
+		while (SDL_PollEvent(&event))
+		{
+			switch (event.type)
+			{
+			case SDL_QUIT:
+				m_isRunning = false;
+				break;
+			default:
+				continue;
+			}
+		}
+
+		// handle keyboard input
+		const Uint8* state = SDL_GetKeyboardState(NULL);
+
+		if (state[SDL_SCANCODE_ESCAPE])
+		{
+			m_isRunning = false;
+		}
 	};
 
 	void UpdateGame()

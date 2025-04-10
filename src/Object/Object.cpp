@@ -7,8 +7,6 @@ MultiExtend::Object::Object()
 
 MultiExtend::Object::~Object()
 {
-	delete this->m_constructedTime;
-	m_constructedTime = nullptr;
 }
 
 MULTIEXTEND_API const tm* MultiExtend::Object::GetConstructedTime()

@@ -3,11 +3,11 @@
 #include "MultiExtend.h"
 #include "Object/GameStat.h"
 
-
 #include "SDL.h"
 
 #include "Actor/Actor.h"
 #include "Texture/Texture.h"
+#include "Shader/Shader.h"
 #include "Component/Component.h"
 #include "Renderer/Renderer.h"
 #include "Debug/Message/Message.h"
@@ -17,6 +17,14 @@
 MultiExtend::GameStat::GameStat()
 	:Object()
 {
+}
+
+MultiExtend::GameStat::~GameStat()
+{
+	for(auto shader : m_ShaderGLs)
+	{
+		delete shader;
+	}
 }
 
 void MultiExtend::GameStat::AddActor(Actor* actor)
@@ -55,6 +63,18 @@ void MultiExtend::GameStat::RemoveTexture(Texture* texture)
 	auto it = std::remove_if(m_textures.begin(), m_textures.end(),
 		[texture](Texture* tx) -> bool {return texture->GetHash() == tx->GetHash(); });
 	m_textures.erase(it);
+}
+
+void MultiExtend::GameStat::AddShaderGL(ShaderGL* shader)
+{
+	m_ShaderGLs.emplace_back(shader);
+}
+
+void MultiExtend::GameStat::RemoveShaderGL(ShaderGL* shader)
+{
+	auto it = std::remove_if(m_ShaderGLs.begin(), m_ShaderGLs.end(),
+		[shader](ShaderGL* sh) -> bool {return shader->GetHash() == sh->GetHash(); });
+	m_ShaderGLs.erase(it);
 }
 
 void MultiExtend::GameStat::Update(float delta)

@@ -10,7 +10,7 @@ MultiExtend::ActorComponent::ActorComponent(
 	int updateorder)
 	:
 	Component(tag, updateorder),
-	m_parent_component(nullptr),
+	m_ParentActorComponent(nullptr),
 	m_position(position),
 	m_scale(scale),
 	m_rotation(rotation)
@@ -24,8 +24,12 @@ MultiExtend::ActorComponent::~ActorComponent()
 		actor_component->ClearParentActorComponent();
 	}
 
-	m_parent_component->RemoveChildActorComponent(this);
-	m_parent_component = nullptr;
+	if(m_ParentActorComponent)
+	{
+		m_ParentActorComponent->RemoveChildActorComponent(this);
+		m_ParentActorComponent = nullptr;
+	}
+	
 }
 
 void MultiExtend::ActorComponent::UpdateComponents(float delta)
@@ -121,7 +125,7 @@ void MultiExtend::ActorComponent::AddChildActorComponent(MultiExtend::ActorCompo
 
 void MultiExtend::ActorComponent::SetParentActorComponent(ActorComponent* parent)
 {
-	m_parent_component = parent;
+	m_ParentActorComponent = parent;
 }
 
 void MultiExtend::ActorComponent::RemoveChildActorComponent(ActorComponent* child)
@@ -168,16 +172,16 @@ void MultiExtend::ActorComponent::AttachParentActorComponent(MultiExtend::ActorC
 		m_ChildActorComponents.end(),
 		parent) == m_ChildActorComponents.end())
 	{
-		if (m_parent_component != parent)
+		if (m_ParentActorComponent != parent)
 		{
-			if (m_parent_component != nullptr)
+			if (m_ParentActorComponent != nullptr)
 			{
-				m_parent_component->RemoveChildActorComponent(this);
+				m_ParentActorComponent->RemoveChildActorComponent(this);
 			}
 
 			parent->AddChildActorComponent(this);
 
-			m_parent_component = parent;
+			m_ParentActorComponent = parent;
 		}
 
 		return;
@@ -189,16 +193,16 @@ void MultiExtend::ActorComponent::AttachParentActorComponent(MultiExtend::ActorC
 
 void MultiExtend::ActorComponent::DettachParentActorComponent()
 {
-	if (m_parent_component != nullptr)
+	if (m_ParentActorComponent != nullptr)
 	{
-		m_parent_component->RemoveChildActorComponent(this);
-		m_parent_component = nullptr;
+		m_ParentActorComponent->RemoveChildActorComponent(this);
+		m_ParentActorComponent = nullptr;
 	}
 }
 
 MultiExtend::ActorComponent* MultiExtend::ActorComponent::GetParentActorComponent() const
 {
-	return m_parent_component;
+	return m_ParentActorComponent;
 }
 
 const MultiExtend::Vector3& MultiExtend::ActorComponent::GetPositionRelative() const
@@ -312,13 +316,13 @@ bool MultiExtend::ActorComponent::operator==(ActorComponent* other)
 
 void MultiExtend::ActorComponent::ClearParentActorComponent()
 {
-	if (m_parent_component->GetParentActorComponent() != nullptr)
+	if (m_ParentActorComponent->GetParentActorComponent() != nullptr)
 	{
-		m_parent_component = m_parent_component->GetParentActorComponent();
+		m_ParentActorComponent = m_ParentActorComponent->GetParentActorComponent();
 		return;
 	}
 
-	m_parent_component = nullptr;
+	m_ParentActorComponent = nullptr;
 }
 
 void MultiExtend::ActorComponent::Update(float delta)

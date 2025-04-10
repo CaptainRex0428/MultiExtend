@@ -144,6 +144,12 @@ namespace MultiExtend
 		{
 			Release();
 		}
+
+
+		bool HasIndices() const { return !m_Indices.empty(); }
+		size_t GetIndexCount() const { return m_Indices.size(); }
+		size_t GetVertexCount() const { return m_Vertices.size(); }
+		bool IsIndexBufferValid() const { return m_EBO != 0; }
 	
 	private:
 
@@ -191,16 +197,27 @@ namespace MultiExtend
 
 		void Release() 
 		{
-			if (m_VAO) glDeleteVertexArrays(1, &m_VAO);
-			if (m_VBO) glDeleteBuffers(1, &m_VBO);
-			if (m_EBO) glDeleteBuffers(1, &m_EBO);
+			if (m_VAO) 
+			{
+				glDeleteVertexArrays(1, &m_VAO); 
+				MULTIEXTEND_MESSAGE_CLIENT_TRACE("Released Vertex Arrays:{}", m_VAO);
+			}
+
+			if (m_VBO)
+			{
+				glDeleteBuffers(1, &m_VBO);
+				MULTIEXTEND_MESSAGE_CLIENT_TRACE("Released Vertex Buffer:{}", m_VBO);
+			} 
+
+			if (m_EBO)
+			{
+				glDeleteBuffers(1, &m_EBO);
+				MULTIEXTEND_MESSAGE_CLIENT_TRACE("Released Vertex Element buffer:{}", m_EBO);
+			} 
+			
 			m_VAO = m_VBO = m_EBO = 0;
 		}
 
-		bool HasIndices() const { return !m_Indices.empty(); }
-		size_t GetIndexCount() const { return m_Indices.size(); }
-		size_t GetVertexCount() const { return m_Vertices.size(); }
-		bool IsIndexBufferValid() const { return m_EBO != 0; }
 
 	private:
 		std::vector<Vertex<T, colorDepth>> m_Vertices;

@@ -76,7 +76,7 @@ namespace MultiExtend
 
 	private:
 
-		ActorComponent* m_parent_component;
+		ActorComponent* m_ParentActorComponent;
 
 		// need update & draw
 		std::vector<BasicComponent*> m_Components;
