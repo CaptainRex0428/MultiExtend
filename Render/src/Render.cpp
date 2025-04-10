@@ -5,6 +5,8 @@
 #include <glew.h>
 #include <GLFW/glfw3.h>
 
+#include <Math/Vertex.h>
+
 static unsigned int CompileShader(unsigned int type,const std::string & source)
 {
 	unsigned int id = glCreateShader(type);

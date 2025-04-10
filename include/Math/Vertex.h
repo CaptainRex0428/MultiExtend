@@ -7,7 +7,11 @@
 #include "Math/Vector.h"
 #include "Math/Color.h"
 #include "Shader/Shader.h"
+
 #include <type_traits>
+#include <stddef.h>
+
+#include "MultiExtend.h"
 
 namespace MultiExtend
 {
@@ -73,7 +77,7 @@ namespace MultiExtend
 		{
 			glBindVertexArray(m_VAO);
 			glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-			if (m_EBO && m_Indices != 0) glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+			if (m_EBO && (!m_Indices.empty())) glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 		}
 
 		void Unbind() const 
@@ -149,7 +153,7 @@ namespace MultiExtend
 		bool HasIndices() const { return !m_Indices.empty(); }
 		size_t GetIndexCount() const { return m_Indices.size(); }
 		size_t GetVertexCount() const { return m_Vertices.size(); }
-		bool IsIndexBufferValid() const { return m_EBO != 0; }
+		bool IsIndexBufferValid() const { return (m_EBO != 0) && HasIndices(); }
 	
 	private:
 
@@ -267,5 +271,22 @@ namespace MultiExtend
 			MULTIEXTEND_MESSAGE_CLIENT_ERROR("OpenGL draw error: {0}",
 				reinterpret_cast<const char*>(glGetString(err)));
 		}
+	};
+
+	typedef Vertex<double, 8> VertexDouble;
+	typedef Vertex<float, 8> VertexFloat;
+
+	static std::vector<MultiExtend::VertexAttribute> DefaultDoubleVertexAttributes =
+	{
+		{"vPos",   4, GL_FLOAT, offsetof(VertexDouble,pos) },
+		{"vColor", 4, GL_FLOAT, offsetof(VertexDouble,color)},
+		{"vNormal",4, GL_FLOAT, offsetof(VertexDouble,normal)}
+	};
+
+	static std::vector<MultiExtend::VertexAttribute> DefaultFloatVertexAttributes =
+	{
+		{"vPos",   4, GL_FLOAT, offsetof(VertexFloat,pos) },
+		{"vColor", 4, GL_FLOAT, offsetof(VertexFloat,color)},
+		{"vNormal",4, GL_FLOAT, offsetof(VertexFloat,normal)}
 	};
 }

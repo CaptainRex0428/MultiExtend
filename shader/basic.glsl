@@ -2,14 +2,14 @@
 #version 330 core
 
 uniform mat4 MVP;
-in vec4 vCol;
+in vec4 vColor;
 in vec4 vPos;
 out vec4 color;
 
 void main()
 {
 	gl_Position = MVP * vPos;
-	color = vCol;
+	color = vColor;
 }
 
 #Fragment

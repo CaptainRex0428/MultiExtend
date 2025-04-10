@@ -142,7 +142,7 @@ const std::string & MultiExtend::ShaderGL::GetFilePath() const
 }
 
 MultiExtend::ShaderGL::ShaderGL(const char* vertexShader, const char* fragShader)
-	:m_vertexShader(vertexShader), m_fragmentShader(fragShader)
+	:m_vertexShader(vertexShader), m_fragmentShader(fragShader), m_filePath("")
 {
 	VertexShader = Compile(GL_VERTEX_SHADER, vertexShader);
 	FragmentShader = Compile(GL_FRAGMENT_SHADER, fragShader);
@@ -152,7 +152,7 @@ MultiExtend::ShaderGL::ShaderGL(const char* vertexShader, const char* fragShader
 }
 
 MultiExtend::ShaderGL::ShaderGL(const char* filePath)
-	:m_vertexShader(""), m_fragmentShader(""), VertexShader(0), FragmentShader(0), ShaderProgram(0)
+	:m_vertexShader(""), m_fragmentShader(""), VertexShader(0), FragmentShader(0), ShaderProgram(0), m_filePath(filePath)
 {
 	if(ShaderFile::IsFilePathValid(filePath))
 	{

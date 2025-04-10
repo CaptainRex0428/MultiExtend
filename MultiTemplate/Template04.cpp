@@ -60,13 +60,20 @@ public:
 		Get().m_renderer = new RendererOpenGL(context);
 		Get().m_isRunning = true;
 
-		MultiExtend::ShaderGL * shader = CreateShaderGL(Get().m_GameStat,"../shader/basic.glsl");
+		Get().m_shader = CreateShaderGL(Get().m_GameStat,"../shader/basic.glsl");
 
-		if(shader && shader->IsValid())
+		std::vector<MultiExtend::Vertex<float, 8>> vertices =
 		{
-			MULTIEXTEND_MESSAGE_CLIENT_DEBUG("ShaderValid");
-		}
+			{{ -.6f, -.4f, 0.f, 1.f},{ 1.f, 0.f, 0.f, 1.f },{ 0.f, 0.f, 1.f, 1.f }},
+			{{  .6f, -.4f, 0.f, 1.f},{ 0.f, 1.f, 0.f, 1.f },{ 0.f, 0.f, 1.f, 1.f }},
+			{{  0.f,  .6f, 0.f, 1.f},{ 0.f, 0.f, 1.f, 1.f },{ 0.f, 0.f, 1.f, 1.f }}
+		};
 
+		std::vector<unsigned int> indices;
+
+		Get().m_buffer = new MultiExtend::VertexBuffer<float, 8>(vertices, indices);
+		Get().m_buffer->ConfigureAttributes(Get().m_shader, DefaultFloatVertexAttributes);
+		
 		return true;
 	};
 
@@ -164,6 +171,8 @@ private:
 		glClearColor(c[r], c[g], c[b], c[a]);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		DrawVertices(Get().m_buffer, Get().m_shader, GL_TRIANGLES);
+
 		SDL_GL_SwapWindow(Get().m_window);
 	};
 
@@ -178,6 +187,10 @@ private:
 
 	GameStat* m_GameStat;
 	Actor* m_GameActor;
+
+	ShaderGL * m_shader;
+
+	VertexBuffer<float, 8> * m_buffer;
 };
 
 int main(int argc, char** argv)

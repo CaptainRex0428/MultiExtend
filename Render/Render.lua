@@ -8,7 +8,7 @@ project "Render"
         "include/**.h",
         "src/**.cpp"
     }
-
+    
     includedirs
     {
         "include",
@@ -21,11 +21,16 @@ project "Render"
         "%{DepIncludeDir.spdlog}",
         "%{DepIncludeDir.cryptopp}",
 		"%{DepIncludeDir.libpng}",
-        "%{DepIncludeDir.linmath}"
+        "%{DepIncludeDir.linmath}",
+        "%{DepIncludeDir.spdlog}"
     }
 
 	links
 	{
+
+        "spdlog",
+        "cryptopp",
+        "SDL_image",
 		"SDL",
 		"SDL_main",
 		"libpng",
@@ -46,8 +51,7 @@ project "Render"
 
 	defines
 	{
-		"LOAD_PNG",
-		"LOAD_TGA",
+
 	}
 
     flags
