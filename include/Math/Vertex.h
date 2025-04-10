@@ -256,6 +256,9 @@ namespace MultiExtend
 		mat4x4 m, p, mvp;
 		mat4x4_identity(m);
 		mat4x4_rotate_Z(m, m, (float)glfwGetTime());
+
+		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("glfwGetTime : {0}", (float)glfwGetTime());
+
 		mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 		mat4x4_mul(mvp, p, m);
 
@@ -263,7 +266,7 @@ namespace MultiExtend
 
 		if (buffer->HasIndices() && buffer->IsIndexBufferValid())
 		{
-			MULTIEXTEND_MESSAGE_CLIENT_DEBUG("Draw with index buffer");
+			// MULTIEXTEND_MESSAGE_CLIENT_DEBUG("Draw with index buffer");
 			glDrawElements(mode,
 				static_cast<GLsizei>(buffer->GetIndexCount()),
 				GL_UNSIGNED_INT,
@@ -271,7 +274,7 @@ namespace MultiExtend
 		}
 		else
 		{
-			MULTIEXTEND_MESSAGE_CLIENT_DEBUG("Draw without index buffer");
+			// MULTIEXTEND_MESSAGE_CLIENT_DEBUG("Draw without index buffer");
 
 			glDrawArrays(mode,
 				0,

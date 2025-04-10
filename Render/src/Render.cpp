@@ -7,6 +7,8 @@
 
 #include <Math/Vertex.h>
 
+#include <MultiExtend.h>
+
 static unsigned int CompileShader(unsigned int type,const std::string & source)
 {
 	unsigned int id = glCreateShader(type);
@@ -150,7 +152,10 @@ int render::Render(const Vertex* vertices, unsigned int size)
 
 		mat4x4 m, p, mvp;
 		mat4x4_identity(m);
-		mat4x4_rotate_Z(m, m, (float)glfwGetTime());
+
+		float a = (float)glfwGetTime();
+		mat4x4_rotate_Z(m, m, a);
+
 		mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 		mat4x4_mul(mvp, p, m);
 
