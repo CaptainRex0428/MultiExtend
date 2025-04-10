@@ -1,7 +1,7 @@
 project "glfw"
 	kind "SharedLib"
-	language "C++"
-	cppdialect "C++20"
+	language "C"
+	cdialect "C11"  -- 使用 C11 标准
 
 	files
 	{
@@ -28,6 +28,11 @@ project "glfw"
     	"glfw/src/null_joystick.c",
 	}
 
+	defines 
+	{ 
+		"_GLFW_BUILD_DLL"
+	}
+
 	location (LocationDir)
 	targetdir (TargetDir)
 	objdir (ObjectDir)
@@ -45,15 +50,15 @@ project "glfw"
 		files
 		{
 			"glfw/src/x11_init.c",
-	       	"glfw/src/x11_monitor.c",
-	        "glfw/src/x11_window.c",
-	        "glfw/src/xkb_unicode.c",
-	        "glfw/src/posix_time.c",
-	        "glfw/src/posix_thread.c",
-	        "glfw/src/glx_context.c",
-	        "glfw/src/egl_context.c",
-	        "glfw/src/osmesa_context.c",
-	        "glfw/src/linux_joystick.c"
+			"glfw/src/x11_monitor.c",
+			"glfw/src/x11_window.c",
+			"glfw/src/xkb_unicode.c",
+			"glfw/src/posix_time.c",
+			"glfw/src/posix_thread.c",
+			"glfw/src/glx_context.c",
+			"glfw/src/egl_context.c",
+			"glfw/src/osmesa_context.c",
+			"glfw/src/linux_joystick.c"
 		}
 
 		defines
