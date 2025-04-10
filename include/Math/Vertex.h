@@ -8,6 +8,8 @@
 #include "Math/Color.h"
 #include "Shader/Shader.h"
 
+#include "linmath.h"
+
 #include <type_traits>
 #include <stddef.h>
 
@@ -230,7 +232,7 @@ namespace MultiExtend
 	};
 
 	template<typename T, size_t colorDepth>
-	void DrawVertices(VertexBuffer<T,colorDepth> * buffer, ShaderGL * shader, GLenum mode)
+	void DrawVertices(VertexBuffer<T,colorDepth> * buffer, ShaderGL * shader, GLenum mode, const float & ratio)
 	{
 		if(!shader)
 		{
@@ -249,9 +251,19 @@ namespace MultiExtend
 		buffer->Bind();
 		glUseProgram(shader->GetShaderProgram());
 
+		const unsigned int MVP_Idx = glGetUniformLocation(shader->GetShaderProgram(), "MVP");
+
+		mat4x4 m, p, mvp;
+		mat4x4_identity(m);
+		mat4x4_rotate_Z(m, m, (float)glfwGetTime());
+		mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+		mat4x4_mul(mvp, p, m);
+
+		glUniformMatrix4fv(MVP_Idx, 1, GL_FALSE, (const GLfloat*)&mvp);
 
 		if (buffer->HasIndices() && buffer->IsIndexBufferValid())
 		{
+			MULTIEXTEND_MESSAGE_CLIENT_DEBUG("Draw with index buffer");
 			glDrawElements(mode,
 				static_cast<GLsizei>(buffer->GetIndexCount()),
 				GL_UNSIGNED_INT,
@@ -259,6 +271,8 @@ namespace MultiExtend
 		}
 		else
 		{
+			MULTIEXTEND_MESSAGE_CLIENT_DEBUG("Draw without index buffer");
+
 			glDrawArrays(mode,
 				0,
 				static_cast<GLsizei>(buffer->GetVertexCount()));
@@ -278,9 +292,9 @@ namespace MultiExtend
 
 	static std::vector<MultiExtend::VertexAttribute> DefaultDoubleVertexAttributes =
 	{
-		{"vPos",   4, GL_FLOAT, offsetof(VertexDouble,pos) },
-		{"vColor", 4, GL_FLOAT, offsetof(VertexDouble,color)},
-		{"vNormal",4, GL_FLOAT, offsetof(VertexDouble,normal)}
+		{"vPos",   4, GL_DOUBLE, offsetof(VertexDouble,pos) },
+		{"vColor", 4, GL_DOUBLE, offsetof(VertexDouble,color)},
+		{"vNormal",4, GL_DOUBLE, offsetof(VertexDouble,normal)}
 	};
 
 	static std::vector<MultiExtend::VertexAttribute> DefaultFloatVertexAttributes =

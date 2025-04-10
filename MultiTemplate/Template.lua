@@ -306,7 +306,8 @@ project "MultiExtendTemplateOPENGL"
         "%{DepIncludeDir.glfw}",
         "%{DepIncludeDir.glew}",
         "%{DepIncludeDir.spdlog}",
-        "%{DepIncludeDir.cryptopp}"
+        "%{DepIncludeDir.cryptopp}",
+        "%{DepIncludeDir.linmath}"
     }
 
     links

@@ -54,6 +54,9 @@ public:
 
 		glGetError();
 
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
+
 		const unsigned char * version = glGetString(GL_VERSION);
 		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("OpenGL Version :{}", reinterpret_cast<const char*>(version));
 
@@ -126,6 +129,9 @@ private:
 	void ProcessInput()
 	{
 		MULTIEXTEND_TIMER_TRACE_TAG(ProcessInput);
+		
+		/* Poll for and process events */
+		glfwPollEvents();
 
 		SDL_Event event;
 		while (SDL_PollEvent(&event))
@@ -167,13 +173,23 @@ private:
 	{
 		MULTIEXTEND_TIMER_TRACE_TAG(GenerateOuput);
 
+		int width, height;
+		SDL_GL_GetDrawableSize(m_window, &width, &height);
+		glViewport(0, 0, width, height);
+
+		const float ratio = width / (float)height;
+
+		/* Render here */
+		glViewport(0, 0, width, height);
+
 		Color<float,8> c((int)30,30,30,30);
 		glClearColor(c[r], c[g], c[b], c[a]);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		DrawVertices(Get().m_buffer, Get().m_shader, GL_TRIANGLES);
+		DrawVertices(Get().m_buffer, Get().m_shader, GL_TRIANGLES, ratio);
 
 		SDL_GL_SwapWindow(Get().m_window);
+		
 	};
 
 private:
