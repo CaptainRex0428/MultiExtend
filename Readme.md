@@ -1,36 +1,16 @@
 # MultiExtend
 
+## 联系作者
 
-  <div style="justify-content: space-between; 
-              font-family: monospace;font-size: 1em;
-              font-style: italic;" >
-    <p align="center">
-      <img src="img/Snipaste_2024-04-10_16-11-24.png" alt="图灵数字艺术" width = "30%">
-      <br>
-      <small>图灵数字艺术</small>
-    </p>
-    <p align="center">
-      <img src="img/Snipaste_2024-04-10_16-11-24.png" alt="RestArt重启VFX" width = "30%">
-      <br>
-      <small>RestArt重启VFX</small>
-    </p>
-    
-  </div>
-
-  
-
-  <p align="center" style="font-family: monospace;font-size: 1.2em;
+  <p align="left" style="font-family: monospace;font-size: 1.2em;
                     font-style: italic;">
     <small><code>微信/小红书</code></small>
-    <br>
-    <small><a https="https://www.xiaohongshu.com/user/profile/63f43dce000000000f010c9a?xsec_token=ABAgEvauBbpzp2-rKa3MmFdv6_n0kGV3M013XnWfeBsfA=&xsec_source=pc_search">tuling166</a></small>
+    <small><a src="https://www.xiaohongshu.com/user/profile/63f43dce000000000f010c9a?xsec_token=ABAgEvauBbpzp2-rKa3MmFdv6_n0kGV3M013XnWfeBsfA=&xsec_source=pc_search">tuling166</a></small>
     <br>
     <small><code>Email</code></small>
-    <br>
     <small><a>rvo0428@163.com</a></small>
     <br>
     <small><code>Email</code></small>
-    <br>
     <small><a>captainrex0428@gmail.com</a></small>
   </p>
 
@@ -176,20 +156,20 @@ ObjectDir = "%{wks.location}/bin/obj/" .. OutputDir .. "/%{prj.name}"
 ***
 
 <p align="center">
-  <div style="display: flex; justify-content: space-between; 
-              font-size: 1em;
-              font-style: italic;">
+    <div style="justify-content: space-between; 
+              font-family: monospace;font-size: 1em;
+              font-style: italic;" >
     <p align="center">
-      <img src="img/Snipaste_2024-04-10_16-11-24.png" alt="图灵数字艺术" width = "30%">
+      <img src="img/Turing.png" alt="图灵数字艺术" width = "40%">
+    </p>
+    <p align="center">
+      <img src="img/RestArt.png" alt="RestArt重启VFX" width = "30%">
       <br>
       <small>RestArt重启VFX</small>
     </p>
-    <p align="center">
-      <img src="img/Snipaste_2024-04-10_16-11-24.png" alt="RestArt重启VFX" width = "30%">
-      <br>
-      <small>图灵数字艺术</small>
-    </p>
+    
   </div>
+
 
   <p align="center" style="font-size: 1.2em;
                     font-style: italic;">
