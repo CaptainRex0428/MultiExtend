@@ -1,6 +1,6 @@
 **/assets/** 
 
 **.pdf
-
+**.gif
 
 filter=lfs diff=lfs merge=lfs -text
