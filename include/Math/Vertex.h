@@ -234,6 +234,8 @@ namespace MultiExtend
 	template<typename T, size_t colorDepth>
 	void DrawVertices(VertexBuffer<T,colorDepth> * buffer, ShaderGL * shader, GLenum mode, const float & ratio)
 	{
+		MULTIEXTEND_TIMER_TRACE_TAG(DrawVertices());
+
 		if(!shader)
 		{
 			MULTIEXTEND_MESSAGE_CLIENT_ERROR("Shader ptr is null.");
@@ -256,15 +258,25 @@ namespace MultiExtend
 		mat4x4 m, p, mvp;
 		mat4x4_identity(m);
 		
-
-		// MULTIEXTEND_MESSAGE_CLIENT_DEBUG("glfwGetTime : {0}", (float)glfwGetTime());
 		
-		float startTimeDuration = std::chrono::duration<float>(GlobalClock::GetProcessStartTime()->m_time_highres.time_since_epoch()).count();
-		float nowTimeDuration = std::chrono::duration<float>(MULTIEXTEND_CLOCK_HIGHRES::now().time_since_epoch()).count();
+		float glfwTime = (float)glfwGetTime();
+		
+		std::chrono::steady_clock::duration startTime = GlobalClock::GetProcessStartTime()->m_time_highres.time_since_epoch();
+		std::chrono::steady_clock::duration now = MULTIEXTEND_CLOCK_HIGHRES::now().time_since_epoch();
 
-		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("Clock: {0}", nowTimeDuration - startTimeDuration);
+		double startTimeDurationDouble = std::chrono::duration<double>(startTime).count();
+		double nowTimeDurationDouble = std::chrono::duration<double>(now).count();
+		float timeSpanFromStart_Double = (float)(nowTimeDurationDouble - startTimeDurationDouble);
+		
+		float startTimeDurationFloat = std::chrono::duration<float>(startTime).count();
+		float nowTimeDurationFloat = std::chrono::duration<float>(now).count();
+		float timeSpanFromStart_Float = nowTimeDurationFloat - startTimeDurationFloat;
 
-		mat4x4_rotate_Z(m, m, nowTimeDuration - startTimeDuration);
+		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("glfwGetTime : {0}", glfwTime);
+		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("Clock Double: {0}", timeSpanFromStart_Double);
+		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("Clock Float: {0}", timeSpanFromStart_Float);
+
+		mat4x4_rotate_Z(m, m, timeSpanFromStart_Double);
 
 		mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 		mat4x4_mul(mvp, p, m);

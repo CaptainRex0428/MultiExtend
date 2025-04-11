@@ -45,9 +45,9 @@ public:
 		
 		glewExperimental = GL_TRUE;
 		
-		if(glewInit() != GLEW_OK)
+		if(glfwInit() != GLFW_TRUE || glewInit() != GLEW_OK)
 		{
-			SDL_Log("Failed to initialize GLEW.");
+			SDL_Log("Failed to initialize GLEW && GLFW.");
 			
 			return false;
 		}
