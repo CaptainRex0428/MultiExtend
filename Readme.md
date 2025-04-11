@@ -87,8 +87,8 @@ MultiExtend是一个集成了SDL 2D框架、OpenGL和DirectX等3D框架、日常
 打开`.sln`工程，会看到整体的结构
 <p align="center" style=" font-family: monospace;
                           font-size: 1em;
-                          font-style: italic;">
-  <img src="img/SolutionFramework.png" alt="solution结构" width = "80%">
+                          font-style: italic;" >
+  <img src="img/SolutionFramework.png" alt="solution结构" width = "40%">
   <br>
   <small>solution结构</small>
 </p>
@@ -174,25 +174,24 @@ ObjectDir = "%{wks.location}/bin/obj/" .. OutputDir .. "/%{prj.name}"
 ## 版本计划
 
 ***
-***
 
 <p align="center">
   <div style="display: flex; justify-content: space-between; 
-              font-family: monospace;font-size: 1em;
+              font-size: 1em;
               font-style: italic;">
     <p align="center">
-      <img src="img/Snipaste_2024-04-10_16-11-24.png" alt="图灵数字艺术" width = "80%">
+      <img src="img/Snipaste_2024-04-10_16-11-24.png" alt="图灵数字艺术" width = "30%">
       <br>
       <small>RestArt重启VFX</small>
     </p>
     <p align="center">
-      <img src="img/Snipaste_2024-04-10_16-11-24.png" alt="RestArt重启VFX" width = "80%">
+      <img src="img/Snipaste_2024-04-10_16-11-24.png" alt="RestArt重启VFX" width = "30%">
       <br>
       <small>图灵数字艺术</small>
     </p>
   </div>
 
-  <p align="center" style="font-family: monospace;font-size: 1.2em;
+  <p align="center" style="font-size: 1.2em;
                     font-style: italic;">
     <small><code>微信/小红书</code></small>
     <br>
