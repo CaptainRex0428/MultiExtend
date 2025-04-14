@@ -210,6 +210,8 @@ void MultiExtend::GameObject::ShutDown()
 
 	delete Get().m_GameStat;
 	delete Get().m_GameActor;
+
+	MultiExtend::Trace::Stop();
 }
 
 MultiExtend::GameObject::GameObject()
@@ -318,7 +320,7 @@ void MultiExtend::GameObject::GenerateOuput()
 
 	if (m_Initialized & InitFrameworkTag::SDL)
 	{
-		ClearRenderer(Get().m_renderer);
+		ClearRenderer(m_renderer);
 	}
 
 	/* Render here */
@@ -329,12 +331,12 @@ void MultiExtend::GameObject::GenerateOuput()
 
 	if (m_Initialized & InitFrameworkTag::SDL)
 	{
-		RenderPresent(Get().m_renderer);
+		RenderPresent(m_renderer);
 	}
 
 	if (m_Initialized & InitFrameworkTag::OpenGL)
 	{
-		SDL_GL_SwapWindow(Get().m_window);
+		SDL_GL_SwapWindow(m_window);
 	}
 }
 

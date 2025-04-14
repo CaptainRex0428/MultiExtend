@@ -22,6 +22,7 @@ project "MultiExtend"
         "%{DepIncludeDir.glad}",
         "%{DepIncludeDir.glfw}",
         "%{DepIncludeDir.glew}",
+        "%{DepIncludeDir.linmath}",
     }
 
     libdirs
