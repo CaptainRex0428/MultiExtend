@@ -21,14 +21,14 @@ GameFrameMode frameMode = CUSTOM;
 const int limitFPS = 60;
 const int limitFrameTime = 1000 / limitFPS;
 
-class GameObject
+class GameInstance
 {
 public:
-	GameObject(GameObject&) = delete;
+	GameInstance(GameInstance&) = delete;
 
-	static GameObject & Get()
+	static GameInstance & Get()
 	{
-		static GameObject instance;
+		static GameInstance instance;
 		return instance;
 	};
 
@@ -43,7 +43,7 @@ public:
 
 		Get().m_window = SDL_CreateWindow("ObjectTest",
 			100, 100,
-			720,462, 0);
+			720,462, SDL_WINDOW_OPENGL);
 
 		if (!Get().m_window)
 		{
@@ -256,7 +256,7 @@ public:
 	};
 
 private:
-	GameObject()
+	GameInstance()
 	:m_window(nullptr), m_renderer(nullptr), m_isRunning(false),
 	m_tickcount(0),m_delta(0)
 	{
@@ -264,7 +264,7 @@ private:
 		m_GameActor = MultiExtend::CreateActor<Actor>(m_GameStat);
 	};
 	
-	virtual ~GameObject()
+	virtual ~GameInstance()
 	{
 		IMG_Quit();
 
@@ -400,12 +400,12 @@ private:
 int main(int argc, char** argv)
 {
 	{
-		if (GameObject::Initialize())
+		if (GameInstance::Initialize())
 		{
-			GameObject::Runloop();
+			GameInstance::Runloop();
 		};
 
-		GameObject::ShutDown();
+		GameInstance::ShutDown();
 	}
 	return 0;
 }

@@ -47,7 +47,7 @@ namespace MultiExtend
 		MULTIEXTEND_API virtual ~ScrollSpriteComponent();
 
 		MULTIEXTEND_API virtual void Update(float delta) override;
-		MULTIEXTEND_API virtual void Draw() override;
+		MULTIEXTEND_API virtual void Draw(const float & ratio) override;
 
 		MULTIEXTEND_API virtual void SetScrollTextures(const std::vector<Texture*>& textures);
 

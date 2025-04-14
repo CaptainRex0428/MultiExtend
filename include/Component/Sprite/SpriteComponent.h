@@ -39,7 +39,7 @@ namespace MultiExtend
 		MULTIEXTEND_API virtual ~SpriteComponent();
 
 		MULTIEXTEND_API virtual void Update(float delta) override;
-		MULTIEXTEND_API virtual void Draw() override;
+		MULTIEXTEND_API virtual void Draw(const float & ratio) override;
 
 		MULTIEXTEND_API virtual void SetTexture(Texture * texture);
 

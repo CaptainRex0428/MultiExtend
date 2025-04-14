@@ -27,7 +27,7 @@ namespace MultiExtend
 		MULTIEXTEND_API virtual void Update(float delta) override { if(GetState(Tag_UPDATE)) CustomUpdate(delta);};
 		MULTIEXTEND_API virtual void CustomUpdate(float delta) override = 0;
 
-		MULTIEXTEND_API virtual void Draw() override { if (GetState(Tag_DISPLAY)) CustomDraw() ;};
+		MULTIEXTEND_API virtual void Draw(const float& ratio) override { if (GetState(Tag_DISPLAY)) CustomDraw() ;};
 		MULTIEXTEND_API virtual void CustomDraw() override = 0;
 
 	private:

@@ -10,14 +10,14 @@
 #include "Shader/Shader.h"
 
 
-class GameObject
+class GameInstance
 {
 public:
-	GameObject(GameObject&) = delete;
+	GameInstance(GameInstance&) = delete;
 
-	static GameObject& Get()
+	static GameInstance& Get()
 	{
-		static GameObject instance;
+		static GameInstance instance;
 		return instance;
 	};
 
@@ -111,7 +111,7 @@ public:
 	};
 
 private:
-	GameObject()
+	GameInstance()
 		:m_window(nullptr), m_renderer(nullptr), m_isRunning(false),
 		m_tickcount(0), m_delta(0)
 	{
@@ -119,7 +119,7 @@ private:
 		m_GameActor = MultiExtend::CreateActor<Actor>(m_GameStat);
 	};
 
-	virtual ~GameObject()
+	virtual ~GameInstance()
 	{
 		
 	};
@@ -210,12 +210,12 @@ private:
 int main(int argc, char** argv)
 {
 	{
-		if (GameObject::Initialize())
+		if (GameInstance::Initialize())
 		{
-			GameObject::Runloop();
+			GameInstance::Runloop();
 		};
 
-		GameObject::ShutDown();
+		GameInstance::ShutDown();
 	}
 	return 0;
 }

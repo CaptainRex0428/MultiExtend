@@ -77,7 +77,7 @@ MULTIEXTEND_API Vector2 MultiExtend::SpriteComponent::GetSize()
 	return Vector2{(float)m_TextureRender_w,(float)m_TextureRender_h};
 }
 
-void MultiExtend::SpriteComponent::Draw()
+void MultiExtend::SpriteComponent::Draw(const float& ratio)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(DrawSpriteComponent);
 
@@ -99,5 +99,5 @@ void MultiExtend::SpriteComponent::Draw()
 			GetRotationAbsolute()[z]);
 	}
 
-	ActorComponent::Draw();
+	ActorComponent::Draw(ratio);
 }

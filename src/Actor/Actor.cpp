@@ -395,7 +395,7 @@ void MultiExtend::Actor::CustomUpdate(float delta)
 	
 }
 
-void MultiExtend::Actor::Draw()
+void MultiExtend::Actor::Draw(const float & ratio)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(DrawBasicActor);
 	
@@ -403,16 +403,16 @@ void MultiExtend::Actor::Draw()
 	{
 		CustomDraw();
 
-		m_ActorComponentRoot->Draw();
+		m_ActorComponentRoot->Draw(ratio);
 
 		for (auto component : m_Components)
 		{
-			component->Draw();
+			component->Draw(ratio);
 		}
 
 		for (auto child : m_ChildActors)
 		{
-			child->Draw();
+			child->Draw(ratio);
 		}
 		
 	}

@@ -41,7 +41,7 @@ namespace MultiExtend
 		MULTIEXTEND_API virtual ~TileMapComponent();
 
 		MULTIEXTEND_API virtual void Update(float delta) override;
-		MULTIEXTEND_API virtual void Draw() override;
+		MULTIEXTEND_API virtual void Draw(const float& ratio) override;
 
 		MULTIEXTEND_API virtual void SetTexture(Texture* texture);
 

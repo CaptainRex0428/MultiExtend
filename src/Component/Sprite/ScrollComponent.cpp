@@ -115,7 +115,7 @@ void MultiExtend::ScrollSpriteComponent::Update(float delta)
 	}
 }
 
-void MultiExtend::ScrollSpriteComponent::Draw()
+void MultiExtend::ScrollSpriteComponent::Draw(const float & ratio)
 {
 	
 	MULTIEXTEND_TIMER_TRACE_TAG(DrawScrollSpriteComponent);
@@ -214,7 +214,7 @@ void MultiExtend::ScrollSpriteComponent::Draw()
 		drawIdx = (drawIdx + 1) % m_Textures.size();
 	}
 
-	ActorComponent::Draw();
+	ActorComponent::Draw(ratio);
 
 }
 

@@ -8,7 +8,7 @@ namespace MultiExtend
 	class IDraw
 	{
 	public:
-		MULTIEXTEND_API virtual void Draw() = 0;
+		MULTIEXTEND_API virtual void Draw(const float & ratio) = 0;
 		MULTIEXTEND_API virtual void CustomDraw() = 0;
 	};
 }

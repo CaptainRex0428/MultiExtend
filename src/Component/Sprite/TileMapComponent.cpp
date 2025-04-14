@@ -62,7 +62,7 @@ void MultiExtend::TileMapComponent::Update(float delta)
 	ActorComponent::Update(delta);
 }
 
-void MultiExtend::TileMapComponent::Draw()
+void MultiExtend::TileMapComponent::Draw(const float& ratio)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(DrawTileMapComponent);
 
@@ -89,7 +89,7 @@ void MultiExtend::TileMapComponent::Draw()
 			GetRotationAbsolute()[z]);
 	}
 
-	ActorComponent::Draw();
+	ActorComponent::Draw(ratio);
 }
 
 void MultiExtend::TileMapComponent::SetTexture(Texture* texture)

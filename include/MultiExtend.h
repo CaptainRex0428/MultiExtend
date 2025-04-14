@@ -44,15 +44,7 @@ namespace MultiExtend
 	class GameStat;
 	class Component;
 
-	enum InitFrameworkTag: int
-	{
-		SDL		=	MULTIEXTEND_BIT(0),
-		OpenGL	=	MULTIEXTEND_BIT(1),
-		DirectX	=	MULTIEXTEND_BIT(2),
-		ALL		=	0b11111111
-	};
-
-	MULTIEXTEND_API int Init(int inttag = ALL);
+	MULTIEXTEND_API int Init();
 
 	template <typename T, typename... Args>
 	inline T* CreateActor(GameStat * GameStat,Args&&... args)
