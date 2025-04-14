@@ -6,7 +6,7 @@
 
 MultiExtend::SpriteComponent::SpriteComponent(
 	GameStat* gameStat, 
-	Renderer* renderer, 
+	SDL_Renderer* renderer, 
 	const char* texturefilepath, 
 	const char* tag, 
 	Vector3 postion, 
@@ -27,7 +27,7 @@ MultiExtend::SpriteComponent::SpriteComponent(
 }
 
 MultiExtend::SpriteComponent::SpriteComponent(
-	Renderer* renderer, 
+	SDL_Renderer* renderer, 
 	Texture* texture, 
 	const char* tag, 
 	Vector3 postion, 

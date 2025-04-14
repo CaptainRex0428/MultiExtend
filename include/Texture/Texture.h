@@ -4,8 +4,10 @@
 
 #include "MultiExtendAPI.h"
 #include "Object/Object.h"
-#include "Renderer/Renderer.h"
+
 #include "Math/Vector.h" 
+
+#include "Object/GameStat.h"
 
 
 namespace MultiExtend
@@ -64,7 +66,9 @@ namespace MultiExtend
 		FLIP_VERTICAL
 	};
 
+	MULTIEXTEND_API TextureSDL* LoadTexture(GameStat* GameStat, SDL_Renderer* renderer, const char* filepath);
+
 	MULTIEXTEND_API void QueryTexture(Texture * texture, Vector2 * sourceSize, Uint32* format = nullptr, int* access = nullptr);
 
-	MULTIEXTEND_API void RenderTexture(Renderer * renderer, Texture* texture, TextureRelocator * srcLocator, TextureRelocator * dstLocator, float rotate = 0, Vector2 * point = nullptr, TextureFlip flip = FLIP_NONE);
+	MULTIEXTEND_API void RenderTexture(SDL_Renderer * renderer, Texture* texture, TextureRelocator * srcLocator, TextureRelocator * dstLocator, float rotate = 0, Vector2 * point = nullptr, TextureFlip flip = FLIP_NONE);
 }

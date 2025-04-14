@@ -64,8 +64,9 @@ public:
 			SDL_Log("SDL create renderer error:%s", SDL_GetError());
 			return false;
 		}
+		
 
-		Get().m_renderer = new MultiExtend::RendererSDL(renderer);
+		Get().m_renderer = renderer;
 		Get().m_isRunning = true;
 
 		Actor * spriteStaticActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
@@ -245,7 +246,7 @@ public:
 		IMG_Quit();
 
 		SDL_DestroyWindow(Get().m_window);
-		SDL_DestroyRenderer(Get().m_renderer->GetRendererAs<SDL_Renderer>());
+		SDL_DestroyRenderer(Get().m_renderer);
 
 		SDL_Quit();
 
@@ -280,7 +281,7 @@ private:
 
 		if (m_renderer)
 		{
-			SDL_DestroyRenderer(m_renderer->GetRendererAs<SDL_Renderer>());
+			SDL_DestroyRenderer(m_renderer);
 		}
 	};
 
@@ -375,7 +376,7 @@ private:
 
 		MULTIEXTEND_TIMER_TRACE_TAG(GenerateOuput);
 
-		SDL_SetRenderDrawColor(Get().m_renderer->GetRendererAs<SDL_Renderer>(), 30,30,30,30);
+		SDL_SetRenderDrawColor(Get().m_renderer, 30,30,30,30);
 		ClearRenderer(Get().m_renderer);
 
 		m_GameActor->Draw();
@@ -386,8 +387,8 @@ private:
 private:
 
 	bool m_isRunning;
-	SDL_Window* m_window;
-	Renderer * m_renderer;
+	SDL_Window * m_window;
+	SDL_Renderer * m_renderer;
 
 	long long int m_tickcount;
 	float m_delta;

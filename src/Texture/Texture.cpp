@@ -4,6 +4,8 @@
 #include "Time/Clock/Clock.h"
 #include "MultiExtend.h"
 
+#include "SDL_image.h"
+
 MultiExtend::Texture::Texture(const char * filePath)
 	:m_FilePath(filePath)
 {
@@ -42,6 +44,47 @@ void* MultiExtend::TextureSDL::GetTexture() const
     return m_Texture;
 }
 
+TextureSDL* MultiExtend::LoadTexture(GameStat* gameStat, SDL_Renderer* renderer, const char* filepath)
+{
+	MULTIEXTEND_TIMER_TRACE_TAG(LoadSDLTexture);
+
+	if (!gameStat) return nullptr;
+
+	std::ifstream f(filepath);
+
+	if (!f.good())
+	{
+		SDL_Log("File Doesn't exist :%s", filepath);
+		return nullptr;
+	}
+
+	SDL_Surface* surf = IMG_Load(filepath);
+
+	if (!surf)
+	{
+		SDL_Log("Failed to load texture file :%s", filepath);
+		return nullptr;
+	}
+
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surf);
+
+	SDL_FreeSurface(surf);
+
+	if (texture == nullptr)
+	{
+		SDL_Log("Failed to convert surface to texture :%s", filepath);
+		return nullptr;
+	}
+
+	TextureSDL* textureSDL = new TextureSDL(texture, filepath);
+
+	gameStat->AddTexture(textureSDL);
+
+	MULTIEXTEND_MESSAGE_CLIENT_TRACE("Loaded Texture:{0}", filepath);
+
+	return textureSDL;
+}
+
 void MultiExtend::QueryTexture(Texture* texture, Vector2 * sourceSize, Uint32* format, int* access)
 {
 	if (texture->IsA<SDL_Texture>())
@@ -55,13 +98,13 @@ void MultiExtend::QueryTexture(Texture* texture, Vector2 * sourceSize, Uint32* f
 }
 
 void MultiExtend::RenderTexture(
-	Renderer* renderer,
+	SDL_Renderer * renderer,
 	Texture* texture,
 	TextureRelocator* srcLocator,
 	TextureRelocator* dstLocator,
 	float rotate, Vector2 * point, TextureFlip flip)
 {
-	if(renderer->IsA<SDL_Renderer>() && texture->IsA<SDL_Texture>())
+	if(renderer && texture->IsA<SDL_Texture>())
 	{
 		SDL_Rect srcRect;
 		SDL_Rect dstRect;
@@ -105,7 +148,7 @@ void MultiExtend::RenderTexture(
 		}
 		
 		SDL_RenderCopyEx(
-			renderer->GetRendererAs<SDL_Renderer>(), 
+			renderer, 
 			texture->GetTextureAs<SDL_Texture>(), 
 			(srcLocator ? &srcRect : NULL), &dstRect,
 			rotate, point ? &center : NULL, textureFlip);

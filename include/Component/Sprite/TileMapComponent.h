@@ -2,7 +2,7 @@
 
 #include "MultiExtendAPI.h"
 #include "Component/ActorComponent.h"
-#include "Renderer/Renderer.h"
+
 #include "Texture/Texture.h"
 #include "Object/GameStat.h"
 
@@ -15,7 +15,7 @@ namespace MultiExtend
 	public:
 		MULTIEXTEND_API TileMapComponent(
 			GameStat* gameState,
-			Renderer* renderer,
+			SDL_Renderer* renderer,
 			const char* texturefilepath = nullptr,
 			Vector2 srcPosition = Vector2{0, 0},
 			Vector2 srcSize = Vector2{256, 256},
@@ -27,7 +27,7 @@ namespace MultiExtend
 			int updateorder = DEFAULT_UPDATEORDER);
 
 		MULTIEXTEND_API TileMapComponent(
-			Renderer* renderer,
+			SDL_Renderer* renderer,
 			Texture* texture = nullptr,
 			Vector2 srcPosition = Vector2{ 0, 0 },
 			Vector2 srcSize = Vector2{ 256, 256 },
@@ -56,7 +56,7 @@ namespace MultiExtend
 
 	private:
 		Texture * m_Texture;
-		Renderer * m_Renderer;
+		SDL_Renderer * m_Renderer;
 		Vector2 m_srcPosition;
 		Vector2 m_srcSize;
 		Vector2 m_dstSize;

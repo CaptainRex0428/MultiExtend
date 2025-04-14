@@ -3,7 +3,6 @@
 #include "MultiExtendAPI.h"
 #include "Component/ActorComponent.h"
 
-#include "Renderer/Renderer.h"
 #include "Texture/Texture.h"
 #include "Object/GameStat.h"
 
@@ -17,8 +16,8 @@ namespace MultiExtend
 	{
 	public:
 		MULTIEXTEND_API SpriteComponent(
-			GameStat * gameState,
-			Renderer * renderer,
+			GameStat * gameStat,
+			SDL_Renderer * renderer,
 			const char* texturefilepath = nullptr,
 			const char* tag = BaseSpriteComponentTypeName,
 			Vector3 postion = Vector3{0.0f, 0.0f, 0.0f},
@@ -28,7 +27,7 @@ namespace MultiExtend
 			int updateorder = DEFAULT_UPDATEORDER);
 
 		MULTIEXTEND_API SpriteComponent(
-			Renderer* renderer,
+			SDL_Renderer * renderer,
 			Texture* texture = nullptr,
 			const char* tag = BaseSpriteComponentTypeName,
 			Vector3 postion = Vector3{ 0.0f, 0.0f, 0.0f },
@@ -50,7 +49,7 @@ namespace MultiExtend
 
 	protected:
 		Texture * m_Texture;
-		Renderer * m_Renderer;
+		SDL_Renderer * m_Renderer;
 		int m_TextureRender_w;
 		int m_TextureRender_h;
 	};

@@ -21,7 +21,7 @@ namespace MultiExtend
 	public:
 		MULTIEXTEND_API DynamicAnimateSpriteUnit(
 			GameStat* gameStat,
-			Renderer* renderer,
+			SDL_Renderer* renderer,
 			std::vector<const char*> textureFilePaths,
 			const char* groupTag,
 			DynamicAnimateSpriteUnitUpdateType updateType = LOOP,
@@ -59,7 +59,7 @@ namespace MultiExtend
 	public:
 
 		MULTIEXTEND_API DynamicAnimateSpriteComponent(
-			Renderer* renderer,
+			SDL_Renderer* renderer,
 			std::vector<DynamicAnimateSpriteUnit*> dynamicAnimateSpriteUnits,
 			float FPS = 60,
 			const char* tag = BaseDynamicAnimSpriteComponentTypeName,

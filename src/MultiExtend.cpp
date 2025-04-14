@@ -2,10 +2,8 @@
 
 #include "SDL.h"
 #include "SDL_image.h"
-#include "Renderer/Renderer.h"
+
 #include "Texture/Texture.h"
-
-
 
 namespace MultiExtend
 {
@@ -66,80 +64,25 @@ namespace MultiExtend
 
 		return 1;
 	};
-	
-	Texture* LoadTexture(GameStat* GameStat, Renderer* renderer, const char* filepath)
+
+	void ClearRenderer(SDL_Renderer* renderer)
 	{
-		MULTIEXTEND_TIMER_TRACE_TAG(LoadTexture);
-
-		if(!GameStat) return nullptr;
-
-		if (renderer->IsA<SDL_Renderer>())
+		if (renderer)
 		{
-			return LoadTexture(GameStat,renderer->GetRendererAs<SDL_Renderer>(), filepath);
-		}
-
-		return nullptr;
-	}
-	
-	TextureSDL* LoadTexture(GameStat* gameStat, SDL_Renderer* renderer, const char* filepath)
-	{
-		MULTIEXTEND_TIMER_TRACE_TAG(LoadSDLTexture);
-
-		if (!gameStat) return nullptr;
-
-		std::ifstream f(filepath);
-
-		if (!f.good())
-		{
-			SDL_Log("File Doesn't exist :%s", filepath);
-			return nullptr;
-		}
-
-		SDL_Surface* surf = IMG_Load(filepath);
-
-		if (!surf)
-		{
-			SDL_Log("Failed to load texture file :%s", filepath);
-			return nullptr;
-		}
-
-		SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surf);
-
-		SDL_FreeSurface(surf);
-
-		if (texture == nullptr)
-		{
-			SDL_Log("Failed to convert surface to texture :%s", filepath);
-			return nullptr;
-		}
-
-		TextureSDL* textureSDL = new TextureSDL(texture, filepath);
-
-		gameStat->AddTexture(textureSDL);
-
-		MULTIEXTEND_MESSAGE_CLIENT_TRACE("Loaded Texture:{0}",filepath);
-
-		return textureSDL;
-	}
-
-	void ClearRenderer(Renderer* renderer)
-	{
-		if (renderer->IsA<SDL_Renderer>())
-		{
-			SDL_RenderClear(renderer->GetRendererAs<SDL_Renderer>());
+			SDL_RenderClear(renderer);
 			return;
 		}
 	}
 
-	void RenderPresent(Renderer* renderer)
+	void RenderPresent(SDL_Renderer* renderer)
 	{
 		MULTIEXTEND_TIMER_TRACE_TAG(RenderPresent);
 
-		if (renderer->IsA<SDL_Renderer>())
+		if (renderer)
 		{
 			MULTIEXTEND_TIMER_TRACE_TAG(RenderPresent_SDL);
 
-			SDL_RenderPresent(renderer->GetRendererAs<SDL_Renderer>());
+			SDL_RenderPresent(renderer);
 			return;
 		}
 	}

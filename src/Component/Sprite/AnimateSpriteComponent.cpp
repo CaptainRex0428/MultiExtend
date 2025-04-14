@@ -4,7 +4,7 @@
 MultiExtend::AnimateSpriteComponent::AnimateSpriteComponent(
 	float FPS,
 	GameStat* gameStat,
-	Renderer* renderer, 
+	SDL_Renderer* renderer, 
 	std::vector<const char*> textureFilePaths,
 	const char* tag, 
 	Vector3 position, 
@@ -29,7 +29,7 @@ MultiExtend::AnimateSpriteComponent::AnimateSpriteComponent(
 
 MultiExtend::AnimateSpriteComponent::AnimateSpriteComponent(
 	float FPS,
-	Renderer* renderer,
+	SDL_Renderer* renderer,
 	std::vector<Texture*> textures,
 	const char* tag,
 	Vector3 position,

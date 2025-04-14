@@ -4,7 +4,7 @@
 
 MultiExtend::DynamicAnimateSpriteUnit::DynamicAnimateSpriteUnit(
 	GameStat* gameStat,
-	Renderer* renderer,
+	SDL_Renderer* renderer,
 	std::vector<const char*> textureFilePaths,
 	const char* groupTag,
 	DynamicAnimateSpriteUnitUpdateType updateType,
@@ -88,7 +88,7 @@ void MultiExtend::DynamicAnimateSpriteUnit::SetAnimateUnitNext(DynamicAnimateSpr
 }
 
 MultiExtend::DynamicAnimateSpriteComponent::DynamicAnimateSpriteComponent(
-	Renderer* renderer, 
+	SDL_Renderer* renderer, 
 	std::vector<DynamicAnimateSpriteUnit*> dynamicAnimateSpriteUnits, 
 	float FPS, const char* tag, 
 	Vector3 position, 

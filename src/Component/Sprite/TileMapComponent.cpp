@@ -4,7 +4,7 @@
 
 MultiExtend::TileMapComponent::TileMapComponent(
 	GameStat* gameStat,
-	Renderer* renderer,
+	SDL_Renderer* renderer,
 	const char* texturefilepath,
 	Vector2 srcPosition,
 	Vector2 srcSize,
@@ -28,7 +28,7 @@ MultiExtend::TileMapComponent::TileMapComponent(
 }
 
 MultiExtend::TileMapComponent::TileMapComponent(
-	Renderer* renderer,
+	SDL_Renderer* renderer,
 	Texture* texture,
 	Vector2 srcPosition,
 	Vector2 srcSize,

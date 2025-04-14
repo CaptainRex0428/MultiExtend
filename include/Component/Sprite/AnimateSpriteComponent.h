@@ -15,7 +15,7 @@ namespace MultiExtend
 		MULTIEXTEND_API AnimateSpriteComponent(
 			float FPS,
 			GameStat* gameStat,
-			Renderer* renderer,
+			SDL_Renderer* renderer,
 			std::vector<const char *> textureFilePaths,
 			const char* tag = BaseAnimSpriteComponentTypeName,
 			Vector3 position = Vector3{0.0f, 0.0f, 0.0f},
@@ -26,7 +26,7 @@ namespace MultiExtend
 
 		MULTIEXTEND_API AnimateSpriteComponent(
 			float FPS,
-			Renderer* renderer,
+			SDL_Renderer* renderer,
 			std::vector<Texture*> textures,
 			const char* tag = BaseAnimSpriteComponentTypeName,
 			Vector3 position = Vector3{ 0.0f, 0.0f, 0.0f },

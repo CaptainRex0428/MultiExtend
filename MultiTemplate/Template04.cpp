@@ -3,7 +3,6 @@
 #include "SDL.h"
 
 #include "Math/Vertex.h"
-#include "Renderer/Renderer.h"
 
 #include "Actor/Actor.h"
 
@@ -60,16 +59,15 @@ public:
 		const unsigned char * version = glGetString(GL_VERSION);
 		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("OpenGL Version :{}", reinterpret_cast<const char*>(version));
 
-		Get().m_renderer = new RendererOpenGL(context);
 		Get().m_isRunning = true;
 
 		Get().m_shader = CreateShaderGL(Get().m_GameStat,"../shader/basic.glsl");
 
 		std::vector<MultiExtend::Vertex<float, 8>> vertices =
 		{
-			{{ -.6f, -.4f, 0.f, 1.f},{ 1.f, 0.f, 0.f, 1.f },{ 0.f, 0.f, 1.f, 1.f }},
-			{{  .6f, -.4f, 0.f, 1.f},{ 0.f, 1.f, 0.f, 1.f },{ 0.f, 0.f, 1.f, 1.f }},
-			{{  0.f,  .6f, 0.f, 1.f},{ 0.f, 0.f, 1.f, 1.f },{ 0.f, 0.f, 1.f, 1.f }}
+			{{ -.6f, -.4f, 0.f, 1.f},{0.0f,0.5f},{1.f, 0.f, 0.f, 1.f},{0.f, 0.f, 1.f, 1.f}},
+			{{  .6f, -.4f, 0.f, 1.f},{0.0f,0.5f} ,{ 0.f, 1.f, 0.f, 1.f },{ 0.f, 0.f, 1.f, 1.f }},
+			{{  0.f,  .6f, 0.f, 1.f},{0.0f,0.5f} ,{ 0.f, 0.f, 1.f, 1.f },{ 0.f, 0.f, 1.f, 1.f }}
 		};
 
 		std::vector<unsigned int> indices;

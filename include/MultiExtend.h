@@ -100,13 +100,9 @@ namespace MultiExtend
 		return GameStatCreate;
 	};
 
-	MULTIEXTEND_API Texture* LoadTexture(GameStat* GameStat, Renderer* renderer, const char* filepath);
+	MULTIEXTEND_API void ClearRenderer(SDL_Renderer * renderer);
 
-	MULTIEXTEND_API TextureSDL* LoadTexture(GameStat* GameStat, SDL_Renderer* renderer, const char* filepath);
-
-	MULTIEXTEND_API void ClearRenderer(Renderer * renderer);
-
-	MULTIEXTEND_API void RenderPresent(Renderer* renderer);
+	MULTIEXTEND_API void RenderPresent(SDL_Renderer* renderer);
 
 	template <typename T, typename Interface>
 	bool HasInterfaceImpl(const T* obj) 

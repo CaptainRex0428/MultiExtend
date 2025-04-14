@@ -9,7 +9,7 @@
 #include "Texture/Texture.h"
 #include "Shader/Shader.h"
 #include "Component/Component.h"
-#include "Renderer/Renderer.h"
+
 #include "Debug/Message/Message.h"
 #include "Debug/Message/MessageMicro.h"
 

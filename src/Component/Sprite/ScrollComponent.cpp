@@ -4,7 +4,7 @@
 
 MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
 	GameStat* GameStat,
-	Renderer* renderer,
+	SDL_Renderer* renderer,
 	std::vector<const char*> texturefilepaths,
 	float scrollspeed,
 	float offset,
@@ -41,7 +41,7 @@ MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
 }
 
 MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
-	Renderer* renderer,
+	SDL_Renderer* renderer,
 	std::vector<Texture*> textures,
 	float scrollspeed,
 	float offset,
