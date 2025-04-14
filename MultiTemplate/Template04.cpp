@@ -11,6 +11,8 @@
 class GameInstance : public GameObject
 {
 public:
+	static GameInstance& Get();
+
 	virtual bool Initialize(
 		const char* windowTitle = "DefaultWindow",
 		Vector2 position = { 100,100 },
@@ -26,6 +28,11 @@ private:
 	VertexBuffer<float, 8> * m_buffer;
 };
 
+GameInstance& GameInstance::Get() {
+	static GameInstance instance;
+	return instance;
+}
+
 bool GameInstance::Initialize(
 	const char* windowTitle,
 	Vector2 position,
@@ -37,7 +44,7 @@ bool GameInstance::Initialize(
 
 	MultiExtend::Trace::Start();
 
-	CreateShaderGL(m_GameStat, "../shader/basic.glsl");
+	m_shader = CreateShaderGL(m_GameStat, "../shader/basic.glsl");
 
 	std::vector<MultiExtend::Vertex<float, 8>> vertices =
 	{

@@ -110,15 +110,6 @@ bool MultiExtend::GameObject::Initialize(
 			return false;
 		}
 
-		m_renderer = SDL_CreateRenderer(m_window, -1,
-			SDL_RENDERER_ACCELERATED | (m_FrameMode == VSYNC ? SDL_RENDERER_PRESENTVSYNC : 0));
-
-		if (!m_renderer)
-		{
-			MULTIEXTEND_MESSAGE_CLIENT_CRITICAL("SDL create renderer error:{}", SDL_GetError());
-			return false;
-		}
-
 		m_GLContext = SDL_GL_CreateContext(m_window);
 
 		glewExperimental = GL_TRUE;
@@ -156,7 +147,7 @@ bool MultiExtend::GameObject::Initialize(
 
 void MultiExtend::GameObject::Runloop()
 {
-	while (Get().m_isRunning)
+	while (m_isRunning)
 	{
 		// 返回自 SDL 库初始化（通过 SDL_Init()）以来经过的毫秒数（ms）
 		Uint32 frame_start = SDL_GetTicks();
@@ -203,13 +194,13 @@ void MultiExtend::GameObject::ShutDown()
 		glfwTerminate();
 	}
 
-	SDL_DestroyWindow(Get().m_window);
-	SDL_DestroyRenderer(Get().m_renderer);
+	SDL_DestroyWindow(m_window);
+	SDL_DestroyRenderer(m_renderer);
 
 	SDL_Quit();
 
-	delete Get().m_GameStat;
-	delete Get().m_GameActor;
+	// delete m_GameStat;
+	// delete m_GameActor;
 
 	MultiExtend::Trace::Stop();
 }
@@ -308,35 +299,30 @@ void MultiExtend::GameObject::GenerateOuput()
 	width = m_InitSize[x];
 	height = m_InitSize[y];
 
-	if(m_Initialized & InitFrameworkTag::OpenGL)
+	if (m_Initialized & InitFrameworkTag::OpenGL) 
 	{
+		int width, height;
+		float ratio;
 		SDL_GL_GetDrawableSize(m_window, &width, &height);
+
 		glViewport(0, 0, width, height);
-
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		ratio = width / (float)height;
-	}
 
-	if (m_Initialized & InitFrameworkTag::SDL)
-	{
-		ClearRenderer(m_renderer);
-	}
+		m_GameActor->Draw(ratio);
+		CustomGenerateOuput(ratio);
 
-	/* Render here */
-	
-	m_GameActor->Draw(ratio);
-
-	CustomGenerateOuput(ratio);
-
-	if (m_Initialized & InitFrameworkTag::SDL)
-	{
-		RenderPresent(m_renderer);
-	}
-
-	if (m_Initialized & InitFrameworkTag::OpenGL)
-	{
 		SDL_GL_SwapWindow(m_window);
+	}
+	else if (m_Initialized & InitFrameworkTag::SDL) 
+	{
+
+		SDL_RenderClear(m_renderer);
+
+		m_GameActor->Draw(0);
+		CustomGenerateOuput(0);
+
+		SDL_RenderPresent(m_renderer);
 	}
 }
 
