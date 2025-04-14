@@ -22,6 +22,7 @@ namespace MultiExtend
 	struct Vertex
 	{
 		Vector<T,4> pos;
+		Vector<T,2> uv;
 		Color<T, colorDepth> color;
 		Vector<T,4> normal;
 	};
@@ -267,17 +268,8 @@ namespace MultiExtend
 		double startTimeDurationDouble = std::chrono::duration<double>(startTime).count();
 		double nowTimeDurationDouble = std::chrono::duration<double>(now).count();
 		float timeSpanFromStart_Double = (float)(nowTimeDurationDouble - startTimeDurationDouble);
-		
-		float startTimeDurationFloat = std::chrono::duration<float>(startTime).count();
-		float nowTimeDurationFloat = std::chrono::duration<float>(now).count();
-		float timeSpanFromStart_Float = nowTimeDurationFloat - startTimeDurationFloat;
-
-		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("glfwGetTime : {0}", glfwTime);
-		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("Clock Double: {0}", timeSpanFromStart_Double);
-		MULTIEXTEND_MESSAGE_CLIENT_DEBUG("Clock Float: {0}", timeSpanFromStart_Float);
 
 		mat4x4_rotate_Z(m, m, timeSpanFromStart_Double);
-
 		mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 		mat4x4_mul(mvp, p, m);
 
@@ -314,15 +306,17 @@ namespace MultiExtend
 
 	static std::vector<MultiExtend::VertexAttribute> DefaultDoubleVertexAttributes =
 	{
-		{"vPos",   4, GL_DOUBLE, offsetof(VertexDouble,pos) },
-		{"vColor", 4, GL_DOUBLE, offsetof(VertexDouble,color)},
-		{"vNormal",4, GL_DOUBLE, offsetof(VertexDouble,normal)}
+		{"vPos"   , 4, GL_DOUBLE, offsetof(VertexDouble,pos) },
+		{"vUV"    , 2, GL_DOUBLE, offsetof(VertexDouble,uv)},
+		{"vColor" , 4, GL_DOUBLE, offsetof(VertexDouble,color)},
+		{"vNormal", 4, GL_DOUBLE, offsetof(VertexDouble,normal)}
 	};
 
 	static std::vector<MultiExtend::VertexAttribute> DefaultFloatVertexAttributes =
 	{
-		{"vPos",   4, GL_FLOAT, offsetof(VertexFloat,pos) },
-		{"vColor", 4, GL_FLOAT, offsetof(VertexFloat,color)},
-		{"vNormal",4, GL_FLOAT, offsetof(VertexFloat,normal)}
+		{"vPos"   , 4, GL_FLOAT, offsetof(VertexFloat,pos) },
+		{"vUV"    , 2, GL_FLOAT, offsetof(VertexFloat,uv)},
+		{"vColor" , 4, GL_FLOAT, offsetof(VertexFloat,color)},
+		{"vNormal", 4, GL_FLOAT, offsetof(VertexFloat,normal)}
 	};
 }
