@@ -29,9 +29,11 @@ namespace MultiExtend
 	class GameObject : public Object
 	{
 	public:
-		MULTIEXTEND_API GameObject(GameObject&) = delete;
+		
+		MULTIEXTEND_API GameObject();
+		MULTIEXTEND_API virtual ~GameObject();
 
-		MULTIEXTEND_API static GameObject& Get();
+		MULTIEXTEND_API GameObject(GameObject&) = delete;
 
 		MULTIEXTEND_API virtual bool Initialize(
 			const char * windowTitle = "DefaultWindow", 
@@ -46,8 +48,7 @@ namespace MultiExtend
 
 	protected:
 
-		MULTIEXTEND_API GameObject();
-		MULTIEXTEND_API virtual ~GameObject();
+		
 
 		MULTIEXTEND_API void ProcessInput();
 		MULTIEXTEND_API virtual void CustomProcessInput(const Uint8* state);

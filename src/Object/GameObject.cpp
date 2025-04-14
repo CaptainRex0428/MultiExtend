@@ -11,12 +11,6 @@
 #include "Math/Color.h"
 #include "Math/Vertex.h"
 
-GameObject& MultiExtend::GameObject::Get()
-{
-	static GameObject instance;
-	return instance;
-}
-
 bool MultiExtend::GameObject::Initialize(
 	const char* windowTitle,
 	Vector2 position,
@@ -71,10 +65,10 @@ bool MultiExtend::GameObject::Initialize(
 			}
 
 			Color<float, 8> c((int)30, 30, 30, 30);
-			SDL_SetRenderDrawColor(Get().m_renderer, c[r], c[g], c[b], c[a]);
+			SDL_SetRenderDrawColor(m_renderer, c[r], c[g], c[b], c[a]);
 		}
 
-		m_Initialized |= InitFrameworkTag::SDL;
+		m_Initialized = m_Initialized | (int)InitFrameworkTag::SDL;
 	}
 
 	if (initTag & InitFrameworkTag::OpenGL)
@@ -132,14 +126,14 @@ bool MultiExtend::GameObject::Initialize(
 		Color<float, 8> c((int)30, 30, 30, 30);
 		glClearColor(c[r], c[g], c[b], c[a]);
 
-		m_Initialized |= InitFrameworkTag::OpenGL;
+		m_Initialized = m_Initialized | (int)InitFrameworkTag::OpenGL;
 	}
 
 	if (initTag & InitFrameworkTag::DirectX)
 	{
 		MULTIEXTEND_TIMER_TRACE_TAG(InitDirectX);
 
-		m_Initialized |= InitFrameworkTag::DirectX;
+		m_Initialized = m_Initialized | (int)InitFrameworkTag::DirectX;
 	}
 
 	m_isRunning = true;
@@ -155,9 +149,9 @@ void MultiExtend::GameObject::Runloop()
 		{
 			MULTIEXTEND_TIMER_TRACE_TAG(ProcessLoop);
 
-			Get().ProcessInput();
-			Get().UpdateGame();
-			Get().GenerateOuput();
+			ProcessInput();
+			UpdateGame();
+			GenerateOuput();
 
 			switch (m_FrameMode) 
 			{
@@ -184,7 +178,7 @@ void MultiExtend::GameObject::Runloop()
 
 void MultiExtend::GameObject::ShutDown()
 {
-	Get().m_isRunning = false;
+	m_isRunning = false;
 	
 	IMG_Quit();
 
