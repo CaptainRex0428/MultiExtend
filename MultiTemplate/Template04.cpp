@@ -50,12 +50,17 @@ bool GameInstance::Initialize(
 
 	std::vector<MultiExtend::Vertex<float, 8>> vertices =
 	{
-		{{ -.6f, -.4f, 0.f, 1.f},{0.0f,0.5f},{1.f, 0.f, 0.f, 1.f},{0.f, 0.f, 1.f, 1.f}},
-		{{  .6f, -.4f, 0.f, 1.f},{0.0f,0.5f} ,{ 0.f, 1.f, 0.f, 1.f },{ 0.f, 0.f, 1.f, 1.f }},
-		{{  0.f,  .6f, 0.f, 1.f},{0.0f,0.5f} ,{ 0.f, 0.f, 1.f, 1.f },{ 0.f, 0.f, 1.f, 1.f }}
+		{{ -.5f,  .5f, 0.f, 1.f}, {0.0f,0.5f}, {1.f, 1.f, 0.f, 1.f}, {0.f, 0.f, 1.f, 1.f}},
+		{{  .5f,  .5f, 0.f, 1.f}, {0.0f,0.5f}, {0.f, 1.f, 1.f, 1.f}, {0.f, 0.f, 1.f, 1.f}},
+		{{  .5f, -.5f, 0.f, 1.f}, {0.0f,0.5f}, {0.f, 0.f, 1.f, 1.f}, {0.f, 0.f, 1.f, 1.f}},
+		{{ -.5f, -.5f, 0.f, 1.f}, {0.0f,0.5f}, {1.f, 0.f, 1.f, 1.f}, {0.f, 0.f, 1.f, 1.f}}
 	};
 
-	std::vector<unsigned int> indices;
+	std::vector<unsigned int> indices = 
+	{
+		0,1,2,
+		2,3,0
+	};
 
 	m_buffer = new MultiExtend::VertexBuffer<float, 8>(vertices, indices);
 	m_buffer->ConfigureAttributes(m_shader, DefaultFloatVertexAttributes);
