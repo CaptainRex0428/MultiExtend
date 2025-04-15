@@ -1,7 +1,7 @@
 #pragma once
 
 #include "MultiExtendAPI.h"
-#include "Component/Sprite/SpriteComponent.h"
+#include "Component/Sprite/SpriteSDLComponent.h"
 #include "Texture/Texture.h"
 
 namespace MultiExtend
@@ -12,10 +12,10 @@ namespace MultiExtend
 		SCROLL_VERTICAL = 0b00000010
 	};
 
-	class ScrollSpriteComponent : public SpriteComponent
+	class ScrollSpriteSDLComponent : public SpriteSDLComponent
 	{
 	public:
-		MULTIEXTEND_API ScrollSpriteComponent(
+		MULTIEXTEND_API ScrollSpriteSDLComponent(
 			GameStat* GameStat,
 			SDL_Renderer* renderer,
 			std::vector<const char*> texturefilepaths,
@@ -30,7 +30,7 @@ namespace MultiExtend
 			Vector3 rotation = Vector3{ 0.0f, 0.0f, 0.0f },
 			Vector2 renderSize = Vector2{256,32});
 
-		MULTIEXTEND_API ScrollSpriteComponent(
+		MULTIEXTEND_API ScrollSpriteSDLComponent(
 			SDL_Renderer* renderer,
 			std::vector<Texture*> textures,
 			float scrollspeed = 88,
@@ -44,7 +44,7 @@ namespace MultiExtend
 			Vector3 rotation = Vector3{ 0.0f, 0.0f, 0.0f },
 			Vector2 renderSize = Vector2{ 256,32 });
 
-		MULTIEXTEND_API virtual ~ScrollSpriteComponent();
+		MULTIEXTEND_API virtual ~ScrollSpriteSDLComponent();
 
 		MULTIEXTEND_API virtual void Update(float delta) override;
 		MULTIEXTEND_API virtual void Draw(const float & ratio) override;

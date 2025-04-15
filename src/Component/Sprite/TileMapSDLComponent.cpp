@@ -1,8 +1,8 @@
-#include "Component/Sprite/TileMapComponent.h"
+#include "Component/Sprite/TileMapSDLComponent.h"
 
 #include "MultiExtend.h"
 
-MultiExtend::TileMapComponent::TileMapComponent(
+MultiExtend::TileMapSDLComponent::TileMapSDLComponent(
 	GameStat* gameStat,
 	SDL_Renderer* renderer,
 	const char* texturefilepath,
@@ -27,7 +27,7 @@ MultiExtend::TileMapComponent::TileMapComponent(
 	}
 }
 
-MultiExtend::TileMapComponent::TileMapComponent(
+MultiExtend::TileMapSDLComponent::TileMapSDLComponent(
 	SDL_Renderer* renderer,
 	Texture* texture,
 	Vector2 srcPosition,
@@ -49,20 +49,20 @@ MultiExtend::TileMapComponent::TileMapComponent(
 }
 
 
-MultiExtend::TileMapComponent::~TileMapComponent()
+MultiExtend::TileMapSDLComponent::~TileMapSDLComponent()
 {
 	m_Texture = nullptr;
 	m_Renderer = nullptr;
 }
 
-void MultiExtend::TileMapComponent::Update(float delta)
+void MultiExtend::TileMapSDLComponent::Update(float delta)
 {	
 	MULTIEXTEND_TIMER_TRACE_TAG(UpdateTileMapComponent);
 
 	ActorComponent::Update(delta);
 }
 
-void MultiExtend::TileMapComponent::Draw(const float& ratio)
+void MultiExtend::TileMapSDLComponent::Draw(const float& ratio)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(DrawTileMapComponent);
 
@@ -92,7 +92,7 @@ void MultiExtend::TileMapComponent::Draw(const float& ratio)
 	ActorComponent::Draw(ratio);
 }
 
-void MultiExtend::TileMapComponent::SetTexture(Texture* texture)
+void MultiExtend::TileMapSDLComponent::SetTexture(Texture* texture)
 {
 	if (m_Texture)
 	{
@@ -103,32 +103,32 @@ void MultiExtend::TileMapComponent::SetTexture(Texture* texture)
 	// QueryTexture(texture, &sourceSize);
 }
 
-void MultiExtend::TileMapComponent::SetDstSize(Vector2 size)
+void MultiExtend::TileMapSDLComponent::SetDstSize(Vector2 size)
 {
 	m_dstSize = size;
 }
 
-Vector2 MultiExtend::TileMapComponent::GetDstSize() const
+Vector2 MultiExtend::TileMapSDLComponent::GetDstSize() const
 {
 	return m_dstSize;
 }
 
-void MultiExtend::TileMapComponent::SetSrcSize(Vector2 size)
+void MultiExtend::TileMapSDLComponent::SetSrcSize(Vector2 size)
 {
 	m_srcSize = size;
 }
 
-Vector2 MultiExtend::TileMapComponent::GetSrcSize() const
+Vector2 MultiExtend::TileMapSDLComponent::GetSrcSize() const
 {
 	return m_srcSize;
 }
 
-void MultiExtend::TileMapComponent::SetSrcPosition(Vector2 position)
+void MultiExtend::TileMapSDLComponent::SetSrcPosition(Vector2 position)
 {
 	m_srcPosition = position;
 }
 
-Vector2 MultiExtend::TileMapComponent::GetSrcPosition() const
+Vector2 MultiExtend::TileMapSDLComponent::GetSrcPosition() const
 {
 	return m_srcPosition;
 }

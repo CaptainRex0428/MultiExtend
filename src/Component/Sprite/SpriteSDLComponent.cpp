@@ -1,10 +1,10 @@
-#include "Component/Sprite/SpriteComponent.h"
+#include "Component/Sprite/SpriteSDLComponent.h"
 
 #include "MultiExtend.h"
 
 #include "SDL.h"
 
-MultiExtend::SpriteComponent::SpriteComponent(
+MultiExtend::SpriteSDLComponent::SpriteSDLComponent(
 	GameStat* gameStat, 
 	SDL_Renderer* renderer, 
 	const char* texturefilepath, 
@@ -26,7 +26,7 @@ MultiExtend::SpriteComponent::SpriteComponent(
 	}
 }
 
-MultiExtend::SpriteComponent::SpriteComponent(
+MultiExtend::SpriteSDLComponent::SpriteSDLComponent(
 	SDL_Renderer* renderer, 
 	Texture* texture, 
 	const char* tag, 
@@ -43,18 +43,18 @@ MultiExtend::SpriteComponent::SpriteComponent(
 {
 }
 
-MultiExtend::SpriteComponent::~SpriteComponent()
+MultiExtend::SpriteSDLComponent::~SpriteSDLComponent()
 {
 }
 
-void MultiExtend::SpriteComponent::Update(float delta)
+void MultiExtend::SpriteSDLComponent::Update(float delta)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(UpdateSpriteComponent);
 
 	ActorComponent::Update(delta);
 }
 
-void MultiExtend::SpriteComponent::SetTexture(Texture* texture)
+void MultiExtend::SpriteSDLComponent::SetTexture(Texture* texture)
 {
 	if(m_Texture)
 	{
@@ -66,18 +66,18 @@ void MultiExtend::SpriteComponent::SetTexture(Texture* texture)
 
 }
 
-MULTIEXTEND_API void MultiExtend::SpriteComponent::SetSize(Vector2 size)
+MULTIEXTEND_API void MultiExtend::SpriteSDLComponent::SetSize(Vector2 size)
 {
 	m_TextureRender_w = (int)size[x];
 	m_TextureRender_h = (int)size[y];
 }
 
-MULTIEXTEND_API Vector2 MultiExtend::SpriteComponent::GetSize()
+MULTIEXTEND_API Vector2 MultiExtend::SpriteSDLComponent::GetSize()
 {
 	return Vector2{(float)m_TextureRender_w,(float)m_TextureRender_h};
 }
 
-void MultiExtend::SpriteComponent::Draw(const float& ratio)
+void MultiExtend::SpriteSDLComponent::Draw(const float& ratio)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(DrawSpriteComponent);
 

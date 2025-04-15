@@ -6,14 +6,14 @@
 #include "Texture/Texture.h"
 #include "Object/GameStat.h"
 
-#include "TileMapComponentConfig.h"
+#include "TileMapSDLComponentConfig.h"
 
 namespace MultiExtend
 {
-	class TileMapComponent : public ActorComponent
+	class TileMapSDLComponent : public ActorComponent
 	{
 	public:
-		MULTIEXTEND_API TileMapComponent(
+		MULTIEXTEND_API TileMapSDLComponent(
 			GameStat* gameState,
 			SDL_Renderer* renderer,
 			const char* texturefilepath = nullptr,
@@ -26,7 +26,7 @@ namespace MultiExtend
 			Vector3 rotation = Vector3{0.0f, 0.0f, 0.0f},
 			int updateorder = DEFAULT_UPDATEORDER);
 
-		MULTIEXTEND_API TileMapComponent(
+		MULTIEXTEND_API TileMapSDLComponent(
 			SDL_Renderer* renderer,
 			Texture* texture = nullptr,
 			Vector2 srcPosition = Vector2{ 0, 0 },
@@ -38,7 +38,7 @@ namespace MultiExtend
 			Vector3 rotation = Vector3{ 0.0f, 0.0f, 0.0f },
 			int updateorder = DEFAULT_UPDATEORDER);
 
-		MULTIEXTEND_API virtual ~TileMapComponent();
+		MULTIEXTEND_API virtual ~TileMapSDLComponent();
 
 		MULTIEXTEND_API virtual void Update(float delta) override;
 		MULTIEXTEND_API virtual void Draw(const float& ratio) override;

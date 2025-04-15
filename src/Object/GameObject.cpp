@@ -15,7 +15,7 @@ bool MultiExtend::GameObject::Initialize(
 	const char* windowTitle,
 	Vector2 position,
 	Vector2 size,
-	int initTag,
+	InitFrameworkTag initTag,
 	GameFrameMode mode)
 {
 	if (!MultiExtend::Init())
@@ -23,55 +23,53 @@ bool MultiExtend::GameObject::Initialize(
 		return false;
 	};
 
+	m_InitTag = initTag;
 	m_FrameMode = mode;
 
 	m_InitSize = size;
 
-	if (initTag & InitFrameworkTag::SDL)
+	MULTIEXTEND_TIMER_TRACE_TAG(InitSDL);
+
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0)
+	{
+		SDL_Log("SDL init error:%s", SDL_GetError());
+		return 0;
+	};
+
+	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
+	{
+		SDL_Log("SDL init PNG image module error:%s", SDL_GetError());
+		return 0;
+	};
+
+	if (m_InitTag == InitFrameworkTag::SDL)
 	{
 		MULTIEXTEND_TIMER_TRACE_TAG(InitSDL);
 
-		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0)
+		m_window = SDL_CreateWindow(windowTitle,
+			(int)position[x], (int)position[y],
+			(int)size[x], (int)size[y], 0);
+
+		if (!m_window)
 		{
-			SDL_Log("SDL init error:%s", SDL_GetError());
-			return 0;
-		};
-
-		if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
-		{
-			SDL_Log("SDL init PNG image module error:%s", SDL_GetError());
-			return 0;
-		};
-
-		if (!(initTag & InitFrameworkTag::OpenGL))
-		{
-			m_window = SDL_CreateWindow(windowTitle,
-				position[x], position[y],
-				size[x], size[y], 0);
-
-			if (!m_window)
-			{
-				MULTIEXTEND_MESSAGE_CLIENT_CRITICAL("SDL create window error:{}", SDL_GetError());
-				return false;
-			}
-
-			m_renderer = SDL_CreateRenderer(m_window, -1,
-				SDL_RENDERER_ACCELERATED | (m_FrameMode == VSYNC ? SDL_RENDERER_PRESENTVSYNC : 0));
-
-			if (!m_renderer)
-			{
-				MULTIEXTEND_MESSAGE_CLIENT_CRITICAL("SDL create renderer error:{}", SDL_GetError());
-				return false;
-			}
-
-			Color<float, 8> c((int)30, 30, 30, 30);
-			SDL_SetRenderDrawColor(m_renderer, c[r], c[g], c[b], c[a]);
+			MULTIEXTEND_MESSAGE_CLIENT_CRITICAL("SDL create window error:{}", SDL_GetError());
+			return false;
 		}
 
-		m_Initialized = m_Initialized | (int)InitFrameworkTag::SDL;
+		m_renderer = SDL_CreateRenderer(m_window, -1,
+			SDL_RENDERER_ACCELERATED | (m_FrameMode == VSYNC ? SDL_RENDERER_PRESENTVSYNC : 0));
+
+		if (!m_renderer)
+		{
+			MULTIEXTEND_MESSAGE_CLIENT_CRITICAL("SDL create renderer error:{}", SDL_GetError());
+			return false;
+		}
+
+		Color<float, 8> c((int)30, 30, 30, 30);
+		SDL_SetRenderDrawColor(m_renderer, int(c[r] * 255), int(c[g] * 255), int(c[b] * 255), int(c[a] * 255));
 	}
 
-	if (initTag & InitFrameworkTag::OpenGL)
+	if (m_InitTag == InitFrameworkTag::OpenGL)
 	{
 		MULTIEXTEND_TIMER_TRACE_TAG(InitOpenGL);
 
@@ -95,8 +93,8 @@ bool MultiExtend::GameObject::Initialize(
 		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
 		m_window = SDL_CreateWindow(windowTitle,
-			position[x], position[y],
-			size[x], size[y], SDL_WINDOW_OPENGL);
+			(int)position[x], (int)position[y],
+			(int)size[x], (int)size[y], SDL_WINDOW_OPENGL);
 
 		if (!m_window)
 		{
@@ -105,6 +103,8 @@ bool MultiExtend::GameObject::Initialize(
 		}
 
 		m_GLContext = SDL_GL_CreateContext(m_window);
+		m_renderer = SDL_CreateRenderer(m_window, -1,
+			SDL_RENDERER_ACCELERATED | (m_FrameMode == VSYNC ? SDL_RENDERER_PRESENTVSYNC : 0));
 
 		glewExperimental = GL_TRUE;
 
@@ -126,17 +126,16 @@ bool MultiExtend::GameObject::Initialize(
 		Color<float, 8> c((int)30, 30, 30, 30);
 		glClearColor(c[r], c[g], c[b], c[a]);
 
-		m_Initialized = m_Initialized | (int)InitFrameworkTag::OpenGL;
 	}
 
 	if (initTag & InitFrameworkTag::DirectX)
 	{
 		MULTIEXTEND_TIMER_TRACE_TAG(InitDirectX);
-
-		m_Initialized = m_Initialized | (int)InitFrameworkTag::DirectX;
 	}
 
 	m_isRunning = true;
+
+	return true;
 }
 
 void MultiExtend::GameObject::Runloop()
@@ -182,14 +181,18 @@ void MultiExtend::GameObject::ShutDown()
 	
 	IMG_Quit();
 
-	if(m_Initialized & InitFrameworkTag::OpenGL)
+	if(m_InitTag == InitFrameworkTag::OpenGL)
 	{
 		SDL_GL_DeleteContext(m_GLContext);
 		glfwTerminate();
 	}
 
 	SDL_DestroyWindow(m_window);
-	SDL_DestroyRenderer(m_renderer);
+
+	if(m_renderer)
+	{
+		SDL_DestroyRenderer(m_renderer);
+	}
 
 	SDL_Quit();
 
@@ -201,7 +204,7 @@ void MultiExtend::GameObject::ShutDown()
 
 MultiExtend::GameObject::GameObject()
 	:m_window(nullptr), m_renderer(nullptr), m_isRunning(false),
-	m_tickcount(0), m_delta(0), m_GLContext(nullptr), m_Initialized(0), m_FrameMode(CUSTOM),
+	m_tickcount(0), m_delta(0), m_GLContext(nullptr), m_InitTag(SDL), m_FrameMode(CUSTOM),
 	m_InitSize({0,0})
 {
 	m_GameStat = MultiExtend::CreateGameStat<GameStat>();
@@ -260,6 +263,8 @@ void MultiExtend::GameObject::ProcessInput()
 	}
 
 	CustomProcessInput(state);
+
+	m_GameActor->ProcessInput(state);
 }
 
 void MultiExtend::GameObject::CustomProcessInput(const Uint8* state)
@@ -276,10 +281,10 @@ void MultiExtend::GameObject::UpdateGame()
 
 	m_GameActor->Update(m_delta);
 
-	CustomUpdateGame();
+	CustomUpdateGame(m_delta);
 }
 
-void MultiExtend::GameObject::CustomUpdateGame()
+void MultiExtend::GameObject::CustomUpdateGame(float m_delta)
 {
 }
 
@@ -287,13 +292,18 @@ void MultiExtend::GameObject::GenerateOuput()
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(GenerateOuput);
 
-	int width, height;
-	float ratio;
+	if (m_InitTag == InitFrameworkTag::SDL)
+	{
 
-	width = m_InitSize[x];
-	height = m_InitSize[y];
+		SDL_RenderClear(m_renderer);
 
-	if (m_Initialized & InitFrameworkTag::OpenGL) 
+		m_GameActor->Draw(0);
+		CustomGenerateOuput(0);
+
+		SDL_RenderPresent(m_renderer);
+	}
+
+	if (m_InitTag == InitFrameworkTag::OpenGL) 
 	{
 		int width, height;
 		float ratio;
@@ -308,16 +318,8 @@ void MultiExtend::GameObject::GenerateOuput()
 
 		SDL_GL_SwapWindow(m_window);
 	}
-	else if (m_Initialized & InitFrameworkTag::SDL) 
-	{
-
-		SDL_RenderClear(m_renderer);
-
-		m_GameActor->Draw(0);
-		CustomGenerateOuput(0);
-
-		SDL_RenderPresent(m_renderer);
-	}
+	
+	
 }
 
 void MultiExtend::GameObject::CustomGenerateOuput(const float& ratio)

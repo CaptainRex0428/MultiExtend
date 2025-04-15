@@ -6,16 +6,16 @@
 #include "Texture/Texture.h"
 #include "Object/GameStat.h"
 
-#include "SpriteComponentConfig.h"
+#include "SpriteSDLComponentConfig.h"
 
 #define BaseSpriteComponentTypeName "BaseSpriteComponent"
 
 namespace MultiExtend
 {
-	class SpriteComponent : public ActorComponent
+	class SpriteSDLComponent : public ActorComponent
 	{
 	public:
-		MULTIEXTEND_API SpriteComponent(
+		MULTIEXTEND_API SpriteSDLComponent(
 			GameStat * gameStat,
 			SDL_Renderer * renderer,
 			const char* texturefilepath = nullptr,
@@ -26,7 +26,7 @@ namespace MultiExtend
 			Vector2 size = Vector2{32, 32},
 			int updateorder = DEFAULT_UPDATEORDER);
 
-		MULTIEXTEND_API SpriteComponent(
+		MULTIEXTEND_API SpriteSDLComponent(
 			SDL_Renderer * renderer,
 			Texture* texture = nullptr,
 			const char* tag = BaseSpriteComponentTypeName,
@@ -36,7 +36,7 @@ namespace MultiExtend
 			Vector2 size = Vector2{ 32, 32 },
 			int updateorder = DEFAULT_UPDATEORDER);
 
-		MULTIEXTEND_API virtual ~SpriteComponent();
+		MULTIEXTEND_API virtual ~SpriteSDLComponent();
 
 		MULTIEXTEND_API virtual void Update(float delta) override;
 		MULTIEXTEND_API virtual void Draw(const float & ratio) override;

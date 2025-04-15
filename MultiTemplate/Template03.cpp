@@ -7,405 +7,233 @@
 #include "Math/Color.h"
 #include "Config/Game.h"
 #include "Actor/Actor.h"
-#include "Component/Sprite/SpriteComponent.h"
-#include "Component/Sprite/AnimateSpriteComponent.h"
-#include "Component/Sprite/ScrollComponent.h"
-#include "Component/Sprite/TileMapComponent.h"
-#include "Component/Sprite/DynamicAnimateSpriteComponent.h"
+#include "Component/Sprite/SpriteSDLComponent.h"
+#include "Component/Sprite/AnimateSpriteSDLComponent.h"
+#include "Component/Sprite/ScrollSDLComponent.h"
+#include "Component/Sprite/TileMapSDLComponent.h"
+#include "Component/Sprite/DynamicAnimateSpriteSDLComponent.h"
 
-#include "SDL.h"
-#include "SDL_image.h"
+#include "Object/GameObject.h"
 
-
-GameFrameMode frameMode = CUSTOM;
-const int limitFPS = 60;
-const int limitFrameTime = 1000 / limitFPS;
-
-class GameInstance
+class GameInstance: public GameObject
 {
 public:
-	GameInstance(GameInstance&) = delete;
+	static GameInstance& Get();
 
-	static GameInstance & Get()
-	{
-		static GameInstance instance;
-		return instance;
-	};
-
-	static bool Initialize()
-	{
-		MultiExtend::Trace::Start();
-
-		if (!MultiExtend::Init())
-		{
-			return false;
-		};
-
-		Get().m_window = SDL_CreateWindow("ObjectTest",
-			100, 100,
-			720,462, SDL_WINDOW_OPENGL);
-
-		if (!Get().m_window)
-		{
-			SDL_Log("SDL create window error:%s", SDL_GetError());
-			return false;
-		}
-
-	/* 
-		SDL_Renderer* renderer = SDL_CreateRenderer(Get().m_window, -1,
-		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	*/
-
-		SDL_Renderer* renderer = SDL_CreateRenderer(Get().m_window, -1,
-			SDL_RENDERER_ACCELERATED | (frameMode == VSYNC ? SDL_RENDERER_PRESENTVSYNC : 0));
-
-		if (!renderer)
-		{
-			SDL_Log("SDL create renderer error:%s", SDL_GetError());
-			return false;
-		}
-		
-
-		Get().m_renderer = renderer;
-		Get().m_isRunning = true;
-
-		Actor * spriteStaticActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
-		MultiExtend::SpriteComponent * spriteStatic = new MultiExtend::SpriteComponent(Get().m_GameStat, Get().m_renderer, "../assets/Ship01.png");
-		spriteStatic->SetSize(Vector2{64, 29});
-		spriteStatic->SetPositionRelative(Vector3{spriteStatic->GetSize()[x]/2, spriteStatic->GetSize()[y]/2,0});
-		spriteStaticActor->AddChildActorComponent(spriteStatic);
-		
-		Actor* spriteAnimateActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
-		std::vector<const char *> textures = 
-		{
-			"../assets/Ship01.png",
-			"../assets/Ship02.png",
-			"../assets/Ship03.png",
-			"../assets/Ship04.png"
-		};
-		MultiExtend::AnimateSpriteComponent* spriteAnimate = new MultiExtend::AnimateSpriteComponent(10,Get().m_GameStat, Get().m_renderer,textures);
-		spriteAnimate->SetSize(Vector2{64, 29});
-		spriteAnimate->SetPositionRelative(Vector3{spriteAnimate->GetSize()[x] / 2, spriteAnimate->GetSize()[y] / 2, 0});
-		spriteAnimateActor->AddChildActorComponent(spriteAnimate);
-		spriteAnimateActor->SetPositionRelative(Vector3{spriteStatic->GetSize()[x],0,0});
-
-		Actor* spriteScrollActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
-		std::vector<const char*> scrolltextures =
-		{
-			"../assets/Farback01.png",
-			"../assets/Farback02.png"
-		};
-		MultiExtend::ScrollSpriteComponent * scrollSprite = new MultiExtend::ScrollSpriteComponent(Get().m_GameStat, Get().m_renderer,scrolltextures);
-		scrollSprite->SetRenderSize(Vector2{512,32});
-		scrollSprite->SetSourceSizeScale(Vector3{.2f, .2f, 1});
-		scrollSprite->SetScrollSpeed(80);
-		scrollSprite->SetOffset(300);
-		spriteScrollActor->AddChildActorComponent(scrollSprite);
-		spriteScrollActor->SetPositionRelative(Vector3{spriteAnimateActor->GetPositionAbsolute()[x] + spriteAnimate->GetSize()[x], 0, 0});
-
-		Get().m_GameActor->AddChildActor(spriteStaticActor);
-		Get().m_GameActor->AddChildActor(spriteAnimateActor);
-		Get().m_GameActor->AddChildActor(spriteScrollActor);
-
-		Actor* starScrollActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
-		std::vector<const char*> starScrolltextures =
-		{
-			"../assets/Stars.png",
-		};
-		MultiExtend::ScrollSpriteComponent* starScrollSprite = new MultiExtend::ScrollSpriteComponent(Get().m_GameStat, Get().m_renderer, starScrolltextures);
-		starScrollSprite->SetRenderSize(Vector2{512, 32});
-		starScrollSprite->SetSourceSizeScale(Vector3{.3f, .3f, 1});
-		starScrollSprite->SetScrollSpeed(40);
-		starScrollSprite->SetOffset(0);
-		starScrollActor->AddChildActorComponent(starScrollSprite);
-		starScrollActor->SetPositionRelative(Vector3{spriteAnimateActor->GetPositionAbsolute()[x] + spriteAnimate->GetSize()[x],0, 0});
-
-		Actor* tileMapActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
-
-		const char * tileMapPath = "../assets/Tiles.png";
-		Texture * tileMap = MultiExtend::LoadTexture(Get().m_GameStat, Get().m_renderer, tileMapPath);
-
-		MultiExtend::TileMapComponent* tileMapA = new MultiExtend::TileMapComponent(Get().m_renderer, tileMap);
-		tileMapA->SetSrcPosition(Vector2{97,1});
-		tileMapA->SetSrcSize(Vector2{30, 30});
-		tileMapA->SetDstSize(Vector2{32, 32});
-
-		MultiExtend::TileMapComponent* tileMapB = new MultiExtend::TileMapComponent(Get().m_renderer, tileMap);
-		tileMapB->SetSrcPosition(Vector2{65, 1});
-		tileMapB->SetSrcSize(Vector2{30, 30});
-		tileMapB->SetDstSize(Vector2{32, 32});
-		tileMapB->SetPositionRelative(Vector3{33,0,0});
-
-		tileMapActor->AddChildActorComponent(tileMapA);
-		tileMapActor->AddChildActorComponent(tileMapB);
-		tileMapActor->SetPositionRelative(Vector3{starScrollActor->GetPositionAbsolute()[x] + starScrollSprite->GetRenderSize()[x], 0, 0});
-
-		std::vector<const char*> ActorStepTextures =
-		{
-			"../assets/Character01.png",
-			"../assets/Character02.png",
-			"../assets/Character03.png",
-			"../assets/Character04.png",
-			"../assets/Character05.png",
-			"../assets/Character06.png"
-		};
-		DynamicAnimateSpriteUnit * AnimateUnit_ActorStep = new DynamicAnimateSpriteUnit(Get().m_GameStat,Get().m_renderer, ActorStepTextures,"Step",LOOP,nullptr);
-
-		std::vector<const char*> JUMPtextures =
-		{
-			"../assets/Character07.png",
-			"../assets/Character08.png",
-			"../assets/Character09.png",
-			"../assets/Character10.png",
-			"../assets/Character11.png",
-			"../assets/Character12.png",
-			"../assets/Character13.png",
-			"../assets/Character14.png",
-			"../assets/Character15.png",
-		};
-		DynamicAnimateSpriteUnit* AnimateUnit_ActorJump = new DynamicAnimateSpriteUnit(Get().m_GameStat, Get().m_renderer, JUMPtextures, "Jump", ONCE, nullptr);
-
-		std::vector<const char*> Punchtextures =
-		{
-			"../assets/Character16.png",
-			"../assets/Character17.png",
-			"../assets/Character18.png"
-		};
-		DynamicAnimateSpriteUnit* AnimateUnit_ActorPunch = new DynamicAnimateSpriteUnit(Get().m_GameStat, Get().m_renderer, Punchtextures, "Punch", ONCE, nullptr);
-
-		std::vector<DynamicAnimateSpriteUnit*> dynamicAnimateSpriteUnits = 
-		{
-			AnimateUnit_ActorStep,
-			AnimateUnit_ActorJump,
-			AnimateUnit_ActorPunch
-		};
-		DynamicAnimateSpriteComponent * PlayerBaseComp = new DynamicAnimateSpriteComponent(Get().m_renderer, dynamicAnimateSpriteUnits);
-
-		PlayerBaseComp->SetDefaultDynamicSpriteUnit("Step");
-		PlayerBaseComp->SetCurrentDynamicSpriteUnit("Step");
-		PlayerBaseComp->SetAnimFPS(12);
-		PlayerBaseComp->SetSize(Vector2{64, 64});
-		PlayerBaseComp->SetTag("PlayerBaseComp");
-
-		Actor* PlayerBaseActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat, "PlayerBase");
-		PlayerBaseActor->AddChildActorComponent(PlayerBaseComp);
-		PlayerBaseActor->SetPositionRelative(Vector3{PlayerBaseComp->GetSize()[x]/2, spriteStatic->GetSize()[y] + PlayerBaseComp->GetSize()[y] / 2,0});
-		
-
-		Get().m_GameActor->AddChildActor(spriteStaticActor);
-		Get().m_GameActor->AddChildActor(spriteAnimateActor);
-		Get().m_GameActor->AddChildActor(spriteScrollActor);
-		Get().m_GameActor->AddChildActor(starScrollActor);
-		Get().m_GameActor->AddChildActor(tileMapActor);
-		Get().m_GameActor->AddChildActor(PlayerBaseActor);
-
-		return true;
-	};
-
-	static void Runloop()
-	{
-		while (Get().m_isRunning)
-		{
-
-			// 返回自 SDL 库初始化（通过 SDL_Init()）以来经过的毫秒数（ms）
-			Uint32 frame_start = SDL_GetTicks();
-
-			{
-				MULTIEXTEND_TIMER_TRACE_TAG(ProcessLoop);
-
-				Get().ProcessInput();
-				Get().UpdateGame();
-				Get().GenerateOuput();
-
-				switch (frameMode) {
-				case CUSTOM:
-				{
-					Uint32 frame_time = SDL_GetTicks() - frame_start;
-					if (frame_time < limitFrameTime) {
-						SDL_Delay(limitFrameTime - frame_time);
-					}
-					break;
-				}
-				case VSYNC:
-					break;
-				case UNLIMITED:
-				default:
-					break;
-				}
-			}
-
-			// 统计帧率
-			Uint32 frameCost = SDL_GetTicks() - frame_start;
-			// MULTIEXTEND_MESSAGE_CLIENT_DEBUG("FPS:{0:.2f}", 1000.0f / frameCost);
-		}
-	};
-
-	static void ShutDown()
-	{
-
-		IMG_Quit();
-
-		SDL_DestroyWindow(Get().m_window);
-		SDL_DestroyRenderer(Get().m_renderer);
-
-		SDL_Quit();
-
-		MultiExtend::Trace::Stop();
-
-		Get().m_isRunning = false;
-	};
+	virtual bool Initialize(
+		const char* windowTitle = "DefaultWindow",
+		Vector2 position = { 100,100 },
+		Vector2 size = { 1280,720 },
+		InitFrameworkTag initTag = SDL,
+		GameFrameMode mode = CUSTOM) override;
 
 private:
-	GameInstance()
-	:m_window(nullptr), m_renderer(nullptr), m_isRunning(false),
-	m_tickcount(0),m_delta(0)
+
+	virtual void CustomProcessInput(const Uint8* state) override;
+};
+
+GameInstance& GameInstance::Get() {
+	static GameInstance instance;
+	return instance;
+}
+
+bool GameInstance::Initialize(
+	const char* windowTitle,
+	Vector2 position,
+	Vector2 size,
+	InitFrameworkTag initTag,
+	GameFrameMode mode)
+{
+	MultiExtend::Trace::Start();
+
+	GameObject::Initialize(windowTitle, position, size, initTag, mode);
+
+	Actor* spriteStaticActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
+	MultiExtend::SpriteSDLComponent* spriteStatic = new MultiExtend::SpriteSDLComponent(Get().m_GameStat, Get().m_renderer, "../assets/Ship01.png");
+	spriteStatic->SetSize(Vector2{ 64, 29 });
+	spriteStatic->SetPositionRelative(Vector3{ spriteStatic->GetSize()[x] / 2, spriteStatic->GetSize()[y] / 2,0 });
+	spriteStaticActor->AddChildActorComponent(spriteStatic);
+
+	Actor* spriteAnimateActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
+	std::vector<const char*> textures =
 	{
-		m_GameStat = MultiExtend::CreateGameStat<GameStat>();
-		m_GameActor = MultiExtend::CreateActor<Actor>(m_GameStat);
+		"../assets/Ship01.png",
+		"../assets/Ship02.png",
+		"../assets/Ship03.png",
+		"../assets/Ship04.png"
 	};
-	
-	virtual ~GameInstance()
+	MultiExtend::AnimateSpriteSDLComponent* spriteAnimate = new MultiExtend::AnimateSpriteSDLComponent(10, Get().m_GameStat, Get().m_renderer, textures);
+	spriteAnimate->SetSize(Vector2{ 64, 29 });
+	spriteAnimate->SetPositionRelative(Vector3{ spriteAnimate->GetSize()[x] / 2, spriteAnimate->GetSize()[y] / 2, 0 });
+	spriteAnimateActor->AddChildActorComponent(spriteAnimate);
+	spriteAnimateActor->SetPositionRelative(Vector3{ spriteStatic->GetSize()[x],0,0 });
+
+	Actor* spriteScrollActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
+	std::vector<const char*> scrolltextures =
 	{
-		IMG_Quit();
-
-		if (m_isRunning)
-		{
-			Get().ShutDown();
-			m_isRunning = false;
-		}
-
-		if (m_window)
-		{
-			SDL_DestroyWindow(m_window);
-		}
-
-		if (m_renderer)
-		{
-			SDL_DestroyRenderer(m_renderer);
-		}
+		"../assets/Farback01.png",
+		"../assets/Farback02.png"
 	};
+	MultiExtend::ScrollSpriteSDLComponent* scrollSprite = new MultiExtend::ScrollSpriteSDLComponent(Get().m_GameStat, Get().m_renderer, scrolltextures);
+	scrollSprite->SetRenderSize(Vector2{ 512,32 });
+	scrollSprite->SetSourceSizeScale(Vector3{ .2f, .2f, 1 });
+	scrollSprite->SetScrollSpeed(80);
+	scrollSprite->SetOffset(300);
+	spriteScrollActor->AddChildActorComponent(scrollSprite);
+	spriteScrollActor->SetPositionRelative(Vector3{ spriteAnimateActor->GetPositionAbsolute()[x] + spriteAnimate->GetSize()[x], 0, 0 });
 
-	void ProcessInput()
+	Get().m_GameActor->AddChildActor(spriteStaticActor);
+	Get().m_GameActor->AddChildActor(spriteAnimateActor);
+	Get().m_GameActor->AddChildActor(spriteScrollActor);
+
+	Actor* starScrollActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
+	std::vector<const char*> starScrolltextures =
 	{
-		MULTIEXTEND_TIMER_TRACE_TAG(ProcessInput);
+		"../assets/Stars.png",
+	};
+	MultiExtend::ScrollSpriteSDLComponent* starScrollSprite = new MultiExtend::ScrollSpriteSDLComponent(Get().m_GameStat, Get().m_renderer, starScrolltextures);
+	starScrollSprite->SetRenderSize(Vector2{ 512, 32 });
+	starScrollSprite->SetSourceSizeScale(Vector3{ .3f, .3f, 1 });
+	starScrollSprite->SetScrollSpeed(40);
+	starScrollSprite->SetOffset(0);
+	starScrollActor->AddChildActorComponent(starScrollSprite);
+	starScrollActor->SetPositionRelative(Vector3{ spriteAnimateActor->GetPositionAbsolute()[x] + spriteAnimate->GetSize()[x],0, 0 });
 
-		SDL_Event event;
-		while (SDL_PollEvent(&event))
+	Actor* tileMapActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat);
+
+	const char* tileMapPath = "../assets/Tiles.png";
+	Texture* tileMap = MultiExtend::LoadTexture(Get().m_GameStat, Get().m_renderer, tileMapPath);
+
+	MultiExtend::TileMapSDLComponent* tileMapA = new MultiExtend::TileMapSDLComponent(Get().m_renderer, tileMap);
+	tileMapA->SetSrcPosition(Vector2{ 97,1 });
+	tileMapA->SetSrcSize(Vector2{ 30, 30 });
+	tileMapA->SetDstSize(Vector2{ 32, 32 });
+
+	MultiExtend::TileMapSDLComponent* tileMapB = new MultiExtend::TileMapSDLComponent(Get().m_renderer, tileMap);
+	tileMapB->SetSrcPosition(Vector2{ 65, 1 });
+	tileMapB->SetSrcSize(Vector2{ 30, 30 });
+	tileMapB->SetDstSize(Vector2{ 32, 32 });
+	tileMapB->SetPositionRelative(Vector3{ 33,0,0 });
+
+	tileMapActor->AddChildActorComponent(tileMapA);
+	tileMapActor->AddChildActorComponent(tileMapB);
+	tileMapActor->SetPositionRelative(Vector3{ starScrollActor->GetPositionAbsolute()[x] + starScrollSprite->GetRenderSize()[x], 0, 0 });
+
+	std::vector<const char*> ActorStepTextures =
+	{
+		"../assets/Character01.png",
+		"../assets/Character02.png",
+		"../assets/Character03.png",
+		"../assets/Character04.png",
+		"../assets/Character05.png",
+		"../assets/Character06.png"
+	};
+	DynamicAnimateSpriteSDLUnit* AnimateUnit_ActorStep = new DynamicAnimateSpriteSDLUnit(Get().m_GameStat, Get().m_renderer, ActorStepTextures, "Step", LOOP, nullptr);
+
+	std::vector<const char*> JUMPtextures =
+	{
+		"../assets/Character07.png",
+		"../assets/Character08.png",
+		"../assets/Character09.png",
+		"../assets/Character10.png",
+		"../assets/Character11.png",
+		"../assets/Character12.png",
+		"../assets/Character13.png",
+		"../assets/Character14.png",
+		"../assets/Character15.png",
+	};
+	DynamicAnimateSpriteSDLUnit* AnimateUnit_ActorJump = new DynamicAnimateSpriteSDLUnit(Get().m_GameStat, Get().m_renderer, JUMPtextures, "Jump", ONCE, nullptr);
+
+	std::vector<const char*> Punchtextures =
+	{
+		"../assets/Character16.png",
+		"../assets/Character17.png",
+		"../assets/Character18.png"
+	};
+	DynamicAnimateSpriteSDLUnit* AnimateUnit_ActorPunch = new DynamicAnimateSpriteSDLUnit(Get().m_GameStat, Get().m_renderer, Punchtextures, "Punch", ONCE, nullptr);
+
+	std::vector<DynamicAnimateSpriteSDLUnit*> dynamicAnimateSpriteUnits =
+	{
+		AnimateUnit_ActorStep,
+		AnimateUnit_ActorJump,
+		AnimateUnit_ActorPunch
+	};
+	DynamicAnimateSpriteSDLComponent* PlayerBaseComp = new DynamicAnimateSpriteSDLComponent(Get().m_renderer, dynamicAnimateSpriteUnits);
+
+	PlayerBaseComp->SetDefaultDynamicSpriteUnit("Step");
+	PlayerBaseComp->SetCurrentDynamicSpriteUnit("Step");
+	PlayerBaseComp->SetAnimFPS(12);
+	PlayerBaseComp->SetSize(Vector2{ 64, 64 });
+	PlayerBaseComp->SetTag("PlayerBaseComp");
+
+	Actor* PlayerBaseActor = MultiExtend::CreateActor<Actor>(Get().m_GameStat, "PlayerBase");
+	PlayerBaseActor->AddChildActorComponent(PlayerBaseComp);
+	PlayerBaseActor->SetPositionRelative(Vector3{ PlayerBaseComp->GetSize()[x] / 2, spriteStatic->GetSize()[y] + PlayerBaseComp->GetSize()[y] / 2,0 });
+
+
+	Get().m_GameActor->AddChildActor(spriteStaticActor);
+	Get().m_GameActor->AddChildActor(spriteAnimateActor);
+	Get().m_GameActor->AddChildActor(spriteScrollActor);
+	Get().m_GameActor->AddChildActor(starScrollActor);
+	Get().m_GameActor->AddChildActor(tileMapActor);
+	Get().m_GameActor->AddChildActor(PlayerBaseActor);
+
+	return true;
+};
+
+void GameInstance::CustomProcessInput(const Uint8* state)
+{
+	MULTIEXTEND_TIMER_TRACE_TAG(CustomProcessInput);
+
+	if (state[SDL_SCANCODE_ESCAPE])
+	{
+		m_isRunning = false;
+	}
+
+	if (state[SDL_SCANCODE_SPACE])
+	{
+		// player base
+		Actor* PlayerBase = Get().m_GameActor->GetChildActor("PlayerBase");
+
+		if (PlayerBase)
 		{
-			switch (event.type)
+			MultiExtend::Component* BaseComp = PlayerBase->GetChildActorComponent("PlayerBaseComp");
+			MultiExtend::DynamicAnimateSpriteSDLComponent* PlayerBaseComp = static_cast<MultiExtend::DynamicAnimateSpriteSDLComponent*>(BaseComp);
+
+			if (PlayerBaseComp && PlayerBaseComp->bCanChangeCurrentUnit())
 			{
-			case SDL_QUIT:
-				m_isRunning = false;
-				break;
-			default:
-				continue;
+				PlayerBaseComp->SetCurrentDynamicSpriteUnit("Jump");
 			}
-		}
+		};
+	}
 
-		// handle keyboard input
-		const Uint8* state = SDL_GetKeyboardState(NULL);
+	if (state[SDL_SCANCODE_Q])
+	{
+		// player base
+		Actor* PlayerBase = Get().m_GameActor->GetChildActor("PlayerBase");
 
-		if (state[SDL_SCANCODE_ESCAPE])
+		if (PlayerBase)
 		{
-			m_isRunning = false;
-		}
+			MultiExtend::Component* BaseComp = PlayerBase->GetChildActorComponent("PlayerBaseComp");
+			MultiExtend::DynamicAnimateSpriteSDLComponent* PlayerBaseComp = static_cast<MultiExtend::DynamicAnimateSpriteSDLComponent*>(BaseComp);
 
-		m_GameActor->ProcessInput(state);
-
-		if (state[SDL_SCANCODE_SPACE])
-		{
-			// player base
-			Actor * PlayerBase = Get().m_GameActor->GetChildActor("PlayerBase");
-
-			if(PlayerBase)
-			{	
-				MultiExtend::Component* BaseComp = PlayerBase->GetChildActorComponent("PlayerBaseComp");
-				MultiExtend::DynamicAnimateSpriteComponent* PlayerBaseComp = static_cast<MultiExtend::DynamicAnimateSpriteComponent*>(BaseComp);
-
-				if(PlayerBaseComp && PlayerBaseComp->bCanChangeCurrentUnit())
-				{
-					PlayerBaseComp->SetCurrentDynamicSpriteUnit("Jump");
-				}
-			};
-		}
-
-		if (state[SDL_SCANCODE_Q])
-		{
-			// player base
-			Actor* PlayerBase = Get().m_GameActor->GetChildActor("PlayerBase");
-
-			if (PlayerBase)
+			if (PlayerBaseComp && PlayerBaseComp->bCanChangeCurrentUnit())
 			{
-				MultiExtend::Component* BaseComp = PlayerBase->GetChildActorComponent("PlayerBaseComp");
-				MultiExtend::DynamicAnimateSpriteComponent* PlayerBaseComp = static_cast<MultiExtend::DynamicAnimateSpriteComponent*>(BaseComp);
-
-				if (PlayerBaseComp && PlayerBaseComp->bCanChangeCurrentUnit())
-				{
-					PlayerBaseComp->SetCurrentDynamicSpriteUnit("Punch");
-				}
-			};
-		}
-	};
-	
-	void UpdateGame()
-	{
-		MULTIEXTEND_TIMER_TRACE_TAG(UpdateGame);
-
-		static auto last_time = MULTIEXTEND_CLOCK_HIGHRES::now();
-
-		auto current_time = MULTIEXTEND_CLOCK_HIGHRES::now();
-
-		m_delta = std::chrono::duration<float>(current_time - last_time).count();
-
-		last_time = current_time;
-
-		// int ticks = SDL_GetTicks();
-		// limit the frame time span to 16ms
-		// while (!SDL_TICKS_PASSED(ticks = SDL_GetTicks(), m_tickcount + 16));
-
-		// m_delta = (ticks - m_tickcount) / 1000.0f;
-		// m_tickcount = ticks;
-
-		// MultiExtend::Math::limit_min(m_delta, 0.05f);
-
-		m_GameActor->Update(m_delta);
-	};
-
-	void GenerateOuput()
-	{
-
-		MULTIEXTEND_TIMER_TRACE_TAG(GenerateOuput);
-
-		SDL_SetRenderDrawColor(Get().m_renderer, 30,30,30,30);
-		ClearRenderer(Get().m_renderer);
-
-		m_GameActor->Draw();
-
-		RenderPresent(Get().m_renderer);
-	};
-
-private:
-
-	bool m_isRunning;
-	SDL_Window * m_window;
-	SDL_Renderer * m_renderer;
-
-	long long int m_tickcount;
-	float m_delta;
-
-	GameStat * m_GameStat;
-	Actor * m_GameActor;
+				PlayerBaseComp->SetCurrentDynamicSpriteUnit("Punch");
+			}
+		};
+	}
 };
 
 int main(int argc, char** argv)
 {
 	{
-		if (GameInstance::Initialize())
+		if (GameInstance::Get().Initialize())
 		{
-			GameInstance::Runloop();
+			GameInstance::Get().Runloop();
 		};
 
-		GameInstance::ShutDown();
+		GameInstance::Get().ShutDown();
 	}
 	return 0;
 }

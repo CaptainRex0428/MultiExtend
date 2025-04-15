@@ -19,11 +19,9 @@ namespace MultiExtend
 
 	enum InitFrameworkTag : int
 	{
-		NONE = 0b00000000,
-		SDL = MULTIEXTEND_BIT(0),
-		OpenGL = MULTIEXTEND_BIT(1),
-		DirectX = MULTIEXTEND_BIT(2),
-		ALL = 0b11111111
+		SDL = 0,
+		OpenGL,
+		DirectX
 	};
 
 	class GameObject : public Object
@@ -39,7 +37,7 @@ namespace MultiExtend
 			const char * windowTitle = "DefaultWindow", 
 			Vector2 position = {100,100},
 			Vector2 size = {1280,720},
-			int initTag = (int)InitFrameworkTag::ALL, 
+			InitFrameworkTag initTag = SDL,
 			GameFrameMode mode = CUSTOM);
 
 		MULTIEXTEND_API virtual void Runloop();
@@ -54,7 +52,7 @@ namespace MultiExtend
 		MULTIEXTEND_API virtual void CustomProcessInput(const Uint8* state);
 
 		MULTIEXTEND_API void UpdateGame();
-		MULTIEXTEND_API virtual void CustomUpdateGame();
+		MULTIEXTEND_API virtual void CustomUpdateGame(float m_delta);
 
 		MULTIEXTEND_API void GenerateOuput();
 		MULTIEXTEND_API virtual void CustomGenerateOuput(const float& ratio);
@@ -73,7 +71,7 @@ namespace MultiExtend
 		GameStat* m_GameStat;
 		Actor* m_GameActor;
 
-		int m_Initialized;
+		InitFrameworkTag m_InitTag;
 		GameFrameMode m_FrameMode;
 
 		Vector2 m_InitSize;

@@ -1,14 +1,14 @@
-#include "Component/Sprite/DynamicAnimateSpriteComponent.h"
+#include "Component/Sprite/DynamicAnimateSpriteSDLComponent.h"
 #include "MultiExtend.h"
 #include "Math/Math.h"
 
-MultiExtend::DynamicAnimateSpriteUnit::DynamicAnimateSpriteUnit(
+MultiExtend::DynamicAnimateSpriteSDLUnit::DynamicAnimateSpriteSDLUnit(
 	GameStat* gameStat,
 	SDL_Renderer* renderer,
 	std::vector<const char*> textureFilePaths,
 	const char* groupTag,
 	DynamicAnimateSpriteUnitUpdateType updateType,
-	DynamicAnimateSpriteUnit* animateUnitNext)
+	DynamicAnimateSpriteSDLUnit* animateUnitNext)
 	:m_GroupTag(groupTag),
 	m_UpdateType(updateType),
 	m_AnimateUnitNext(animateUnitNext)
@@ -28,11 +28,11 @@ MultiExtend::DynamicAnimateSpriteUnit::DynamicAnimateSpriteUnit(
 	
 }
 
-MultiExtend::DynamicAnimateSpriteUnit::DynamicAnimateSpriteUnit(
+MultiExtend::DynamicAnimateSpriteSDLUnit::DynamicAnimateSpriteSDLUnit(
 	std::vector<Texture*> textures,
 	const char* groupTag,
 	DynamicAnimateSpriteUnitUpdateType updateType,
-	DynamicAnimateSpriteUnit* animateUnitNext)
+	DynamicAnimateSpriteSDLUnit* animateUnitNext)
 	:m_GroupTag(groupTag),
 	m_UpdateType(updateType),
 	m_AnimateTextures(textures),
@@ -40,36 +40,36 @@ MultiExtend::DynamicAnimateSpriteUnit::DynamicAnimateSpriteUnit(
 {
 }
 
-MultiExtend::DynamicAnimateSpriteUnit::~DynamicAnimateSpriteUnit()
+MultiExtend::DynamicAnimateSpriteSDLUnit::~DynamicAnimateSpriteSDLUnit()
 {
 }
 
-const char* MultiExtend::DynamicAnimateSpriteUnit::GetGroupTag() const
+const char* MultiExtend::DynamicAnimateSpriteSDLUnit::GetGroupTag() const
 {
 	return m_GroupTag;
 }
 
-void MultiExtend::DynamicAnimateSpriteUnit::SetGroupTag(const char* tag)
+void MultiExtend::DynamicAnimateSpriteSDLUnit::SetGroupTag(const char* tag)
 {
 	m_GroupTag = tag;
 }
 
-MultiExtend::DynamicAnimateSpriteUnitUpdateType MultiExtend::DynamicAnimateSpriteUnit::GetUpdateType() const
+MultiExtend::DynamicAnimateSpriteUnitUpdateType MultiExtend::DynamicAnimateSpriteSDLUnit::GetUpdateType() const
 {
 	return m_UpdateType;
 }
 
-void MultiExtend::DynamicAnimateSpriteUnit::SetUpdateType(DynamicAnimateSpriteUnitUpdateType updateType)
+void MultiExtend::DynamicAnimateSpriteSDLUnit::SetUpdateType(DynamicAnimateSpriteUnitUpdateType updateType)
 {
 	m_UpdateType = updateType;
 }
 
-std::vector<Texture*> MultiExtend::DynamicAnimateSpriteUnit::GetAnimateTextures() const
+std::vector<Texture*> MultiExtend::DynamicAnimateSpriteSDLUnit::GetAnimateTextures() const
 {
 	return m_AnimateTextures;
 }
 
-void MultiExtend::DynamicAnimateSpriteUnit::SetAnimateTextures(std::vector<Texture*>& textures)
+void MultiExtend::DynamicAnimateSpriteSDLUnit::SetAnimateTextures(std::vector<Texture*>& textures)
 {
 	if (textures.size() > 0)
 	{
@@ -77,26 +77,26 @@ void MultiExtend::DynamicAnimateSpriteUnit::SetAnimateTextures(std::vector<Textu
 	}
 }
 
-MultiExtend::DynamicAnimateSpriteUnit* MultiExtend::DynamicAnimateSpriteUnit::GetAnimateUnitNext() const
+MultiExtend::DynamicAnimateSpriteSDLUnit* MultiExtend::DynamicAnimateSpriteSDLUnit::GetAnimateUnitNext() const
 {
 	return m_AnimateUnitNext;
 }
 
-void MultiExtend::DynamicAnimateSpriteUnit::SetAnimateUnitNext(DynamicAnimateSpriteUnit* animateUnitNext)
+void MultiExtend::DynamicAnimateSpriteSDLUnit::SetAnimateUnitNext(DynamicAnimateSpriteSDLUnit* animateUnitNext)
 {
 	this->m_AnimateUnitNext = animateUnitNext;
 }
 
-MultiExtend::DynamicAnimateSpriteComponent::DynamicAnimateSpriteComponent(
+MultiExtend::DynamicAnimateSpriteSDLComponent::DynamicAnimateSpriteSDLComponent(
 	SDL_Renderer* renderer, 
-	std::vector<DynamicAnimateSpriteUnit*> dynamicAnimateSpriteUnits, 
+	std::vector<DynamicAnimateSpriteSDLUnit*> dynamicAnimateSpriteUnits, 
 	float FPS, const char* tag, 
 	Vector3 position, 
 	Vector3 scale, 
 	Vector3 rotation, 
 	Vector2 size, 
 	int updateorder)
-	:SpriteComponent(renderer, dynamicAnimateSpriteUnits[0]->GetAnimateTextures()[0], tag, position, scale, rotation, size, updateorder),
+	:SpriteSDLComponent(renderer, dynamicAnimateSpriteUnits[0]->GetAnimateTextures()[0], tag, position, scale, rotation, size, updateorder),
 	m_FPS(FPS),
 	m_currentFrame(0),
 	bResetCurrentFrame(false),
@@ -106,11 +106,11 @@ MultiExtend::DynamicAnimateSpriteComponent::DynamicAnimateSpriteComponent(
 {
 }
 
-MultiExtend::DynamicAnimateSpriteComponent::~DynamicAnimateSpriteComponent()
+MultiExtend::DynamicAnimateSpriteSDLComponent::~DynamicAnimateSpriteSDLComponent()
 {
 }
 
-void MultiExtend::DynamicAnimateSpriteComponent::Update(float delta)
+void MultiExtend::DynamicAnimateSpriteSDLComponent::Update(float delta)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(UpdateDynamicAnimateSpriteComponent);
 
@@ -136,36 +136,36 @@ void MultiExtend::DynamicAnimateSpriteComponent::Update(float delta)
 		
 		size_t resetIdx = (int)m_currentFrame;
 		resetIdx = resetIdx < m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures().size() ? resetIdx : (m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures().size() - 1);
-		SpriteComponent::SetTexture(m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures()[resetIdx]);
+		SpriteSDLComponent::SetTexture(m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures()[resetIdx]);
 
 		// MULTIEXTEND_MESSAGE_CLIENT_DEBUG(m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures().size());
 		// MULTIEXTEND_MESSAGE_CLIENT_DEBUG(m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures()[resetIdx]->GetHash());
 	}
 
-	SpriteComponent::Update(delta);
+	SpriteSDLComponent::Update(delta);
 }
 
-bool MultiExtend::DynamicAnimateSpriteComponent::isFinished()
+bool MultiExtend::DynamicAnimateSpriteSDLComponent::isFinished()
 {
 	return m_DynamicAnimateSpriteUnit_Current->GetUpdateType() == ONCE && (int)m_currentFrame == m_DynamicAnimateSpriteUnit_Current->GetAnimateTextures().size()-1;
 }
 
-bool MultiExtend::DynamicAnimateSpriteComponent::bCanChangeCurrentUnit()
+bool MultiExtend::DynamicAnimateSpriteSDLComponent::bCanChangeCurrentUnit()
 {
 	return m_DynamicAnimateSpriteUnit_Current->GetUpdateType() == LOOP || isFinished();
 }
 
-float MultiExtend::DynamicAnimateSpriteComponent::GetAnimFPS() const
+float MultiExtend::DynamicAnimateSpriteSDLComponent::GetAnimFPS() const
 {
 	return m_FPS;
 }
 
-void MultiExtend::DynamicAnimateSpriteComponent::SetAnimFPS(float fps)
+void MultiExtend::DynamicAnimateSpriteSDLComponent::SetAnimFPS(float fps)
 {
 	m_FPS = fps > 0 ? fps : 0;
 }
 
-void MultiExtend::DynamicAnimateSpriteComponent::SetCurrentDynamicSpriteUnit(int idx)
+void MultiExtend::DynamicAnimateSpriteSDLComponent::SetCurrentDynamicSpriteUnit(int idx)
 {
 	if(bCanChangeCurrentUnit())
 	{
@@ -176,7 +176,7 @@ void MultiExtend::DynamicAnimateSpriteComponent::SetCurrentDynamicSpriteUnit(int
 	}
 }
 
-void MultiExtend::DynamicAnimateSpriteComponent::SetCurrentDynamicSpriteUnit(const char* tag)
+void MultiExtend::DynamicAnimateSpriteSDLComponent::SetCurrentDynamicSpriteUnit(const char* tag)
 {
 
 	// MULTIEXTEND_MESSAGE_CLIENT_DEBUG(this->m_DynamicAnimateSpriteUnits.size());
@@ -184,7 +184,7 @@ void MultiExtend::DynamicAnimateSpriteComponent::SetCurrentDynamicSpriteUnit(con
 	auto iter = m_DynamicAnimateSpriteUnits.begin();
 	for (; iter != m_DynamicAnimateSpriteUnits.end(); ++iter)
 	{
-		DynamicAnimateSpriteUnit * SpriteUnit = *iter;
+		DynamicAnimateSpriteSDLUnit * SpriteUnit = *iter;
 		const char * groupTag = SpriteUnit->GetGroupTag();
 
 		if(*groupTag == *tag)
@@ -197,7 +197,7 @@ void MultiExtend::DynamicAnimateSpriteComponent::SetCurrentDynamicSpriteUnit(con
 	};
 }
 
-void MultiExtend::DynamicAnimateSpriteComponent::SetDefaultDynamicSpriteUnit(int idx)
+void MultiExtend::DynamicAnimateSpriteSDLComponent::SetDefaultDynamicSpriteUnit(int idx)
 {
 	if (bCanChangeCurrentUnit())
 	{
@@ -208,12 +208,12 @@ void MultiExtend::DynamicAnimateSpriteComponent::SetDefaultDynamicSpriteUnit(int
 	}
 }
 
-void MultiExtend::DynamicAnimateSpriteComponent::SetDefaultDynamicSpriteUnit(const char* tag)
+void MultiExtend::DynamicAnimateSpriteSDLComponent::SetDefaultDynamicSpriteUnit(const char* tag)
 {
 	auto iter = m_DynamicAnimateSpriteUnits.begin();
 	for (; iter != m_DynamicAnimateSpriteUnits.end(); ++iter)
 	{
-		DynamicAnimateSpriteUnit* SpriteUnit = *iter;
+		DynamicAnimateSpriteSDLUnit* SpriteUnit = *iter;
 		const char* groupTag = SpriteUnit->GetGroupTag();
 
 		if (groupTag == tag)
@@ -226,7 +226,7 @@ void MultiExtend::DynamicAnimateSpriteComponent::SetDefaultDynamicSpriteUnit(con
 	};
 }
 
-void MultiExtend::DynamicAnimateSpriteComponent::AddAnimateSpriteUnit(DynamicAnimateSpriteUnit* dynamicAnimateSpriteUnit)
+void MultiExtend::DynamicAnimateSpriteSDLComponent::AddAnimateSpriteUnit(DynamicAnimateSpriteSDLUnit* dynamicAnimateSpriteUnit)
 {
 	if (std::find(m_DynamicAnimateSpriteUnits.begin(), m_DynamicAnimateSpriteUnits.end(),
 		dynamicAnimateSpriteUnit) == m_DynamicAnimateSpriteUnits.end())
@@ -235,15 +235,15 @@ void MultiExtend::DynamicAnimateSpriteComponent::AddAnimateSpriteUnit(DynamicAni
 	}
 }
 
-void MultiExtend::DynamicAnimateSpriteComponent::RemoveAnimateSpriteUnit(DynamicAnimateSpriteUnit* dynamicAnimateSpriteUnit)
+void MultiExtend::DynamicAnimateSpriteSDLComponent::RemoveAnimateSpriteUnit(DynamicAnimateSpriteSDLUnit* dynamicAnimateSpriteUnit)
 {
 	auto it = std::remove_if(m_DynamicAnimateSpriteUnits.begin(), m_DynamicAnimateSpriteUnits.end(),
-		[dynamicAnimateSpriteUnit](DynamicAnimateSpriteUnit* SpriteUnit) -> bool {return *dynamicAnimateSpriteUnit->GetGroupTag() == *SpriteUnit->GetGroupTag(); });
+		[dynamicAnimateSpriteUnit](DynamicAnimateSpriteSDLUnit* SpriteUnit) -> bool {return *dynamicAnimateSpriteUnit->GetGroupTag() == *SpriteUnit->GetGroupTag(); });
 	
 	m_DynamicAnimateSpriteUnits.erase(it);
 }
 
-void MultiExtend::DynamicAnimateSpriteComponent::SetCurrentFrame(float frame)
+void MultiExtend::DynamicAnimateSpriteSDLComponent::SetCurrentFrame(float frame)
 {
 	m_currentFrame = frame;
 

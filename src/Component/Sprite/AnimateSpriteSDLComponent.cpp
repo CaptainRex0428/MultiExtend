@@ -1,7 +1,7 @@
-#include "Component/Sprite/AnimateSpriteComponent.h"
+#include "Component/Sprite/AnimateSpriteSDLComponent.h"
 #include "MultiExtend.h"
 
-MultiExtend::AnimateSpriteComponent::AnimateSpriteComponent(
+MultiExtend::AnimateSpriteSDLComponent::AnimateSpriteSDLComponent(
 	float FPS,
 	GameStat* gameStat,
 	SDL_Renderer* renderer, 
@@ -12,7 +12,7 @@ MultiExtend::AnimateSpriteComponent::AnimateSpriteComponent(
 	Vector3 rotation,
 	Vector2 size,
 	int updateorder):
-	SpriteComponent(gameStat, renderer, textureFilePaths[0], tag, position, scale, rotation, size, updateorder),
+	SpriteSDLComponent(gameStat, renderer, textureFilePaths[0], tag, position, scale, rotation, size, updateorder),
 	m_FPS(FPS),
 	m_currentFrame(0)
 {
@@ -27,7 +27,7 @@ MultiExtend::AnimateSpriteComponent::AnimateSpriteComponent(
 	};
 }
 
-MultiExtend::AnimateSpriteComponent::AnimateSpriteComponent(
+MultiExtend::AnimateSpriteSDLComponent::AnimateSpriteSDLComponent(
 	float FPS,
 	SDL_Renderer* renderer,
 	std::vector<Texture*> textures,
@@ -37,18 +37,18 @@ MultiExtend::AnimateSpriteComponent::AnimateSpriteComponent(
 	Vector3 rotation,
 	Vector2 size,
 	int updateorder) :
-	SpriteComponent(renderer, textures[0], tag, position, scale, rotation, size, updateorder),
+	SpriteSDLComponent(renderer, textures[0], tag, position, scale, rotation, size, updateorder),
 	m_FPS(FPS),
 	m_currentFrame(0)
 {
 	m_animateTextures = textures;
 }
 
-MultiExtend::AnimateSpriteComponent::~AnimateSpriteComponent()
+MultiExtend::AnimateSpriteSDLComponent::~AnimateSpriteSDLComponent()
 {
 }
 
-void MultiExtend::AnimateSpriteComponent::Update(float delta)
+void MultiExtend::AnimateSpriteSDLComponent::Update(float delta)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(UpdateAnimateSpriteComponent);
 
@@ -60,13 +60,13 @@ void MultiExtend::AnimateSpriteComponent::Update(float delta)
 
 		resetIdx = resetIdx < m_animateTextures.size() ? resetIdx :(m_animateTextures.size()-1);
 
-		SpriteComponent::SetTexture(m_animateTextures[resetIdx]);
+		SpriteSDLComponent::SetTexture(m_animateTextures[resetIdx]);
 	}
 
-	SpriteComponent::Update(delta);
+	SpriteSDLComponent::Update(delta);
 }
 
-void MultiExtend::AnimateSpriteComponent::SetAnimTextures(std::vector<Texture*>& animateTextures)
+void MultiExtend::AnimateSpriteSDLComponent::SetAnimTextures(std::vector<Texture*>& animateTextures)
 {
 	if(animateTextures.size() > 0)
 	{
@@ -75,17 +75,17 @@ void MultiExtend::AnimateSpriteComponent::SetAnimTextures(std::vector<Texture*>&
 	
 }
 
-float MultiExtend::AnimateSpriteComponent::GetAnimFPS() const
+float MultiExtend::AnimateSpriteSDLComponent::GetAnimFPS() const
 {
 	return m_FPS;
 }
 
-void MultiExtend::AnimateSpriteComponent::SetAnimFPS(float fps)
+void MultiExtend::AnimateSpriteSDLComponent::SetAnimFPS(float fps)
 {
 	m_FPS = fps > 0? fps : 0;
 }
 
-void MultiExtend::AnimateSpriteComponent::SetCurrentFrame(float frame)
+void MultiExtend::AnimateSpriteSDLComponent::SetCurrentFrame(float frame)
 {
 	m_currentFrame = frame;
 

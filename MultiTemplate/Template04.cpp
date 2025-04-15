@@ -17,7 +17,7 @@ public:
 		const char* windowTitle = "DefaultWindow",
 		Vector2 position = { 100,100 },
 		Vector2 size = { 1280,720 },
-		int initTag = (int)InitFrameworkTag::ALL,
+		InitFrameworkTag initTag = OpenGL,
 		GameFrameMode mode = CUSTOM) override;
 
 	virtual void CustomGenerateOuput(const float& ratio) override;
@@ -37,12 +37,12 @@ bool GameInstance::Initialize(
 	const char* windowTitle,
 	Vector2 position,
 	Vector2 size,
-	int initTag,
+	InitFrameworkTag initTag,
 	GameFrameMode mode)
 {
-	GameObject::Initialize(windowTitle, position, size, initTag, mode);
-
 	MultiExtend::Trace::Start();
+
+	GameObject::Initialize(windowTitle, position, size, initTag, mode);
 
 	m_shader = CreateShaderGL(m_GameStat, "../shader/basic.glsl");
 

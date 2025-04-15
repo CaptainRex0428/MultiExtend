@@ -1,8 +1,8 @@
-﻿#include "Component/Sprite/ScrollComponent.h"
+﻿#include "Component/Sprite/ScrollSDLComponent.h"
 #include "MultiExtend.h"
 #include "Math/Math.h"
 
-MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
+MultiExtend::ScrollSpriteSDLComponent::ScrollSpriteSDLComponent(
 	GameStat* GameStat,
 	SDL_Renderer* renderer,
 	std::vector<const char*> texturefilepaths,
@@ -15,7 +15,7 @@ MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
 	Vector3 position, Vector3 scale,
 	Vector3 rotation, Vector2 renderSize)
 	:
-	SpriteComponent(GameStat, renderer, texturefilepaths[0], tag, position, scale, rotation, Vector2{0, 0}, updateorder),
+	SpriteSDLComponent(GameStat, renderer, texturefilepaths[0], tag, position, scale, rotation, Vector2{0, 0}, updateorder),
 	m_ScrollSpeed(scrollspeed),
 	m_sourceSizeScale(sourceSizeScale),
 	m_limitedSourceSizeScale(sourceSizeScale),
@@ -40,7 +40,7 @@ MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
 	RefreshLimit();
 }
 
-MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
+MultiExtend::ScrollSpriteSDLComponent::ScrollSpriteSDLComponent(
 	SDL_Renderer* renderer,
 	std::vector<Texture*> textures,
 	float scrollspeed,
@@ -52,7 +52,7 @@ MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
 	Vector3 position, Vector3 scale,
 	Vector3 rotation, Vector2 renderSize)
 	:
-	SpriteComponent(renderer, textures[0], tag, position, scale, rotation, Vector2{0, 0}, updateorder),
+	SpriteSDLComponent(renderer, textures[0], tag, position, scale, rotation, Vector2{0, 0}, updateorder),
 	m_ScrollSpeed(scrollspeed),
 	m_sourceSizeScale(sourceSizeScale),
 	m_limitedSourceSizeScale(sourceSizeScale),
@@ -69,7 +69,7 @@ MultiExtend::ScrollSpriteComponent::ScrollSpriteComponent(
 	RefreshLimit();
 }
 
-MultiExtend::ScrollSpriteComponent::~ScrollSpriteComponent()
+MultiExtend::ScrollSpriteSDLComponent::~ScrollSpriteSDLComponent()
 {
 	for (Texture* texture : m_Textures)
 	{
@@ -79,11 +79,11 @@ MultiExtend::ScrollSpriteComponent::~ScrollSpriteComponent()
 	m_Textures.clear();
 }
 
-void MultiExtend::ScrollSpriteComponent::Update(float delta)
+void MultiExtend::ScrollSpriteSDLComponent::Update(float delta)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(UpdateScrollSpriteComponent);
 
-	SpriteComponent::Update(delta);
+	SpriteSDLComponent::Update(delta);
 
 	float direction = bReverse ? -1.0f : 1.0f;
 	float offset = direction * m_ScrollSpeed * delta;
@@ -115,7 +115,7 @@ void MultiExtend::ScrollSpriteComponent::Update(float delta)
 	}
 }
 
-void MultiExtend::ScrollSpriteComponent::Draw(const float & ratio)
+void MultiExtend::ScrollSpriteSDLComponent::Draw(const float & ratio)
 {
 	
 	MULTIEXTEND_TIMER_TRACE_TAG(DrawScrollSpriteComponent);
@@ -218,7 +218,7 @@ void MultiExtend::ScrollSpriteComponent::Draw(const float & ratio)
 
 }
 
-void MultiExtend::ScrollSpriteComponent::SetScrollTextures(const std::vector<Texture*>& textures)
+void MultiExtend::ScrollSpriteSDLComponent::SetScrollTextures(const std::vector<Texture*>& textures)
 {
 	if(m_Textures.empty()) return;
 
@@ -227,36 +227,36 @@ void MultiExtend::ScrollSpriteComponent::SetScrollTextures(const std::vector<Tex
 	RefreshLimit();
 }
 
-void MultiExtend::ScrollSpriteComponent::SetRenderSize(const Vector2 size)
+void MultiExtend::ScrollSpriteSDLComponent::SetRenderSize(const Vector2 size)
 {
 	m_renderSize = size;
 
 	RefreshLimit();
 }
 
-Vector2 MultiExtend::ScrollSpriteComponent::GetRenderSize()
+Vector2 MultiExtend::ScrollSpriteSDLComponent::GetRenderSize()
 {
 	return m_renderSize;
 }
 
-void MultiExtend::ScrollSpriteComponent::SetSourceSizeScale(const Vector3 size)
+void MultiExtend::ScrollSpriteSDLComponent::SetSourceSizeScale(const Vector3 size)
 {
 	m_sourceSizeScale = size;
 
 	RefreshLimit();
 }
 
-Vector3 MultiExtend::ScrollSpriteComponent::GetSourceSizeScale()
+Vector3 MultiExtend::ScrollSpriteSDLComponent::GetSourceSizeScale()
 {
 	return m_sourceSizeScale;
 }
 
-Vector3 MultiExtend::ScrollSpriteComponent::GetLimitedSourceSizeScale()
+Vector3 MultiExtend::ScrollSpriteSDLComponent::GetLimitedSourceSizeScale()
 {
 	return m_limitedSourceSizeScale;
 }
 
-void MultiExtend::ScrollSpriteComponent::SetOffset(float offset)
+void MultiExtend::ScrollSpriteSDLComponent::SetOffset(float offset)
 {
 	Math::limit_min(offset,0);
 	m_offset = offset;
@@ -264,32 +264,32 @@ void MultiExtend::ScrollSpriteComponent::SetOffset(float offset)
 	RefreshLimit();
 }
 
-const float& MultiExtend::ScrollSpriteComponent::GetOffset()
+const float& MultiExtend::ScrollSpriteSDLComponent::GetOffset()
 {
 	return m_offset;
 }
 
-const float& MultiExtend::ScrollSpriteComponent::GetLimitedOffset()
+const float& MultiExtend::ScrollSpriteSDLComponent::GetLimitedOffset()
 {
 	return m_limitOffset;
 }
 
-void MultiExtend::ScrollSpriteComponent::SetScrollSpeed(float speed)
+void MultiExtend::ScrollSpriteSDLComponent::SetScrollSpeed(float speed)
 {
 	m_ScrollSpeed = speed;
 }
 
-float MultiExtend::ScrollSpriteComponent::GetScrollSpeed() const
+float MultiExtend::ScrollSpriteSDLComponent::GetScrollSpeed() const
 {
 	return m_ScrollSpeed;
 }
 
-void MultiExtend::ScrollSpriteComponent::ReverseScroll()
+void MultiExtend::ScrollSpriteSDLComponent::ReverseScroll()
 {
 	this->bReverse = this->bReverse ? false : true;
 }
 
-void MultiExtend::ScrollSpriteComponent::RefreshLimit()
+void MultiExtend::ScrollSpriteSDLComponent::RefreshLimit()
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(RefreshLimit);
 
@@ -297,7 +297,7 @@ void MultiExtend::ScrollSpriteComponent::RefreshLimit()
 	this->RefreshLimitedOffset();
 }
 
-void MultiExtend::ScrollSpriteComponent::RefreshLimitedSizeScale()
+void MultiExtend::ScrollSpriteSDLComponent::RefreshLimitedSizeScale()
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(RefreshLimitedSizeScale);
 
@@ -338,7 +338,7 @@ void MultiExtend::ScrollSpriteComponent::RefreshLimitedSizeScale()
 	}
 }
 
-void MultiExtend::ScrollSpriteComponent::RefreshLimitedOffset()
+void MultiExtend::ScrollSpriteSDLComponent::RefreshLimitedOffset()
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(RefreshLimitedOffset);
 

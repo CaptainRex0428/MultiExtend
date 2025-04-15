@@ -3,16 +3,16 @@
 #include <vector>
 
 #include "MultiExtendAPI.h"
-#include "SpriteComponent.h"
+#include "SpriteSDLComponent.h"
 
-#include "AnimateSpriteComponentConfig.h"
+#include "AnimateSpriteSDLComponentConfig.h"
 
 namespace MultiExtend
 {
-	class AnimateSpriteComponent: public SpriteComponent
+	class AnimateSpriteSDLComponent: public SpriteSDLComponent
 	{
 	public:
-		MULTIEXTEND_API AnimateSpriteComponent(
+		MULTIEXTEND_API AnimateSpriteSDLComponent(
 			float FPS,
 			GameStat* gameStat,
 			SDL_Renderer* renderer,
@@ -24,7 +24,7 @@ namespace MultiExtend
 			Vector2 size = Vector2{32,32},
 			int updateorder = DEFAULT_UPDATEORDER);
 
-		MULTIEXTEND_API AnimateSpriteComponent(
+		MULTIEXTEND_API AnimateSpriteSDLComponent(
 			float FPS,
 			SDL_Renderer* renderer,
 			std::vector<Texture*> textures,
@@ -35,7 +35,7 @@ namespace MultiExtend
 			Vector2 size = Vector2{ 32,32 },
 			int updateorder = DEFAULT_UPDATEORDER);
 
-		MULTIEXTEND_API virtual ~AnimateSpriteComponent();
+		MULTIEXTEND_API virtual ~AnimateSpriteSDLComponent();
 
 		MULTIEXTEND_API virtual void Update(float delta) override;
 
