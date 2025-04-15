@@ -1,6 +1,6 @@
 ﻿#include "Object/GameObject.h"
 
-#include "MultiExtend.h"
+#include "MultiExtendRender.h"
 
 #include "SDL.h"
 #include "SDL_image.h"
@@ -204,7 +204,7 @@ void MultiExtend::GameObject::ShutDown()
 
 MultiExtend::GameObject::GameObject()
 	:m_window(nullptr), m_renderer(nullptr), m_isRunning(false),
-	m_tickcount(0), m_delta(0), m_GLContext(nullptr), m_InitTag(SDL), m_FrameMode(CUSTOM),
+	m_tickcount(0), m_delta(0), m_GLContext(nullptr), m_InitTag(InitFrameworkTag::SDL), m_FrameMode(CUSTOM),
 	m_InitSize({0,0})
 {
 	m_GameStat = MultiExtend::CreateGameStat<GameStat>();

@@ -2,7 +2,8 @@
 #include <fstream>
 #include <Windows.h>
 
-#include "MultiExtend.h"
+#include "MultiExtendRender.h"
+
 #include "Math/Math.h"
 #include "Math/Color.h"
 #include "Config/Game.h"
