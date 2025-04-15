@@ -79,11 +79,11 @@ MultiExtend::ScrollSpriteSDLComponent::~ScrollSpriteSDLComponent()
 	m_Textures.clear();
 }
 
-void MultiExtend::ScrollSpriteSDLComponent::Update(float delta)
+void MultiExtend::ScrollSpriteSDLComponent::CustomUpdate(float delta)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(UpdateScrollSpriteComponent);
 
-	SpriteSDLComponent::Update(delta);
+	SpriteSDLComponent::CustomUpdate(delta);
 
 	float direction = bReverse ? -1.0f : 1.0f;
 	float offset = direction * m_ScrollSpeed * delta;
@@ -115,7 +115,7 @@ void MultiExtend::ScrollSpriteSDLComponent::Update(float delta)
 	}
 }
 
-void MultiExtend::ScrollSpriteSDLComponent::Draw(const float & ratio)
+void MultiExtend::ScrollSpriteSDLComponent::CustomDraw(const Vector2& size)
 {
 	
 	MULTIEXTEND_TIMER_TRACE_TAG(DrawScrollSpriteComponent);
@@ -214,7 +214,7 @@ void MultiExtend::ScrollSpriteSDLComponent::Draw(const float & ratio)
 		drawIdx = (drawIdx + 1) % m_Textures.size();
 	}
 
-	ActorComponent::Draw(ratio);
+	ActorComponent::CustomDraw(size);
 
 }
 

@@ -7,6 +7,8 @@
 
 #include "Object/GameObject.h"
 
+#include "glew.h"
+#include <GLFW/glfw3.h>
 
 class GameInstance : public GameObject
 {
@@ -20,7 +22,7 @@ public:
 		InitFrameworkTag initTag = OpenGL,
 		GameFrameMode mode = CUSTOM) override;
 
-	virtual void CustomGenerateOuput(const float& ratio) override;
+	virtual void CustomGenerateOuput(const Vector2& size) override;
 
 private:
 
@@ -61,9 +63,9 @@ bool GameInstance::Initialize(
 	return true;
 }
 
-void GameInstance::CustomGenerateOuput(const float& ratio)
+void GameInstance::CustomGenerateOuput(const Vector2& size)
 {
-	DrawVertices(m_buffer, m_shader, GL_TRIANGLES, ratio);
+	DrawVertices(m_buffer, m_shader, GL_TRIANGLES, size[x]/size[y]);
 }
 
 

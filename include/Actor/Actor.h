@@ -29,8 +29,8 @@ namespace MultiExtend
 		MULTIEXTEND_API void Update(float delta) override;
 		MULTIEXTEND_API virtual void CustomUpdate(float delta) override;
 
-		MULTIEXTEND_API void Draw(const float & ratio = 0) override;
-		MULTIEXTEND_API virtual void CustomDraw() override;
+		MULTIEXTEND_API void Draw(const Vector2 & size) override;
+		MULTIEXTEND_API virtual void CustomDraw(const Vector2& size) override;
 
 		MULTIEXTEND_API void ProcessInput(const uint8_t * keyState) override;
 		MULTIEXTEND_API virtual void CustomInput(const uint8_t * keyState) override;

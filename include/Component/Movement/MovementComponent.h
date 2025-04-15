@@ -21,7 +21,7 @@ namespace MultiExtend
 
 		MULTIEXTEND_API virtual void CustomInput(const uint8_t* keyState) override {};
 		MULTIEXTEND_API virtual void CustomUpdate(float delta) override;
-		MULTIEXTEND_API virtual void CustomDraw() override {};
+		MULTIEXTEND_API virtual void CustomDraw(const Vector2& size) override {};
 
 		Vector3 GetAngularSpeed() const;
 		float GetForwardSpeed() const;

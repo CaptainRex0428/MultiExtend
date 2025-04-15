@@ -55,7 +55,7 @@ namespace MultiExtend
 		MULTIEXTEND_API virtual void CustomUpdateGame(float m_delta);
 
 		MULTIEXTEND_API void GenerateOuput();
-		MULTIEXTEND_API virtual void CustomGenerateOuput(const float& ratio);
+		MULTIEXTEND_API virtual void CustomGenerateOuput(const Vector2& size);
 
 	protected:
 

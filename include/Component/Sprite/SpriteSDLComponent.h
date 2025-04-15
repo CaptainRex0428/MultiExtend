@@ -8,8 +8,6 @@
 
 #include "SpriteSDLComponentConfig.h"
 
-#define BaseSpriteComponentTypeName "BaseSpriteComponent"
-
 namespace MultiExtend
 {
 	class SpriteSDLComponent : public ActorComponent
@@ -19,7 +17,7 @@ namespace MultiExtend
 			GameStat * gameStat,
 			SDL_Renderer * renderer,
 			const char* texturefilepath = nullptr,
-			const char* tag = BaseSpriteComponentTypeName,
+			const char* tag = BaseSpriteSDLComponentTypeName,
 			Vector3 postion = Vector3{0.0f, 0.0f, 0.0f},
 			Vector3 scale = Vector3{1.0f, 1.0f, 1.0f},
 			Vector3 rotation = Vector3{0.0f, 0.0f, 0.0f},
@@ -29,7 +27,7 @@ namespace MultiExtend
 		MULTIEXTEND_API SpriteSDLComponent(
 			SDL_Renderer * renderer,
 			Texture* texture = nullptr,
-			const char* tag = BaseSpriteComponentTypeName,
+			const char* tag = BaseSpriteSDLComponentTypeName,
 			Vector3 postion = Vector3{ 0.0f, 0.0f, 0.0f },
 			Vector3 scale = Vector3{ 1.0f, 1.0f, 1.0f },
 			Vector3 rotation = Vector3{ 0.0f, 0.0f, 0.0f },
@@ -38,8 +36,8 @@ namespace MultiExtend
 
 		MULTIEXTEND_API virtual ~SpriteSDLComponent();
 
-		MULTIEXTEND_API virtual void Update(float delta) override;
-		MULTIEXTEND_API virtual void Draw(const float & ratio) override;
+		MULTIEXTEND_API virtual void CustomUpdate(float delta) override;
+		MULTIEXTEND_API virtual void CustomDraw(const Vector2& size) override;
 
 		MULTIEXTEND_API virtual void SetTexture(Texture * texture);
 

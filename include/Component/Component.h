@@ -28,8 +28,8 @@ namespace MultiExtend
 		MULTIEXTEND_API void Update(float delta) = 0;
 		MULTIEXTEND_API virtual void CustomUpdate(float delta) = 0;
 
-		MULTIEXTEND_API void Draw(const float& ratio) = 0;
-		MULTIEXTEND_API virtual void CustomDraw() = 0;
+		MULTIEXTEND_API void Draw(const Vector2& size) = 0;
+		MULTIEXTEND_API virtual void CustomDraw(const Vector2& size) = 0;
 
 		MULTIEXTEND_API const char* GetTag() const override;
 		MULTIEXTEND_API virtual void SetTag(const char* type) override;

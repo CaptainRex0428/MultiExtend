@@ -21,7 +21,7 @@ namespace MultiExtend
 			std::vector<const char*> texturefilepaths,
 			float scrollspeed = 88,
 			float offset = 0,
-			const char* tag = BaseSpriteComponentTypeName,
+			const char* tag = BaseSpriteSDLComponentTypeName,
 			int updateorder = DEFAULT_UPDATEORDER,
 			ScrollDirect direct = SCROLL_HORIZON,
 			Vector3 sourceSizeScale = Vector3{1.0f, 1.0f, 1.0f},
@@ -35,7 +35,7 @@ namespace MultiExtend
 			std::vector<Texture*> textures,
 			float scrollspeed = 88,
 			float offset = 0,
-			const char* tag = BaseSpriteComponentTypeName,
+			const char* tag = BaseSpriteSDLComponentTypeName,
 			int updateorder = DEFAULT_UPDATEORDER,
 			ScrollDirect direct = SCROLL_HORIZON,
 			Vector3 sourceSizeScale = Vector3{ 1.0f, 1.0f, 1.0f },
@@ -46,8 +46,8 @@ namespace MultiExtend
 
 		MULTIEXTEND_API virtual ~ScrollSpriteSDLComponent();
 
-		MULTIEXTEND_API virtual void Update(float delta) override;
-		MULTIEXTEND_API virtual void Draw(const float & ratio) override;
+		MULTIEXTEND_API virtual void CustomUpdate(float delta) override;
+		MULTIEXTEND_API virtual void CustomDraw(const Vector2& size) override;
 
 		MULTIEXTEND_API virtual void SetScrollTextures(const std::vector<Texture*>& textures);
 

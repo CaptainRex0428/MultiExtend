@@ -373,7 +373,7 @@ void MultiExtend::Actor::Update(float delta)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(UpdateBasicActor);
 
-	if(m_State & State::State_UPDATE)
+	if(GetState(Tag_VALID) && GetState(Tag_UPDATE))
 	{
 		CustomUpdate(delta);
 
@@ -395,37 +395,37 @@ void MultiExtend::Actor::CustomUpdate(float delta)
 	
 }
 
-void MultiExtend::Actor::Draw(const float & ratio)
+void MultiExtend::Actor::Draw(const Vector2& size)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(DrawBasicActor);
 	
-	if (m_State & State::State_DISPLAY)
+	if (GetState(Tag_VALID) && GetState(Tag_DISPLAY))
 	{
-		CustomDraw();
+		CustomDraw(size);
 
-		m_ActorComponentRoot->Draw(ratio);
+		m_ActorComponentRoot->Draw(size);
 
 		for (auto component : m_Components)
 		{
-			component->Draw(ratio);
+			component->Draw(size);
 		}
 
 		for (auto child : m_ChildActors)
 		{
-			child->Draw(ratio);
+			child->Draw(size);
 		}
 		
 	}
 }
 
-void MultiExtend::Actor::CustomDraw()
+void MultiExtend::Actor::CustomDraw(const Vector2& size)
 {
 	
 }
 
 void MultiExtend::Actor::ProcessInput(const uint8_t* keyState)
 {
-	if(m_State & State::State_INPUT)
+	if(GetState(Tag_VALID) && GetState(Tag_INPUT))
 	{
 		for (auto comp : m_Components)
 		{

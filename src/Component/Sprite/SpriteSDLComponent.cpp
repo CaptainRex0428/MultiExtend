@@ -47,11 +47,11 @@ MultiExtend::SpriteSDLComponent::~SpriteSDLComponent()
 {
 }
 
-void MultiExtend::SpriteSDLComponent::Update(float delta)
+void MultiExtend::SpriteSDLComponent::CustomUpdate(float delta)
 {
-	MULTIEXTEND_TIMER_TRACE_TAG(UpdateSpriteComponent);
+	MULTIEXTEND_TIMER_TRACE_TAG(CustomUpdateSpriteComponent);
 
-	ActorComponent::Update(delta);
+	ActorComponent::CustomUpdate(delta);
 }
 
 void MultiExtend::SpriteSDLComponent::SetTexture(Texture* texture)
@@ -77,7 +77,7 @@ MULTIEXTEND_API Vector2 MultiExtend::SpriteSDLComponent::GetSize()
 	return Vector2{(float)m_TextureRender_w,(float)m_TextureRender_h};
 }
 
-void MultiExtend::SpriteSDLComponent::Draw(const float& ratio)
+void MultiExtend::SpriteSDLComponent::CustomDraw(const Vector2& size)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(DrawSpriteComponent);
 
@@ -99,5 +99,5 @@ void MultiExtend::SpriteSDLComponent::Draw(const float& ratio)
 			GetRotationAbsolute()[z]);
 	}
 
-	ActorComponent::Draw(ratio);
+	ActorComponent::CustomDraw(size);
 }

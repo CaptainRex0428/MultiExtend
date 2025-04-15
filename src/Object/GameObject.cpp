@@ -313,8 +313,8 @@ void MultiExtend::GameObject::GenerateOuput()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		ratio = width / (float)height;
 
-		m_GameActor->Draw(ratio);
-		CustomGenerateOuput(ratio);
+		m_GameActor->Draw({(float)width,(float)height});
+		CustomGenerateOuput({ (float)width,(float)height });
 
 		SDL_GL_SwapWindow(m_window);
 	}
@@ -322,7 +322,7 @@ void MultiExtend::GameObject::GenerateOuput()
 	
 }
 
-void MultiExtend::GameObject::CustomGenerateOuput(const float& ratio)
+void MultiExtend::GameObject::CustomGenerateOuput(const Vector2& size)
 {
 	
 }

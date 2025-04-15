@@ -37,7 +37,7 @@ namespace MultiExtend
 
 		MULTIEXTEND_API virtual ~AnimateSpriteSDLComponent();
 
-		MULTIEXTEND_API virtual void Update(float delta) override;
+		MULTIEXTEND_API virtual void CustomUpdate(float delta) override;
 
 		MULTIEXTEND_API void SetAnimTextures(std::vector<Texture*>& animateTextures);
 

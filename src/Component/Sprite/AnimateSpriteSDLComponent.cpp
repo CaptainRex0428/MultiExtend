@@ -48,7 +48,7 @@ MultiExtend::AnimateSpriteSDLComponent::~AnimateSpriteSDLComponent()
 {
 }
 
-void MultiExtend::AnimateSpriteSDLComponent::Update(float delta)
+void MultiExtend::AnimateSpriteSDLComponent::CustomUpdate(float delta)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(UpdateAnimateSpriteComponent);
 
@@ -63,7 +63,7 @@ void MultiExtend::AnimateSpriteSDLComponent::Update(float delta)
 		SpriteSDLComponent::SetTexture(m_animateTextures[resetIdx]);
 	}
 
-	SpriteSDLComponent::Update(delta);
+	SpriteSDLComponent::CustomUpdate(delta);
 }
 
 void MultiExtend::AnimateSpriteSDLComponent::SetAnimTextures(std::vector<Texture*>& animateTextures)

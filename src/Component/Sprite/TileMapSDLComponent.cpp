@@ -55,14 +55,14 @@ MultiExtend::TileMapSDLComponent::~TileMapSDLComponent()
 	m_Renderer = nullptr;
 }
 
-void MultiExtend::TileMapSDLComponent::Update(float delta)
+void MultiExtend::TileMapSDLComponent::CustomUpdate(float delta)
 {	
 	MULTIEXTEND_TIMER_TRACE_TAG(UpdateTileMapComponent);
 
-	ActorComponent::Update(delta);
+	ActorComponent::CustomUpdate(delta);
 }
 
-void MultiExtend::TileMapSDLComponent::Draw(const float& ratio)
+void MultiExtend::TileMapSDLComponent::CustomDraw(const Vector2& size)
 {
 	MULTIEXTEND_TIMER_TRACE_TAG(DrawTileMapComponent);
 
@@ -89,7 +89,7 @@ void MultiExtend::TileMapSDLComponent::Draw(const float& ratio)
 			GetRotationAbsolute()[z]);
 	}
 
-	ActorComponent::Draw(ratio);
+	ActorComponent::CustomDraw(size);
 }
 
 void MultiExtend::TileMapSDLComponent::SetTexture(Texture* texture)

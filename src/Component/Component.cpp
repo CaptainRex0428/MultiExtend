@@ -5,7 +5,7 @@
 MultiExtend::Component::Component(const char* name, int updateorder)
 	:Object(),
 	m_updateorder(updateorder),
-	m_State(State_VALID | State_UPDATE | State_DISPLAY | State_VALID)
+	m_State(State_VALID | State_UPDATE | State_DISPLAY | State_INPUT)
 {
 	SetTag(name);
 }
