@@ -27,7 +27,7 @@ public:
 private:
 
 	ShaderGL * m_shader;
-	VertexBuffer<float, 8> * m_buffer;
+	VertexBufferGL<float, 8> * m_buffer;
 };
 
 GameInstance& GameInstance::Get() {
@@ -46,7 +46,7 @@ bool GameInstance::Initialize(
 
 	GameObject::Initialize(windowTitle, position, size, initTag, mode);
 
-	m_shader = CreateShaderGL(m_GameStat, "../shader/basic.glsl");
+	m_shader = CreateShaderGL(m_GameStat, "../shader/Basic.glsl");
 
 	std::vector<MultiExtend::Vertex<float, 8>> vertices =
 	{
@@ -62,7 +62,7 @@ bool GameInstance::Initialize(
 		2,3,0
 	};
 
-	m_buffer = new MultiExtend::VertexBuffer<float, 8>(vertices, indices);
+	m_buffer = new MultiExtend::VertexBufferGL<float, 8>(vertices, indices);
 	m_buffer->ConfigureAttributes(m_shader, DefaultFloatVertexAttributes);
 
 	return true;
@@ -70,7 +70,7 @@ bool GameInstance::Initialize(
 
 void GameInstance::CustomGenerateOuput(const Vector2& size)
 {
-	DrawVertices(m_buffer, m_shader, GL_TRIANGLES, size[x]/size[y]);
+	DrawSpinningVerticesGL(m_buffer, m_shader, GL_TRIANGLES, size[x]/size[y]);
 }
 
 

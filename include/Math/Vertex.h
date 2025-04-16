@@ -13,6 +13,9 @@
 #include <type_traits>
 #include <stddef.h>
 
+#include <map>
+#include <string>
+
 #include "MultiExtend.h"
 
 namespace MultiExtend
@@ -36,13 +39,13 @@ namespace MultiExtend
 	};
 
 	template<typename T, size_t colorDepth>
-	class VertexBuffer
+	class VertexBufferGL
 	{
 	public:
 		static_assert(std::is_floating_point<T>::value,
 			"Vertex component type must be floating point");
 
-		VertexBuffer
+		VertexBufferGL
 		(const std::vector<Vertex<T,colorDepth>> & vertices, const std::vector<unsigned int> & indices)
 		: m_Vertices(vertices), m_Indices(indices)
 		{
@@ -147,7 +150,7 @@ namespace MultiExtend
 		}
 
 		
-		virtual ~VertexBuffer()
+		virtual ~VertexBufferGL()
 		{
 			Release();
 		}
@@ -232,10 +235,12 @@ namespace MultiExtend
 		GLuint m_VAO = 0, m_VBO = 0, m_EBO = 0;
 	};
 
+	MULTIEXTEND_API std::map<std::string, int> InitUniformVariablesGL(ShaderGL * shader, const float& ratio);
+
 	template<typename T, size_t colorDepth>
-	void DrawVertices(VertexBuffer<T,colorDepth> * buffer, ShaderGL * shader, GLenum mode, const float & ratio)
+	void DrawSpinningVerticesGL(VertexBufferGL<T,colorDepth> * buffer, ShaderGL * shader, GLenum mode, const float & ratio)
 	{
-		MULTIEXTEND_TIMER_TRACE_TAG(DrawVertices());
+		MULTIEXTEND_TIMER_TRACE_TAG(DrawSpinningVerticesGL());
 
 		if(!shader)
 		{
@@ -254,30 +259,23 @@ namespace MultiExtend
 		buffer->Bind();
 		glUseProgram(shader->GetShaderProgram());
 
-		const unsigned int MVP_Idx = glGetUniformLocation(shader->GetShaderProgram(), "MVP");
+		std::map<std::string, int> uniformVariables = InitUniformVariablesGL(shader,ratio);
 
-		mat4x4 m, p, mvp;
-		mat4x4_identity(m);
+		auto uMVPIt = uniformVariables.find("uMVP");
+		if(uMVPIt != uniformVariables.end() && uMVPIt->second != -1)
+		{
+			mat4x4 m, p, mvp;
+			mat4x4_identity(m);
+			mat4x4_rotate_Z(m, m, (float)glfwGetTime());
+			mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+			mat4x4_mul(mvp, p, m);
+
+			glUniformMatrix4fv(uMVPIt->second, 1, GL_FALSE, (const GLfloat*)&mvp);
+		}
 		
-		
-		float glfwTime = (float)glfwGetTime();
-		
-		std::chrono::steady_clock::duration startTime = GlobalClock::GetProcessStartTime()->m_time_highres.time_since_epoch();
-		std::chrono::steady_clock::duration now = MULTIEXTEND_CLOCK_HIGHRES::now().time_since_epoch();
-
-		double startTimeDurationDouble = std::chrono::duration<double>(startTime).count();
-		double nowTimeDurationDouble = std::chrono::duration<double>(now).count();
-		float timeSpanFromStart_Double = (float)(nowTimeDurationDouble - startTimeDurationDouble);
-
-		mat4x4_rotate_Z(m, m, timeSpanFromStart_Double);
-		mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-		mat4x4_mul(mvp, p, m);
-
-		glUniformMatrix4fv(MVP_Idx, 1, GL_FALSE, (const GLfloat*)&mvp);
 
 		if (buffer->HasIndices() && buffer->IsIndexBufferValid())
 		{
-			// MULTIEXTEND_MESSAGE_CLIENT_DEBUG("Draw with index buffer");
 			glDrawElements(mode,
 				static_cast<GLsizei>(buffer->GetIndexCount()),
 				GL_UNSIGNED_INT,
@@ -285,14 +283,57 @@ namespace MultiExtend
 		}
 		else
 		{
-			// MULTIEXTEND_MESSAGE_CLIENT_DEBUG("Draw without index buffer");
-
 			glDrawArrays(mode,
 				0,
 				static_cast<GLsizei>(buffer->GetVertexCount()));
 		}
 
-		// 可选：错误检查
+		GLenum err = glGetError();
+		if (err != GL_NO_ERROR)
+		{
+			MULTIEXTEND_MESSAGE_CLIENT_ERROR("OpenGL draw error: {0}",
+				reinterpret_cast<const char*>(glGetString(err)));
+		}
+	};
+
+	template<typename T, size_t colorDepth>
+	void DrawVerticesGL(VertexBufferGL<T, colorDepth>* buffer, ShaderGL* shader, GLenum mode, const float& ratio)
+	{
+		MULTIEXTEND_TIMER_TRACE_TAG(DrawVerticesGL());
+
+		if (!shader)
+		{
+			MULTIEXTEND_MESSAGE_CLIENT_ERROR("Shader ptr is null.");
+			return;
+		}
+
+		if (!shader->IsValid())
+		{
+			MULTIEXTEND_MESSAGE_CLIENT_ERROR("Shader is not valid.\n{0}\n{1}",
+				shader->GetVertexShaderContent(),
+				shader->GetFragmentShaderContent());
+			return;
+		}
+
+		buffer->Bind();
+		glUseProgram(shader->GetShaderProgram());
+
+		InitUniformVariablesGL(shader, ratio);
+
+		if (buffer->HasIndices() && buffer->IsIndexBufferValid())
+		{
+			glDrawElements(mode,
+				static_cast<GLsizei>(buffer->GetIndexCount()),
+				GL_UNSIGNED_INT,
+				nullptr);
+		}
+		else
+		{
+			glDrawArrays(mode,
+				0,
+				static_cast<GLsizei>(buffer->GetVertexCount()));
+		}
+
 		GLenum err = glGetError();
 		if (err != GL_NO_ERROR)
 		{
