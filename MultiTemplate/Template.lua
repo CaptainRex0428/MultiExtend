@@ -216,6 +216,10 @@ project "MultiExtendTemplateSSL"
         "%{DepIncludeDir.cryptopp}",
         "%{DepIncludeDir.SDL}",
         "%{DepIncludeDir.SDL_image}",
+        "%{DepIncludeDir.glad}",
+        "%{DepIncludeDir.glfw}",
+        "%{DepIncludeDir.glew}",
+        "%{DepIncludeDir.linmath}"
 
     }
 
@@ -227,7 +231,11 @@ project "MultiExtendTemplateSSL"
         "SDL_image",
 
         "spdlog",
-        "cryptopp"
+        "cryptopp",
+        "glfw",
+        "glad",
+        "glew",
+        "opengl32.lib"
         
     }
 
