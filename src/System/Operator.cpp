@@ -116,6 +116,7 @@ MULTIEXTEND_API int MultiExtend::Operator::Init()
 	MULTIEXTEND_MESSAGE_CLIENT_INFO("{0}", Mac);
 
 	int hardWareConcurrency = this->GetHardwareConcurrency();
+	MULTIEXTEND_MESSAGE_CLIENT_INFO("CPU Max Concurrency:{0}",hardWareConcurrency);
 
 	return 0;
 }
