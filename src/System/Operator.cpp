@@ -1,6 +1,7 @@
 ﻿#include "System/Operator.h"
 
 #include <string>
+#include <thread>
 
 #include "MultiExtend.h"
 
@@ -85,6 +86,9 @@ MultiExtend::Operator::Operator()
 		closedir(dir);
 	}
 #endif
+
+	//Get Hardware_Concurrency number
+	this->m_hardwareConcurrency = std::thread::hardware_concurrency();
 }
 
 MultiExtend::Operator& MultiExtend::Operator::Get() {
@@ -111,9 +115,16 @@ MULTIEXTEND_API int MultiExtend::Operator::Init()
 	MULTIEXTEND_MESSAGE_CLIENT_INFO("Mac Address");
 	MULTIEXTEND_MESSAGE_CLIENT_INFO("{0}", Mac);
 
+	int hardWareConcurrency = this->GetHardwareConcurrency();
+
 	return 0;
 }
 
 std::string MultiExtend::Operator::GetMacAddress() const {
 	return m_macAddress;
+}
+
+int MultiExtend::Operator::GetHardwareConcurrency() const
+{
+	return m_hardwareConcurrency;
 }

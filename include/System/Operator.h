@@ -18,6 +18,7 @@ namespace MultiExtend
 
 		// 获取MAC地址
 		MULTIEXTEND_API std::string GetMacAddress() const;
+		MULTIEXTEND_API int GetHardwareConcurrency() const;
 
 	private:
 		MULTIEXTEND_API Operator();
@@ -26,5 +27,6 @@ namespace MultiExtend
 
 	private:
 		std::string m_macAddress;
+		int m_hardwareConcurrency;
 	};
 }
