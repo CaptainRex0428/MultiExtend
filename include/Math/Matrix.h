@@ -57,6 +57,26 @@ namespace MultiExtend
 		static constexpr size_t Rows() { return rows; }
 		static constexpr size_t Cols() { return cols; }
 
+		// 创建去掉指定行列的子矩阵
+		Matrix<T, rows - 1, cols - 1> submatrix(size_t row, size_t col) const
+		{
+			Matrix<T, rows - 1, cols - 1> submat;
+			size_t sub_i = 0;
+			for (size_t i = 0; i < rows; ++i)
+			{
+				if (i == row) continue;
+				size_t sub_j = 0;
+				for (size_t j = 0; j < cols; ++j)
+				{
+					if (j == col) continue;
+					submat(sub_i, sub_j) = data[i * cols + j];
+					++sub_j;
+				}
+				++sub_i;
+			}
+			return submat;
+		}
+
 	private:
 		std::array<T, rows* cols> data;
 	};
@@ -203,7 +223,7 @@ namespace MultiExtend
 	template<typename T>
 	Matrix<T, 4, 4> MTXScale(T x, T y, T z)
 	{
-		Matrix<T, 4, 4> mat = Identity<T, 4>();
+		Matrix<T, 4, 4> mat = MTXIdentity<T, 4>();
 		mat(0, 0) = x;
 		mat(1, 1) = y;
 		mat(2, 2) = z;

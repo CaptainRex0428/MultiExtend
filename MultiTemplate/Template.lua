@@ -132,6 +132,73 @@ project "MultiExtendTemplateEntity"
         symbols "Off"
         defines { "_DIST","NDEBUG" }
 
+group "Sandbox/Console"
+project "MultiExtendTemplateMath"
+    kind "ConsoleApp"
+    language "C++"
+    cppdialect "C++20"
+
+    files
+    {
+        "Template06.cpp"
+    }
+
+    includedirs
+    {
+        "%{ProjIncludeDir.MultiExtend}",
+        "%{DepIncludeDir.SDL}",
+        "%{DepIncludeDir.SDL_image}",
+        "%{DepIncludeDir.spdlog}",
+        "%{DepIncludeDir.cryptopp}"
+    }
+
+    links
+    {
+        "MultiExtend",
+        "SDL",
+        "SDL_main",
+        "SDL_image",
+
+        "spdlog",
+        "cryptopp"
+        
+    }
+
+    defines
+	{
+	}
+
+    flags
+    {
+    }
+
+    buildoptions { "/EHsc", "/Zc:preprocessor", "/Zc:__cplusplus"}
+
+    location (LocationDir)
+    targetdir (EXEDir)
+    objdir (ObjectDir)
+
+    filter "system:windows" 
+        systemversion "latest"
+        defines { "_WINDOWS","_WIN64" }
+
+    filter "configurations:Debug"
+        runtime "Debug"
+        symbols "On"
+        defines { "_DEBUG" }
+
+    filter "configurations:Release"
+        runtime "Release"
+        optimize "On"
+        symbols "On"
+        defines { "_RELEASE","NDEBUG" }
+
+    filter "configurations:Dist"
+        runtime "Release"
+        optimize "On"
+        symbols "Off"
+        defines { "_DIST","NDEBUG" }
+
 group "Sandbox/Render"
 project "MultiExtendTemplateSDL"
     kind "ConsoleApp"
