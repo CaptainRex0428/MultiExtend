@@ -50,3 +50,4 @@ autom4te*
 
 example_assert_log.txt
 .cursorignore
+.idea
