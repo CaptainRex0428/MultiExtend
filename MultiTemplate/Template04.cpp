@@ -16,7 +16,7 @@ public:
 	static GameInstance& Get();
 
 	virtual bool Initialize(
-		const char* windowTitle = "DefaultWindow",
+		const char* windowTitle = "OpenGL Template",
 		Vector2 position = { 100,100 },
 		Vector2 size = { 1280,720 },
 		InitFrameworkTag initTag = OpenGL,

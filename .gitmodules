@@ -21,9 +21,11 @@
 [submodule "Dependencies/zlib"]
 	path = Dependencies/zlib
 	url = https://github.com/madler/zlib.git
+	branch = develop
 [submodule "Dependencies/libpng"]
 	path = Dependencies/libpng
 	url = https://github.com/pnggroup/libpng.git
+	branch = libpng18
 [submodule "Dependencies/SDL_image"]
 	path = Dependencies/SDL_image
 	url = https://github.com/libsdl-org/SDL_image.git
@@ -38,6 +40,7 @@
 [submodule "Dependencies/spdlog"]
 	path = Dependencies/spdlog
 	url = https://github.com/gabime/spdlog.git
+	branch = v2.x
 [submodule "Dependencies/lua"]
 	path = Dependencies/lua
 	url = https://github.com/lua/lua
