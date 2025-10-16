@@ -52,3 +52,4 @@ example_assert_log.txt
 .cursorignore
 .idea
 .run
+.fork
