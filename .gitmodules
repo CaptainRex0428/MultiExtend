@@ -55,3 +55,7 @@
 	path = Dependencies/FFmpeg
 	url = https://github.com/FFmpeg/FFmpeg.git
 	branch = release/7.1
+[submodule "Dependencies/opencv"]
+	path = Dependencies/opencv
+	url = https://github.com/opencv/opencv.git
+	branch = 5.x
