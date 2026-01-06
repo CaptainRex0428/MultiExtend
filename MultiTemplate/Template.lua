@@ -429,3 +429,61 @@ project "MultiExtendTemplateOPENGL"
        runtime "Release"
        optimize "On"
        symbols "Off"
+
+       group "Sandbox/Render"
+
+project "MultiExtendTemplateImGUI"
+    kind "ConsoleApp"
+    language "C++"
+    cppdialect "C++20"
+
+    files
+    {
+        "Template07.cpp",
+        "%{DepIncludeDir.imgui}/backends/imgui_impl_dx11.cpp",
+        "%{DepIncludeDir.imgui}/backends/imgui_impl_win32.cpp"
+    }
+
+    includedirs
+    {
+        "%{DepIncludeDir.imgui}",
+        "%{DepIncludeDir.imgui}".."/backends"
+    }
+
+    links
+    {
+        "ImGui",
+        "d3d11.lib",
+        "d3dcompiler.lib", 
+        "dxgi.lib"
+    }
+
+    defines 
+    { 
+      
+    }
+   
+   location (LocationDir)
+   targetdir (EXEDir)
+   objdir (ObjectDir)
+
+   filter "system:windows"
+       systemversion "latest"
+       defines { "WINDOWS" }
+
+   filter "configurations:Debug"
+       defines { "DEBUG" }
+       runtime "Debug"
+       symbols "On"
+
+   filter "configurations:Release"
+       defines { "RELEASE" }
+       runtime "Release"
+       optimize "On"
+       symbols "On"
+
+   filter "configurations:Dist"
+       defines { "DIST" }
+       runtime "Release"
+       optimize "On"
+       symbols "Off"
